@@ -232,6 +232,278 @@
       opacity: 0.45;
       cursor: default;
     }
+    .maho-cutscene {
+      position: fixed;
+      inset: 0;
+      z-index: 165;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      background: radial-gradient(ellipse 90% 70% at 50% 40%, rgba(30, 15, 45, 0.97), rgba(2, 2, 10, 0.96));
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .maho-cutscene.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .maho-cutscene__inner {
+      max-width: 28rem;
+      width: 100%;
+      text-align: center;
+    }
+    .maho-cutscene__wheel {
+      font-size: clamp(2.8rem, 10vw, 4.2rem);
+      line-height: 1;
+      margin: 0 auto 1.35rem;
+      display: block;
+      width: fit-content;
+      animation: mahoWheelSpin 3.2s linear infinite;
+      filter: drop-shadow(0 0 18px rgba(251, 191, 36, 0.5)) drop-shadow(0 0 28px rgba(168, 85, 247, 0.35));
+      user-select: none;
+    }
+    @keyframes mahoWheelSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .maho-cutscene__text {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: rgba(245, 240, 255, 0.92);
+      text-align: left;
+      min-height: 6rem;
+      margin-bottom: 1.25rem;
+    }
+    .maho-cutscene__line {
+      margin: 0 0 0.65rem;
+      padding: 0.35rem 0;
+      border-left: 2px solid rgba(251, 191, 36, 0.45);
+      padding-left: 0.75rem;
+      animation: mahoLineIn 0.45s var(--ease-out) both;
+    }
+    @keyframes mahoLineIn {
+      from {
+        opacity: 0;
+        transform: translateX(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    .maho-cutscene__btn {
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      padding: 0.65rem 1.4rem;
+      border-radius: 10px;
+      border: 1px solid rgba(251, 191, 36, 0.55);
+      background: linear-gradient(165deg, rgba(80, 50, 30, 0.5), rgba(18, 14, 28, 0.95));
+      color: #fef3c7;
+      box-shadow: 0 0 24px rgba(251, 191, 36, 0.15);
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.2s;
+    }
+    .maho-cutscene__btn:hover {
+      border-color: rgba(253, 224, 71, 0.85);
+      box-shadow: 0 0 28px rgba(251, 191, 36, 0.28);
+      transform: translateY(-1px);
+    }
+    .heian-cutscene {
+      position: fixed;
+      inset: 0;
+      z-index: 165;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      background: radial-gradient(ellipse 90% 70% at 50% 38%, rgba(50, 8, 18, 0.97), rgba(4, 2, 8, 0.97));
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .heian-cutscene.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .heian-cutscene__inner {
+      max-width: 28rem;
+      width: 100%;
+      text-align: center;
+    }
+    .heian-cutscene__torii {
+      font-size: clamp(2.8rem, 10vw, 4.2rem);
+      line-height: 1;
+      margin: 0 auto 1.35rem;
+      display: block;
+      width: fit-content;
+      animation: mahoWheelSpin 3.2s linear infinite;
+      filter: drop-shadow(0 0 20px rgba(225, 29, 72, 0.55)) drop-shadow(0 0 32px rgba(127, 29, 29, 0.45));
+      user-select: none;
+    }
+    .heian-cutscene__text {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: rgba(255, 245, 248, 0.93);
+      text-align: left;
+      min-height: 6rem;
+      margin-bottom: 1.25rem;
+    }
+    .heian-cutscene__line {
+      margin: 0 0 0.65rem;
+      padding: 0.35rem 0;
+      border-left: 2px solid rgba(225, 29, 72, 0.55);
+      padding-left: 0.75rem;
+      animation: mahoLineIn 0.45s var(--ease-out) both;
+    }
+    .heian-cutscene__btn {
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      padding: 0.65rem 1.4rem;
+      border-radius: 10px;
+      border: 1px solid rgba(225, 29, 72, 0.55);
+      background: linear-gradient(165deg, rgba(70, 15, 28, 0.65), rgba(14, 8, 12, 0.96));
+      color: #fecdd3;
+      box-shadow: 0 0 24px rgba(225, 29, 72, 0.2);
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.2s;
+    }
+    .heian-cutscene__btn:hover {
+      border-color: rgba(251, 113, 133, 0.85);
+      box-shadow: 0 0 28px rgba(225, 29, 72, 0.32);
+      transform: translateY(-1px);
+    }
+    .boss-menu-btn {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(225, 29, 72, 0.55);
+      color: #fecdd3;
+      background: linear-gradient(165deg, rgba(80, 20, 30, 0.55), rgba(18, 10, 16, 0.95));
+      box-shadow: 0 0 22px rgba(225, 29, 72, 0.18);
+      transition: border-color 0.15s, box-shadow 0.2s, transform 0.15s;
+    }
+    .boss-menu-btn:hover {
+      border-color: rgba(251, 113, 133, 0.85);
+      box-shadow: 0 0 28px rgba(225, 29, 72, 0.3);
+      transform: translateY(-1px);
+    }
+    .boss-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(3, 3, 10, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .boss-menu.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .boss-menu__panel {
+      width: 100%;
+      max-width: 44rem;
+      max-height: min(90vh, 38rem);
+      overflow-y: auto;
+      padding: 1.2rem 1.25rem 1.35rem;
+      border-radius: 14px;
+      border: 1px solid rgba(225, 29, 72, 0.45);
+      background: linear-gradient(165deg, rgba(45, 12, 22, 0.96), rgba(12, 10, 18, 0.99));
+      box-shadow: 0 0 40px rgba(225, 29, 72, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    .boss-menu__head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .boss-menu__head h2 {
+      font-family: "Syne", "Outfit", sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin: 0;
+      color: #fecdd3;
+      letter-spacing: 0.03em;
+    }
+    .boss-menu__close {
+      flex-shrink: 0;
+      width: 2.1rem;
+      height: 2.1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--text);
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+    }
+    .boss-menu__close:hover {
+      border-color: rgba(251, 113, 133, 0.6);
+      color: #fff;
+    }
+    .boss-menu__hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin: 0 0 1rem;
+      line-height: 1.45;
+    }
+    .boss-menu__columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.15rem 1.35rem;
+    }
+    @media (max-width: 560px) {
+      .boss-menu__columns {
+        grid-template-columns: 1fr;
+      }
+    }
+    .boss-menu__sub {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(251, 191, 36, 0.9);
+      margin: 0 0 0.45rem;
+      font-weight: 700;
+    }
+    .roster.roster--boss {
+      margin-top: 0;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.55rem;
+    }
+    .boss-menu__columns .setup-team,
+    .boss-menu__columns > div {
+      padding: 0.65rem 0.5rem 0;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .boss-menu__columns .boss-menu__sub {
+      margin: 0 0 0.5rem;
+      padding: 0 0.35rem;
+    }
     body.is-shake {
       animation: screenShake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
@@ -245,9 +517,9 @@
     .wrap {
       position: relative;
       z-index: 1;
-      max-width: 760px;
+      max-width: 920px;
       margin: 0 auto;
-      padding: 1.75rem 1.1rem 3.5rem;
+      padding: 1.5rem clamp(0.85rem, 3vw, 1.35rem) 3rem;
     }
     .title-block {
       text-align: center;
@@ -290,6 +562,108 @@
         0 0 0 1px rgba(255, 255, 255, 0.04) inset,
         0 20px 50px -20px rgba(0, 0, 0, 0.65),
         0 0 80px -40px rgba(56, 189, 248, 0.15);
+    }
+    #setup.panel--setup {
+      padding: 1.45rem clamp(1rem, 2.5vw, 1.5rem) 1.55rem;
+    }
+    .setup-teams {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.15rem 1.25rem;
+      margin-bottom: 1.35rem;
+      align-items: stretch;
+    }
+    @media (max-width: 720px) {
+      .setup-teams {
+        grid-template-columns: 1fr;
+      }
+    }
+    .setup-team {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: 0.95rem 0.85rem 1rem;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: linear-gradient(165deg, rgba(12, 12, 22, 0.55), rgba(8, 8, 14, 0.75));
+    }
+    .setup-team--p1 {
+      border-color: rgba(56, 189, 248, 0.28);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.06) inset, 0 12px 32px -18px rgba(56, 189, 248, 0.12);
+    }
+    .setup-team--p2 {
+      border-color: rgba(225, 29, 72, 0.28);
+      box-shadow: 0 0 0 1px rgba(225, 29, 72, 0.06) inset, 0 12px 32px -18px rgba(225, 29, 72, 0.12);
+    }
+    .setup-team__head {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 800;
+      color: var(--muted);
+      margin: 0 0 0.7rem;
+      padding-bottom: 0.55rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      line-height: 1.35;
+    }
+    .setup-team__head span {
+      display: inline-block;
+      margin-left: 0.35rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      opacity: 0.88;
+      color: rgba(255, 255, 255, 0.55);
+    }
+    .setup-team .roster {
+      flex: 1;
+      align-content: start;
+      grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+      gap: 0.5rem;
+    }
+    .setup-footer {
+      margin-top: 0.25rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .setup-diff__head {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin: 0 0 0.65rem;
+      font-weight: 800;
+    }
+    .setup-cta {
+      display: grid;
+      grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+      gap: 0.65rem 0.85rem;
+      align-items: stretch;
+    }
+    @media (max-width: 520px) {
+      .setup-cta {
+        grid-template-columns: 1fr;
+      }
+    }
+    .setup-cta .boss-menu-btn,
+    .setup-cta .start-btn {
+      min-height: 3.1rem;
+      margin-top: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .setup-diff-block {
+      margin: 0;
+      padding: 0.85rem 0.75rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(120, 120, 160, 0.12);
+      background: rgba(0, 0, 0, 0.18);
+    }
+    .setup-footer .vs-row {
+      margin: 0;
     }
     #battle.panel {
       box-shadow:
@@ -362,12 +736,12 @@
       justify-content: center;
       gap: 0.65rem 1rem;
       flex-wrap: wrap;
-      margin: 1.15rem 0;
+      margin: 1rem 0;
       font-family: "JetBrains Mono", monospace;
-      font-size: 0.82rem;
-      padding: 0.75rem 1rem;
+      font-size: 0.8rem;
+      padding: 0.85rem 1.1rem;
       border-radius: 12px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.15));
       border: 1px solid var(--border);
     }
     .vs-row span { color: var(--muted); }
@@ -392,7 +766,7 @@
     .start-btn {
       display: block;
       width: 100%;
-      margin-top: 1.1rem;
+      margin-top: 1rem;
       padding: 0.95rem 1rem;
       font-family: inherit;
       font-size: 1.02rem;
@@ -928,6 +1302,8 @@
       .start-btn { animation: none; }
       .start-btn::before { animation: none; }
       h1 { animation: none; background-position: center; }
+      .maho-cutscene__wheel { animation: none; }
+      .heian-cutscene__torii { animation: none; }
     }
   </style>
 </head>
@@ -944,31 +1320,77 @@
   <div class="domain-modal" id="domainModal" aria-hidden="true">
     <div class="domain-modal__panel" id="domainModalBody" role="dialog" aria-modal="true" aria-labelledby="domainModalTitle"></div>
   </div>
+  <div class="boss-menu" id="bossMenu" aria-hidden="true">
+    <div class="boss-menu__panel" role="dialog" aria-modal="true" aria-labelledby="bossMenuTitle">
+      <div class="boss-menu__head">
+        <h2 id="bossMenuTitle">Меню боссов</h2>
+        <button type="button" class="boss-menu__close" id="bossMenuClose" aria-label="Закрыть">×</button>
+      </div>
+      <p class="boss-menu__hint">В общем ростере их нет: <strong>(БОСС) Mahoraga</strong> и <strong>(БОСС) Heian Sukuna</strong> — только здесь. Клик по карточке: до 3 в команде, повторный клик снимает.</p>
+      <div class="boss-menu__columns">
+        <div>
+          <h3 class="boss-menu__sub">Команда 1 (ты)</h3>
+          <div class="roster roster--boss" id="bossRoster1"></div>
+        </div>
+        <div>
+          <h3 class="boss-menu__sub">Команда 2 (противник)</h3>
+          <div class="roster roster--boss" id="bossRoster2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="maho-cutscene" id="mahoCutscene" aria-hidden="true">
+    <div class="maho-cutscene__inner">
+      <div class="maho-cutscene__wheel" aria-hidden="true">☸</div>
+      <div class="maho-cutscene__text" id="mahoCutsceneText"></div>
+      <button type="button" class="maho-cutscene__btn" id="mahoCutsceneBtn" hidden>Продолжить бой</button>
+    </div>
+  </div>
+  <div class="heian-cutscene" id="heianCutscene" aria-hidden="true">
+    <div class="heian-cutscene__inner">
+      <div class="heian-cutscene__torii" aria-hidden="true">⛩</div>
+      <div class="heian-cutscene__text" id="heianCutsceneText"></div>
+      <button type="button" class="heian-cutscene__btn" id="heianCutsceneBtn" hidden>Продолжить бой</button>
+    </div>
+  </div>
 
   <div class="wrap">
     <header class="title-block">
       <h1>Текстовый бой — Jujutsu Kaisen</h1>
-      <p class="sub">До 3 бойцов на сторону, синергия команд в бою. Расширение домена — отдельная мини-игра на персонажа.</p>
+      <p class="sub">До 3 бойцов на сторону, синергия в бою, домен — мини-игра. Боссы — кнопка «Боссы».</p>
     </header>
 
-    <section id="setup" class="panel">
-      <h2>Команда 1 (ты), до 3</h2>
-      <div class="roster" id="roster1"></div>
-      <h2 style="margin-top:1rem">Команда 2 (противник), до 3</h2>
-      <div class="roster" id="roster2"></div>
-      <h2 style="margin-top:1rem">Сложность</h2>
-      <div class="diff-row" id="diffRow" role="radiogroup" aria-label="Сложность боя">
-        <button type="button" class="diff-btn" data-diff="easy">Лёгкая<small>обучение</small></button>
-        <button type="button" class="diff-btn is-on" data-diff="normal">Нормальная<small>базовый баланс</small></button>
-        <button type="button" class="diff-btn" data-diff="hard">Сложная<small>враг сильнее</small></button>
-        <button type="button" class="diff-btn" data-diff="extreme">Экстрим<small>кошмар</small></button>
+    <section id="setup" class="panel panel--setup">
+      <div class="setup-teams">
+        <div class="setup-team setup-team--p1">
+          <div class="setup-team__head">Команда 1<span>ты · до 3</span></div>
+          <div class="roster" id="roster1"></div>
+        </div>
+        <div class="setup-team setup-team--p2">
+          <div class="setup-team__head">Команда 2<span>противник · до 3</span></div>
+          <div class="roster" id="roster2"></div>
+        </div>
       </div>
-      <div class="vs-row">
-        <span>Команда 1:</span> <strong id="label1">—</strong>
-        <span class="vs-badge">VS</span>
-        <span>Команда 2:</span> <strong class="red" id="label2">—</strong>
+      <div class="setup-footer">
+        <div class="setup-diff-block">
+          <div class="setup-diff__head">Сложность</div>
+          <div class="diff-row" id="diffRow" role="radiogroup" aria-label="Сложность боя">
+            <button type="button" class="diff-btn" data-diff="easy">Лёгкая<small>обучение</small></button>
+            <button type="button" class="diff-btn is-on" data-diff="normal">Нормальная<small>базовый баланс</small></button>
+            <button type="button" class="diff-btn" data-diff="hard">Сложная<small>враг сильнее</small></button>
+            <button type="button" class="diff-btn" data-diff="extreme">Экстрим<small>кошмар</small></button>
+          </div>
+        </div>
+        <div class="vs-row">
+          <span>Команда 1:</span> <strong id="label1">—</strong>
+          <span class="vs-badge">VS</span>
+          <span>Команда 2:</span> <strong class="red" id="label2">—</strong>
+        </div>
+        <div class="setup-cta">
+          <button type="button" class="boss-menu-btn" id="openBossMenu">Боссы</button>
+          <button type="button" class="start-btn" id="start" disabled>Начать бой</button>
+        </div>
       </div>
-      <button type="button" class="start-btn" id="start" disabled>Начать бой</button>
     </section>
 
     <section id="battle" class="panel">
@@ -1426,6 +1848,28 @@
         defendLine: "Реверсивная техника и плотный слой CE — тело короля проклятий непробиваемо.",
       },
       {
+        id: "heian_sukuna",
+        boss: true,
+        name: "(БОСС) Heian Sukuna",
+        emoji: "⛩",
+        hp: 148,
+        atk: 20,
+        tech: 22,
+        def: 14,
+        strikePool: [
+          "Эра Хэйан: «Разрубание» (Dismantle) — тяжёлый слэш, будто поле режут весом короля.",
+          "Четыре руки — шквал ударов и захватов, CE плотнее «современной» манеры.",
+        ],
+        techPool: [
+          "«Рассечение» (Cleave) — разрез по закону без жалости эпохи.",
+          "«Стрела пламени» — пожар старой формы, выжигающий дистанцию.",
+          "Давление «Святилища» в сжатом виде: ритуальный дождь slash/cleave.",
+        ],
+        domainHit: "Расширение домена Хэйан: «Святилище зла» (Fukuma Mizushi) во всей полноте — без современных оков; арена сжимается в бесконечную резню.",
+        domainMiss: "Даже король на миг не ухватил закон — остаётся хирургический Dismantle.",
+        defendLine: "Четыре руки и слой CE королевской эпохи — удар гасится, как о клинок Хэйан.",
+      },
+      {
         id: "gojo",
         name: "Gojo Satoru",
         emoji: "🤞🏻",
@@ -1617,6 +2061,7 @@
       },
       {
         id: "mahoraga",
+        boss: true,
         name: "(БОСС) Mahoraga",
         emoji: "☸",
         hp: 148,
@@ -2120,6 +2565,12 @@
         "Жуки разбегаются хаотично",
         "Один жук остаётся в центре",
       ),
+      heian_sukuna: dmStep(
+        "В полной версии «Святилища» эпохи Хэйан цель:",
+        "Ловит slash/cleave без отсрочки — закон поля жёстче",
+        "Может «договориться» с доменом словами",
+        "Иммунна, если не смотрит на короля",
+      ),
     };
 
     function shuffleDomainOpts(pairs) {
@@ -2200,6 +2651,8 @@
     let prevHp1 = 0;
     let prevHp2 = 0;
     let autoBattleTimer = null;
+    let mahoCutsceneTimers = [];
+    let heianCutsceneTimers = [];
 
     function formatTeamPickLabel(ids) {
       if (!ids.length) return "—";
@@ -2264,6 +2717,9 @@
 
     const roster1 = document.getElementById("roster1");
     const roster2 = document.getElementById("roster2");
+    const bossRoster1 = document.getElementById("bossRoster1");
+    const bossRoster2 = document.getElementById("bossRoster2");
+    const bossMenu = document.getElementById("bossMenu");
     const label1 = document.getElementById("label1");
     const label2 = document.getElementById("label2");
     const startBtn = document.getElementById("start");
@@ -2346,11 +2802,65 @@
       if (btn && !btn.disabled) btn.click();
     }
 
+    function renderBossRosters() {
+      if (!bossRoster1 || !bossRoster2) return;
+      bossRoster1.innerHTML = "";
+      bossRoster2.innerHTML = "";
+      const marks = ["①", "②", "③"];
+      CHARS.filter((c) => c.boss).forEach((c) => {
+        const i1 = team1Pick.indexOf(c.id);
+        const i2 = team2Pick.indexOf(c.id);
+
+        const b1 = document.createElement("button");
+        b1.type = "button";
+        b1.className = "char-btn" + (i1 >= 0 ? " p1-pick" : "");
+        b1.innerHTML = (i1 >= 0 ? `<span class="slot-mark">${marks[i1]}</span>` : "") + `${c.emoji} ${c.name}`;
+        b1.disabled = team2Pick.includes(c.id);
+        b1.addEventListener("click", () => {
+          const j = team1Pick.indexOf(c.id);
+          if (j >= 0) team1Pick.splice(j, 1);
+          else if (team1Pick.length < 3) team1Pick.push(c.id);
+          else team1Pick[2] = c.id;
+          renderRosters();
+          updateLabels();
+        });
+        bossRoster1.appendChild(b1);
+
+        const b2 = document.createElement("button");
+        b2.type = "button";
+        b2.className = "char-btn" + (i2 >= 0 ? " p2-pick" : "");
+        b2.innerHTML = (i2 >= 0 ? `<span class="slot-mark">${marks[i2]}</span>` : "") + `${c.emoji} ${c.name}`;
+        b2.disabled = team1Pick.includes(c.id);
+        b2.addEventListener("click", () => {
+          const j = team2Pick.indexOf(c.id);
+          if (j >= 0) team2Pick.splice(j, 1);
+          else if (team2Pick.length < 3) team2Pick.push(c.id);
+          else team2Pick[2] = c.id;
+          renderRosters();
+          updateLabels();
+        });
+        bossRoster2.appendChild(b2);
+      });
+    }
+
+    function closeBossMenu() {
+      if (!bossMenu) return;
+      bossMenu.classList.remove("is-open");
+      bossMenu.setAttribute("aria-hidden", "true");
+    }
+
+    function openBossMenu() {
+      if (!bossMenu) return;
+      bossMenu.classList.add("is-open");
+      bossMenu.setAttribute("aria-hidden", "false");
+      renderBossRosters();
+    }
+
     function renderRosters() {
       roster1.innerHTML = "";
       roster2.innerHTML = "";
       const marks = ["①", "②", "③"];
-      CHARS.forEach((c) => {
+      CHARS.filter((c) => !c.boss).forEach((c) => {
         const i1 = team1Pick.indexOf(c.id);
         const i2 = team2Pick.indexOf(c.id);
 
@@ -2384,6 +2894,7 @@
         });
         roster2.appendChild(b2);
       });
+      renderBossRosters();
     }
 
     function updateLabels() {
@@ -2539,6 +3050,138 @@
       document.querySelectorAll(".act-btn").forEach((b) => { b.disabled = dis; });
     }
 
+    function closeMahoragaCutscene() {
+      mahoCutsceneTimers.forEach((tid) => clearTimeout(tid));
+      mahoCutsceneTimers = [];
+      const el = document.getElementById("mahoCutscene");
+      const textEl = document.getElementById("mahoCutsceneText");
+      const btn = document.getElementById("mahoCutsceneBtn");
+      if (el) {
+        el.classList.remove("is-open");
+        el.setAttribute("aria-hidden", "true");
+      }
+      if (textEl) textEl.innerHTML = "";
+      if (btn) {
+        btn.hidden = true;
+        btn.onclick = null;
+      }
+    }
+
+    function closeHeianCutscene() {
+      heianCutsceneTimers.forEach((tid) => clearTimeout(tid));
+      heianCutsceneTimers = [];
+      const el = document.getElementById("heianCutscene");
+      const textEl = document.getElementById("heianCutsceneText");
+      const btn = document.getElementById("heianCutsceneBtn");
+      if (el) {
+        el.classList.remove("is-open");
+        el.setAttribute("aria-hidden", "true");
+      }
+      if (textEl) textEl.innerHTML = "";
+      if (btn) {
+        btn.hidden = true;
+        btn.onclick = null;
+      }
+    }
+
+    function showHeianCutscene(onDone, skipReenableActions) {
+      const el = document.getElementById("heianCutscene");
+      const textEl = document.getElementById("heianCutsceneText");
+      const btn = document.getElementById("heianCutsceneBtn");
+      if (!el || !textEl || !btn) {
+        onDone();
+        return;
+      }
+      closeHeianCutscene();
+      const lines = [
+        "Воздух сухой — как в старой столице. Ты ещё не сделал ход, а CE уже пахнет кровью и ладаном.",
+        "Это не «тот же Сукуна в другой одежде». Эпоха Хэйан не спрашивала разрешения — она просто забирала поле.",
+        "Четыре руки, взгляд без скидки: «Святилище» здесь не театр, а приговор, вырезанный в пространстве.",
+        "Ворота ⛩ в голове скрипят от натяжения. Следующий кадр — уже бой: кто первым нарушит тишину.",
+      ];
+      textEl.innerHTML = "";
+      btn.hidden = true;
+      el.classList.add("is-open");
+      el.setAttribute("aria-hidden", "false");
+      setActionsDisabled(true);
+      let i = 0;
+      function tick() {
+        if (i >= lines.length) {
+          btn.hidden = false;
+          return;
+        }
+        const p = document.createElement("p");
+        p.className = "heian-cutscene__line";
+        p.textContent = lines[i];
+        textEl.appendChild(p);
+        i += 1;
+        if (i < lines.length) {
+          heianCutsceneTimers.push(setTimeout(tick, 560));
+        } else {
+          heianCutsceneTimers.push(
+            setTimeout(() => {
+              btn.hidden = false;
+            }, 280),
+          );
+        }
+      }
+      tick();
+      btn.onclick = () => {
+        closeHeianCutscene();
+        if (!skipReenableActions) setActionsDisabled(false);
+        onDone();
+      };
+    }
+
+    function showMahoragaCutscene(onDone, skipReenableActions) {
+      const el = document.getElementById("mahoCutscene");
+      const textEl = document.getElementById("mahoCutsceneText");
+      const btn = document.getElementById("mahoCutsceneBtn");
+      if (!el || !textEl || !btn) {
+        onDone();
+        return;
+      }
+      closeMahoragaCutscene();
+      const lines = [
+        "Тень на земле тянется слишком длинной — будто кто-то вычертил круг до того, как разрешили начать.",
+        "«Восьмидужный меч расходящегося сияния — божественный генерал Махорага». Имя само по себе не бьёт. Бьёт тишина сразу после.",
+        "На спине — колесо. Один полный оборот — и удар уже не по старым правилам. Адаптация не спорит: она перевешивает чашу.",
+        "Поле боя ещё пустое для клинка — но уже чужое: будто закон схватки переписали, не спросив ни тебя, ни врага.",
+      ];
+      textEl.innerHTML = "";
+      btn.hidden = true;
+      el.classList.add("is-open");
+      el.setAttribute("aria-hidden", "false");
+      setActionsDisabled(true);
+      let i = 0;
+      function tick() {
+        if (i >= lines.length) {
+          btn.hidden = false;
+          return;
+        }
+        const p = document.createElement("p");
+        p.className = "maho-cutscene__line";
+        p.textContent = lines[i];
+        textEl.appendChild(p);
+        i += 1;
+        if (i < lines.length) {
+          mahoCutsceneTimers.push(setTimeout(tick, 560));
+        } else {
+          mahoCutsceneTimers.push(
+            setTimeout(() => {
+              btn.hidden = false;
+            }, 280),
+          );
+        }
+      }
+      tick();
+      btn.onclick = () => {
+        closeMahoragaCutscene();
+        if (!skipReenableActions) setActionsDisabled(false);
+        onDone();
+      };
+    }
+
     function startBattle() {
       if (team1Pick.length < 1 || team2Pick.length < 1) return;
       team1 = team1Pick.map((id) => CHARS.find((x) => x.id === id)).filter(Boolean);
@@ -2564,28 +3207,54 @@
       document.getElementById("n1").textContent = p1.name;
       document.getElementById("n2").textContent = p2.name;
       logEl.innerHTML = "";
-      appendLog(
-        `Командный бой: <strong>${formatTeamList(team1)}</strong> против <strong class="red">${formatTeamList(team2)}</strong>. Сложность: <strong>${d.label}</strong> (HP активного врага ${max2}).`,
-        "system",
-      );
-      synergyP1 = mergeSynergies(findSynergyMatches(team1Pick));
-      synergyP2 = mergeSynergies(findSynergyMatches(team2Pick));
-      renderSynergyHud();
-      synergyP1.active.forEach((m) => {
-        appendLog(`✦ <strong>Связка (ты):</strong> «${m.name}» — ${m.blurb}`, "synergy");
-      });
-      synergyP2.active.forEach((m) => {
-        appendLog(`✦ <strong>Связка (враг):</strong> «${m.name}» — ${m.blurb}`, "synergy");
-      });
-      appendLog("Твой ход — выбери действие.", "system");
-      updateBattleBenchs();
-      updateHpBars();
-      setActionsDisabled(false);
-      const autoEl = document.getElementById("autoBattle");
-      if (autoEl && autoEl.checked) scheduleAutoBattleStep();
+
+      const hasMahoraga = team1Pick.includes("mahoraga") || team2Pick.includes("mahoraga");
+      const hasHeianSukuna =
+        team1Pick.includes("heian_sukuna") || team2Pick.includes("heian_sukuna");
+
+      function beginBattleLogsAndUi() {
+        appendLog(
+          `Командный бой: <strong>${formatTeamList(team1)}</strong> против <strong class="red">${formatTeamList(team2)}</strong>. Сложность: <strong>${d.label}</strong> (HP активного врага ${max2}).`,
+          "system",
+        );
+        synergyP1 = mergeSynergies(findSynergyMatches(team1Pick));
+        synergyP2 = mergeSynergies(findSynergyMatches(team2Pick));
+        renderSynergyHud();
+        synergyP1.active.forEach((m) => {
+          appendLog(`✦ <strong>Связка (ты):</strong> «${m.name}» — ${m.blurb}`, "synergy");
+        });
+        synergyP2.active.forEach((m) => {
+          appendLog(`✦ <strong>Связка (враг):</strong> «${m.name}» — ${m.blurb}`, "synergy");
+        });
+        appendLog("Твой ход — выбери действие.", "system");
+        updateBattleBenchs();
+        updateHpBars();
+        setActionsDisabled(false);
+        const autoEl = document.getElementById("autoBattle");
+        if (autoEl && autoEl.checked) scheduleAutoBattleStep();
+      }
+
+      if (hasMahoraga && hasHeianSukuna) {
+        setActionsDisabled(true);
+        showMahoragaCutscene(() => showHeianCutscene(beginBattleLogsAndUi), true);
+      } else if (hasMahoraga) {
+        showMahoragaCutscene(beginBattleLogsAndUi);
+      } else if (hasHeianSukuna) {
+        showHeianCutscene(beginBattleLogsAndUi);
+      } else {
+        beginBattleLogsAndUi();
+      }
     }
 
     document.getElementById("start").addEventListener("click", startBattle);
+
+    document.getElementById("openBossMenu").addEventListener("click", openBossMenu);
+    document.getElementById("bossMenuClose").addEventListener("click", closeBossMenu);
+    if (bossMenu) {
+      bossMenu.addEventListener("click", (e) => {
+        if (e.target === bossMenu) closeBossMenu();
+      });
+    }
 
     document.getElementById("autoBattle").addEventListener("change", (e) => {
       if (!e.target.checked) {
@@ -2597,6 +3266,10 @@
 
     document.getElementById("reset").addEventListener("click", () => {
       clearAutoBattleTimer();
+      closeMahoragaCutscene();
+      closeHeianCutscene();
+      closeBossMenu();
+      setActionsDisabled(false);
       closeDomainModal();
       clearFxOverlay();
       document.body.classList.remove("is-shake");
