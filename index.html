@@ -1,0 +1,2685 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JJK — текстовый бой</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #06060a;
+      --panel: rgba(16, 16, 24, 0.72);
+      --panel-solid: #101018;
+      --border: rgba(120, 120, 160, 0.18);
+      --border-bright: rgba(180, 190, 255, 0.35);
+      --text: #f0eef5;
+      --muted: #8b8898;
+      --accent: #e11d48;
+      --accent-glow: rgba(225, 29, 72, 0.45);
+      --accent2: #38bdf8;
+      --accent2-glow: rgba(56, 189, 248, 0.4);
+      --curse: #a855f7;
+      --curse-glow: rgba(168, 85, 247, 0.35);
+      --win: #4ade80;
+      --gold: #fbbf24;
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Outfit", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      position: relative;
+      overflow-x: hidden;
+    }
+    .ambient {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .ambient__orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.55;
+      animation: orbFloat 18s var(--ease-out) infinite;
+    }
+    .ambient__orb--1 {
+      width: min(90vw, 520px);
+      height: min(90vw, 520px);
+      background: radial-gradient(circle, rgba(225, 29, 72, 0.5) 0%, transparent 70%);
+      top: -15%;
+      left: -20%;
+      animation-delay: 0s;
+    }
+    .ambient__orb--2 {
+      width: min(70vw, 420px);
+      height: min(70vw, 420px);
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.45) 0%, transparent 68%);
+      bottom: -10%;
+      right: -15%;
+      animation-delay: -6s;
+      animation-duration: 22s;
+    }
+    .ambient__orb--3 {
+      width: min(50vw, 320px);
+      height: min(50vw, 320px);
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, transparent 65%);
+      top: 40%;
+      left: 50%;
+      transform: translateX(-50%);
+      animation-delay: -12s;
+      animation-duration: 25s;
+      opacity: 0.4;
+    }
+    .ambient__grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
+      opacity: 0.5;
+    }
+    .ambient__vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 85% 70% at 50% 45%, transparent 0%, rgba(0, 0, 0, 0.75) 100%);
+    }
+    .ambient__grain {
+      position: absolute;
+      inset: -50%;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: grainShift 8s steps(10) infinite;
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(4%, 6%) scale(1.05); }
+      66% { transform: translate(-3%, 3%) scale(0.95); }
+    }
+    @keyframes grainShift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-2%, 1%); }
+    }
+    .fx-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.12s ease-out;
+    }
+    .fx-overlay.is-crit {
+      opacity: 1;
+      background: radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.25) 0%, transparent 55%);
+      animation: fxCritPulse 0.45s ease-out forwards;
+    }
+    .fx-overlay.is-domain {
+      opacity: 1;
+      background:
+        radial-gradient(ellipse 100% 80% at 50% 50%, rgba(168, 85, 247, 0.35) 0%, rgba(225, 29, 72, 0.12) 45%, transparent 70%);
+      animation: fxDomainPulse 0.55s ease-out forwards;
+    }
+    .fx-overlay.is-hit-p1 {
+      opacity: 1;
+      background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.12) 30%, transparent 60%);
+      animation: fxHitFlash 0.35s ease-out forwards;
+    }
+    .fx-overlay.is-hit-p2 {
+      opacity: 1;
+      background: linear-gradient(270deg, transparent 0%, rgba(225, 29, 72, 0.14) 35%, transparent 65%);
+      animation: fxHitFlash 0.35s ease-out forwards;
+    }
+    @keyframes fxCritPulse {
+      0% { opacity: 0; }
+      30% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    @keyframes fxDomainPulse {
+      0% { opacity: 0; transform: scale(1.1); filter: blur(4px); }
+      40% { opacity: 1; filter: blur(0); }
+      100% { opacity: 0; transform: scale(1); }
+    }
+    @keyframes fxHitFlash {
+      0% { opacity: 0.8; }
+      100% { opacity: 0; }
+    }
+    .domain-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 180;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(4, 4, 14, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    .domain-modal.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .domain-modal__panel {
+      max-width: 26rem;
+      width: 100%;
+      max-height: min(88vh, 32rem);
+      overflow-y: auto;
+      padding: 1.2rem 1.15rem 1.25rem;
+      border-radius: 14px;
+      border: 1px solid rgba(168, 85, 247, 0.5);
+      background: linear-gradient(165deg, rgba(38, 22, 58, 0.97), rgba(10, 10, 20, 0.99));
+      box-shadow: 0 0 48px rgba(139, 92, 246, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .domain-modal h3 {
+      font-family: "Syne", "Outfit", sans-serif;
+      font-size: 1.02rem;
+      font-weight: 800;
+      margin: 0 0 0.35rem;
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+      color: #e9d5ff;
+    }
+    .domain-modal .dm-step {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(251, 191, 36, 0.85);
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+    }
+    .domain-modal .dm-text {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      margin: 0 0 1rem;
+      color: var(--text);
+    }
+    .domain-modal .dm-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .domain-modal .dm-btn {
+      font: inherit;
+      cursor: pointer;
+      padding: 0.62rem 0.75rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      text-align: left;
+      font-size: 0.84rem;
+      line-height: 1.35;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .domain-modal .dm-btn:hover:not(:disabled) {
+      border-color: rgba(168, 85, 247, 0.55);
+      background: rgba(168, 85, 247, 0.1);
+    }
+    .domain-modal .dm-btn:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+    body.is-shake {
+      animation: screenShake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    @keyframes screenShake {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-4px, 2px); }
+      40% { transform: translate(4px, -2px); }
+      60% { transform: translate(-3px, -1px); }
+      80% { transform: translate(3px, 1px); }
+    }
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 1.75rem 1.1rem 3.5rem;
+    }
+    .title-block {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-family: "Syne", "Outfit", sans-serif;
+      font-size: clamp(1.35rem, 4.5vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      margin: 0 0 0.4rem;
+      background: linear-gradient(105deg, #fff 0%, #bae6fd 35%, #fda4af 70%, #fff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: titleShine 6s ease-in-out infinite;
+      filter: drop-shadow(0 0 24px rgba(56, 189, 248, 0.25)) drop-shadow(0 0 20px rgba(225, 29, 72, 0.2));
+    }
+    @keyframes titleShine {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      max-width: 28rem;
+      margin: 0 auto;
+    }
+    .panel {
+      background: var(--panel);
+      backdrop-filter: blur(20px) saturate(1.35);
+      -webkit-backdrop-filter: blur(20px) saturate(1.35);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.35rem 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 20px 50px -20px rgba(0, 0, 0, 0.65),
+        0 0 80px -40px rgba(56, 189, 248, 0.15);
+    }
+    #battle.panel {
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+        0 24px 60px -24px rgba(0, 0, 0, 0.7),
+        0 0 100px -50px rgba(168, 85, 247, 0.2);
+    }
+    .panel h2 {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin: 0 0 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .panel h2::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+    .roster {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+      gap: 0.55rem;
+    }
+    .char-btn {
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, rgba(30, 30, 42, 0.95), rgba(18, 18, 28, 0.98));
+      color: var(--text);
+      padding: 0.7rem 0.55rem;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: center;
+      transition: transform 0.18s var(--ease-out), box-shadow 0.2s, border-color 0.2s, background 0.2s;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    }
+    .char-btn:hover:not(:disabled) {
+      border-color: var(--border-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 20px rgba(56, 189, 248, 0.12);
+    }
+    .char-btn:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+    .char-btn:disabled {
+      opacity: 0.32;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .char-btn.p1-pick {
+      border-color: rgba(56, 189, 248, 0.65);
+      box-shadow:
+        0 0 0 1px rgba(56, 189, 248, 0.35),
+        0 0 24px rgba(56, 189, 248, 0.2);
+    }
+    .char-btn.p2-pick {
+      border-color: rgba(225, 29, 72, 0.65);
+      box-shadow:
+        0 0 0 1px rgba(225, 29, 72, 0.35),
+        0 0 24px rgba(225, 29, 72, 0.18);
+    }
+    .vs-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem 1rem;
+      flex-wrap: wrap;
+      margin: 1.15rem 0;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.82rem;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent);
+      border: 1px solid var(--border);
+    }
+    .vs-row span { color: var(--muted); }
+    .vs-row strong {
+      color: var(--accent2);
+      text-shadow: 0 0 20px var(--accent2-glow);
+    }
+    .vs-row strong.red {
+      color: #fb7185;
+      text-shadow: 0 0 20px var(--accent-glow);
+    }
+    .vs-badge {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 0.15em;
+      color: rgba(255, 255, 255, 0.35);
+      padding: 0.2rem 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+    }
+    .start-btn {
+      display: block;
+      width: 100%;
+      margin-top: 1.1rem;
+      padding: 0.95rem 1rem;
+      font-family: inherit;
+      font-size: 1.02rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #e11d48 0%, #7f1d1d 50%, #be123c 100%);
+      background-size: 200% auto;
+      box-shadow:
+        0 4px 24px rgba(225, 29, 72, 0.45),
+        0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+      transition: transform 0.15s, box-shadow 0.25s, filter 0.2s;
+      animation: btnPulse 3s ease-in-out infinite;
+    }
+    .start-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.2) 50%, transparent 60%);
+      background-size: 200% 100%;
+      animation: btnSheen 2.5s ease-in-out infinite;
+    }
+    @keyframes btnPulse {
+      0%, 100% { box-shadow: 0 4px 24px rgba(225, 29, 72, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.12) inset; }
+      50% { box-shadow: 0 6px 36px rgba(225, 29, 72, 0.6), 0 0 40px rgba(225, 29, 72, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.15) inset; }
+    }
+    @keyframes btnSheen {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .start-btn:hover:not(:disabled) {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+    }
+    .start-btn:active:not(:disabled) { transform: translateY(0) scale(0.99); }
+    .start-btn:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+      filter: grayscale(0.4);
+      animation: none;
+      box-shadow: none;
+    }
+    .start-btn:disabled::before { display: none; }
+    #battle {
+      display: none;
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+    #battle.active {
+      display: block;
+      animation: battleEnter 0.55s var(--ease-out) forwards;
+    }
+    @keyframes battleEnter {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    .hp-bar {
+      position: relative;
+      height: 11px;
+      background: rgba(0, 0, 0, 0.45);
+      border-radius: 999px;
+      overflow: visible;
+      margin-top: 0.45rem;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+    }
+    .hp-bar__track {
+      border-radius: 999px;
+      overflow: hidden;
+      height: 100%;
+      position: relative;
+      isolation: isolate;
+    }
+    .hp-bar i {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.45s var(--ease-out);
+      position: relative;
+    }
+    .hp-bar i.p1 {
+      background: linear-gradient(90deg, #0369a1, #38bdf8, #7dd3fc);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.55);
+    }
+    .hp-bar i.p2 {
+      background: linear-gradient(90deg, #881337, #e11d48, #fb7185);
+      box-shadow: 0 0 16px rgba(225, 29, 72, 0.5);
+    }
+    .hp-bar i::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, transparent 45%);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    .hp-bar i.hp-hit {
+      animation: hpBarFlash 0.55s ease-out;
+    }
+    @keyframes hpBarFlash {
+      0% { filter: brightness(2.2) saturate(1.3); }
+      100% { filter: brightness(1); }
+    }
+    .hp-bar__shine {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      background-size: 40% 100%;
+      animation: hpShine 2.8s ease-in-out infinite;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+    @keyframes hpShine {
+      0% { transform: translateX(-100%); opacity: 0.5; }
+      100% { transform: translateX(250%); opacity: 0.3; }
+    }
+    .fighters {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.5rem 0.35rem;
+      align-items: stretch;
+      margin-bottom: 1.1rem;
+    }
+    @media (max-width: 560px) {
+      .fighters {
+        grid-template-columns: 1fr;
+      }
+      .fighters__vs { padding: 0.35rem 0; min-height: auto; }
+    }
+    .fighters__vs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 3rem;
+    }
+    .fighters__vs span {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.2);
+      text-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+      letter-spacing: 0.08em;
+    }
+    .fighter {
+      padding: 1.1rem 1rem;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: linear-gradient(165deg, rgba(22, 22, 32, 0.95), rgba(12, 12, 20, 0.98));
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .fighter::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 14px 14px 0 0;
+      opacity: 0.9;
+    }
+    .fighter--p1::before {
+      background: linear-gradient(90deg, transparent, var(--accent2), transparent);
+      box-shadow: 0 0 20px var(--accent2-glow);
+    }
+    .fighter--p2::before {
+      background: linear-gradient(90deg, transparent, #fb7185, transparent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+    .fighter--p1.is-pulse { animation: cardPulseBlue 0.6s ease-out; }
+    .fighter--p2.is-pulse { animation: cardPulseRed 0.6s ease-out; }
+    @keyframes cardPulseBlue {
+      0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.5); }
+      100% { box-shadow: 0 0 0 12px transparent; }
+    }
+    @keyframes cardPulseRed {
+      0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.45); }
+      100% { box-shadow: 0 0 0 12px transparent; }
+    }
+    .fighter h3 {
+      margin: 0 0 0.35rem;
+      font-size: 1.02rem;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+    }
+    .fighter .emoji {
+      font-size: 1.55rem;
+      line-height: 1;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+    }
+    .bench {
+      font-size: 0.68rem;
+      color: var(--muted);
+      line-height: 1.35;
+      margin: 0.15rem 0 0.35rem;
+      min-height: 1.2em;
+    }
+    .bench strong {
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 600;
+    }
+    .bench--p1 strong { color: #7dd3fc; }
+    .bench--p2 strong { color: #fda4af; }
+    .char-btn .slot-mark {
+      display: inline-block;
+      min-width: 1.1em;
+      margin-right: 0.15rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: rgba(56, 189, 248, 0.85);
+    }
+    #roster2 .slot-mark {
+      color: rgba(251, 113, 133, 0.95);
+    }
+    .char-btn.p1-pick,
+    .char-btn.p2-pick {
+      position: relative;
+    }
+    .fighter .hp-label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+    .fighter .hp-label span {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .log {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.76rem;
+      line-height: 1.5;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 0.65rem;
+      background: rgba(6, 6, 12, 0.85);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.5) inset, 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(56, 189, 248, 0.35) transparent;
+    }
+    .log::-webkit-scrollbar { width: 6px; }
+    .log::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.4), rgba(168, 85, 247, 0.35));
+      border-radius: 99px;
+    }
+    .log-line {
+      margin-bottom: 0.4rem;
+      padding: 0.45rem 0.55rem 0.45rem 0.65rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.025);
+      border-left: 3px solid transparent;
+      animation: logIn 0.4s var(--ease-out) backwards;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset;
+    }
+    @keyframes logIn {
+      from {
+        opacity: 0;
+        transform: translateX(-10px) scale(0.98);
+        filter: blur(2px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+      }
+    }
+    .log-line--turn { border-left-color: var(--accent2); background: rgba(56, 189, 248, 0.06); }
+    .log-line--enemy { border-left-color: #fb7185; background: rgba(225, 29, 72, 0.06); }
+    .log-line--crit { border-left-color: var(--gold); background: rgba(251, 191, 36, 0.08); }
+    .log-line--domain { border-left-color: var(--curse); background: rgba(168, 85, 247, 0.1); box-shadow: 0 0 24px rgba(168, 85, 247, 0.08); }
+    .log-line--domain-miss { border-left-color: rgba(168, 85, 247, 0.45); background: rgba(100, 100, 120, 0.06); }
+    .log-line--synergy {
+      border-left-color: #f472b6;
+      background: linear-gradient(90deg, rgba(251, 191, 36, 0.12), rgba(244, 114, 182, 0.08));
+      box-shadow: 0 0 22px rgba(251, 191, 36, 0.1);
+    }
+    .synergy-hud {
+      margin: 0 0 1rem;
+      padding: 0.75rem 0.85rem;
+      border-radius: 12px;
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      background: linear-gradient(135deg, rgba(40, 25, 55, 0.85), rgba(20, 18, 35, 0.92));
+      box-shadow: 0 0 32px rgba(244, 114, 182, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .synergy-hud__title {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #fbbf24;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .synergy-hud__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+    @media (max-width: 520px) {
+      .synergy-hud__inner { grid-template-columns: 1fr; }
+    }
+    .synergy-hud__col {
+      padding: 0.5rem 0.55rem;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .synergy-hud__col--empty {
+      opacity: 0.85;
+      border-style: dashed;
+    }
+    .synergy-hud__col strong {
+      display: block;
+      font-size: 0.72rem;
+      color: #e2e8f0;
+      margin-bottom: 0.25rem;
+    }
+    .synergy-hud__names {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fda4af;
+      line-height: 1.3;
+      margin-bottom: 0.25rem;
+    }
+    .synergy-hud__col:first-child .synergy-hud__names {
+      color: #7dd3fc;
+    }
+    .synergy-hud__stats {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.68rem;
+      color: #fde68a;
+      line-height: 1.35;
+    }
+    .syn-note {
+      color: #fbbf24;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 0.85em;
+    }
+    .log .syn-note { color: #fde68a; }
+    .log-line--system { border-left-color: rgba(255, 255, 255, 0.2); }
+    .log-line--end {
+      border-left-color: var(--win);
+      background: rgba(74, 222, 128, 0.1);
+      animation: logIn 0.5s var(--ease-out) backwards, endGlow 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes endGlow {
+      from { box-shadow: 0 0 20px rgba(74, 222, 128, 0.15); }
+      to { box-shadow: 0 0 28px rgba(74, 222, 128, 0.28); }
+    }
+    .log .turn { color: #7dd3fc; text-shadow: 0 0 12px rgba(56, 189, 248, 0.35); }
+    .log .enemy { color: #fda4af; text-shadow: 0 0 12px rgba(225, 29, 72, 0.25); }
+    .log .crit { color: var(--gold); font-weight: 700; text-shadow: 0 0 14px rgba(251, 191, 36, 0.45); }
+    .log .end { color: #86efac; font-weight: 700; }
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+      margin-top: 1.1rem;
+    }
+    .act-btn {
+      font-family: inherit;
+      padding: 0.78rem 0.65rem;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: linear-gradient(160deg, rgba(32, 32, 48, 0.9), rgba(16, 16, 26, 0.95));
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s, border-color 0.2s, box-shadow 0.25s;
+    }
+    .act-btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.25s;
+      pointer-events: none;
+    }
+    .act-btn:hover:not(:disabled)::after { opacity: 1; }
+    .act-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .act-btn:active:not(:disabled) { transform: translateY(0); }
+    .act-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+    .act-btn[data-act="strike"]::after {
+      background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.2), transparent 55%);
+    }
+    .act-btn[data-act="strike"]:hover:not(:disabled) {
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.2);
+    }
+    .act-btn[data-act="technique"]::after {
+      background: radial-gradient(circle at 70% 20%, rgba(168, 85, 247, 0.22), transparent 50%);
+    }
+    .act-btn[data-act="technique"]:hover:not(:disabled) {
+      box-shadow: 0 0 24px rgba(168, 85, 247, 0.22);
+    }
+    .act-btn[data-act="domain"] {
+      border-color: rgba(168, 85, 247, 0.35);
+      background: linear-gradient(160deg, rgba(50, 30, 70, 0.5), rgba(16, 16, 26, 0.95));
+    }
+    .act-btn[data-act="domain"]::after {
+      background: radial-gradient(circle at 50% 80%, rgba(168, 85, 247, 0.35), transparent 60%);
+    }
+    .act-btn[data-act="domain"]:hover:not(:disabled) {
+      box-shadow: 0 0 28px var(--curse-glow);
+    }
+    .act-btn[data-act="defend"]::after {
+      background: radial-gradient(circle at 50% 50%, rgba(148, 163, 184, 0.15), transparent 60%);
+    }
+    .back {
+      margin-top: 1.1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.6rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+      width: 100%;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .back:hover {
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .auto-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin: 0.85rem 0 0.15rem;
+      padding: 0.55rem 0.65rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
+      user-select: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--muted);
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .auto-wrap:hover {
+      color: var(--text);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+    .auto-wrap input {
+      width: 1.05rem;
+      height: 1.05rem;
+      accent-color: var(--accent2);
+      cursor: pointer;
+    }
+    .diff-hint {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.4;
+      margin: -0.35rem 0 0.65rem;
+    }
+    .diff-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+    }
+    @media (min-width: 520px) {
+      .diff-row { grid-template-columns: repeat(4, 1fr); }
+    }
+    .diff-btn {
+      font-family: inherit;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: rgba(20, 20, 32, 0.9);
+      color: var(--muted);
+      padding: 0.55rem 0.4rem;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.25;
+      transition: color 0.2s, border-color 0.2s, box-shadow 0.25s, transform 0.15s;
+    }
+    .diff-btn small {
+      display: block;
+      font-weight: 500;
+      font-size: 0.62rem;
+      opacity: 0.85;
+      margin-top: 0.2rem;
+      letter-spacing: 0.02em;
+    }
+    .diff-btn:hover {
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+    .diff-btn.is-on {
+      color: #fff;
+      border-color: rgba(168, 85, 247, 0.55);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+      background: linear-gradient(165deg, rgba(60, 40, 90, 0.5), rgba(18, 18, 28, 0.98));
+    }
+    .diff-btn[data-diff="easy"].is-on {
+      border-color: rgba(74, 222, 128, 0.5);
+      box-shadow: 0 0 18px rgba(74, 222, 128, 0.2);
+    }
+    .diff-btn[data-diff="extreme"].is-on {
+      border-color: rgba(225, 29, 72, 0.65);
+      box-shadow: 0 0 22px rgba(225, 29, 72, 0.35);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .hp-bar__shine { animation: none; opacity: 0; }
+      .start-btn { animation: none; }
+      .start-btn::before { animation: none; }
+      h1 { animation: none; background-position: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient__orb ambient__orb--1"></div>
+    <div class="ambient__orb ambient__orb--2"></div>
+    <div class="ambient__orb ambient__orb--3"></div>
+    <div class="ambient__grid"></div>
+    <div class="ambient__vignette"></div>
+    <div class="ambient__grain"></div>
+  </div>
+  <div class="fx-overlay" id="fxOverlay" aria-hidden="true"></div>
+  <div class="domain-modal" id="domainModal" aria-hidden="true">
+    <div class="domain-modal__panel" id="domainModalBody" role="dialog" aria-modal="true" aria-labelledby="domainModalTitle"></div>
+  </div>
+
+  <div class="wrap">
+    <header class="title-block">
+      <h1>Текстовый бой — Jujutsu Kaisen</h1>
+      <p class="sub">До 3 бойцов на сторону, синергия команд в бою. Расширение домена — отдельная мини-игра на персонажа.</p>
+    </header>
+
+    <section id="setup" class="panel">
+      <h2>Команда 1 (ты), до 3</h2>
+      <div class="roster" id="roster1"></div>
+      <h2 style="margin-top:1rem">Команда 2 (противник), до 3</h2>
+      <div class="roster" id="roster2"></div>
+      <h2 style="margin-top:1rem">Сложность</h2>
+      <div class="diff-row" id="diffRow" role="radiogroup" aria-label="Сложность боя">
+        <button type="button" class="diff-btn" data-diff="easy">Лёгкая<small>обучение</small></button>
+        <button type="button" class="diff-btn is-on" data-diff="normal">Нормальная<small>базовый баланс</small></button>
+        <button type="button" class="diff-btn" data-diff="hard">Сложная<small>враг сильнее</small></button>
+        <button type="button" class="diff-btn" data-diff="extreme">Экстрим<small>кошмар</small></button>
+      </div>
+      <div class="vs-row">
+        <span>Команда 1:</span> <strong id="label1">—</strong>
+        <span class="vs-badge">VS</span>
+        <span>Команда 2:</span> <strong class="red" id="label2">—</strong>
+      </div>
+      <button type="button" class="start-btn" id="start" disabled>Начать бой</button>
+    </section>
+
+    <section id="battle" class="panel">
+      <h2>Арена</h2>
+      <div class="synergy-hud" id="synergyHud" aria-live="polite"></div>
+      <div class="fighters">
+        <div class="fighter fighter--p1" id="fighter1">
+          <h3><span class="emoji" id="e1"></span><span id="n1"></span></h3>
+          <div class="bench bench--p1" id="bench1" aria-label="Скамейка команды 1"></div>
+          <div class="hp-label">HP <span id="hp1t"></span></div>
+          <div class="hp-bar">
+            <div class="hp-bar__track">
+              <i class="p1" id="hp1b" style="width:100%"></i>
+              <div class="hp-bar__shine" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+        <div class="fighters__vs" aria-hidden="true"><span>VS</span></div>
+        <div class="fighter fighter--p2" id="fighter2">
+          <h3><span class="emoji" id="e2"></span><span id="n2"></span></h3>
+          <div class="bench bench--p2" id="bench2" aria-label="Скамейка команды 2"></div>
+          <div class="hp-label">HP <span id="hp2t"></span></div>
+          <div class="hp-bar">
+            <div class="hp-bar__track">
+              <i class="p2" id="hp2b" style="width:100%"></i>
+              <div class="hp-bar__shine" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="log" id="log" aria-live="polite"></div>
+      <label class="auto-wrap" for="autoBattle">
+        <input type="checkbox" id="autoBattle" />
+        <span>Авто-бой — ИИ выбирает твои действия каждый ход</span>
+      </label>
+      <div class="actions" id="actions">
+        <button type="button" class="act-btn" data-act="strike">Удар</button>
+        <button type="button" class="act-btn" data-act="technique">Техника</button>
+        <button type="button" class="act-btn" data-act="domain">Расширение домена / риск</button>
+        <button type="button" class="act-btn" data-act="defend">Защита</button>
+      </div>
+      <button type="button" class="back" id="reset">Новый выбор персонажей</button>
+    </section>
+  </div>
+
+  <script>
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function weightedPick(weights) {
+      const total = weights.reduce((s, x) => s + x.w, 0);
+      let r = Math.random() * total;
+      for (let i = 0; i < weights.length; i++) {
+        if (r < weights[i].w) return weights[i].act;
+        r -= weights[i].w;
+      }
+      return weights[weights.length - 1].act;
+    }
+
+    const TEAM_SYNERGIES = [
+      {
+        ids: ["todo", "yuji"],
+        name: "Идеальный брат × Юдзи",
+        blurb: "Тодо хлопает в такт — чёрная вспышка и Буги-вуги раскрывают комбо.",
+        strikeMult: 1.22,
+        techMult: 1.14,
+        critChanceAdd: 0.12,
+        domainChanceAdd: 0.06,
+      },
+      {
+        ids: ["yuji", "nobara", "megumi"],
+        name: "Тройка первокурсников Токио",
+        blurb: "Мегуми, Нобара и Юдзи — прикрытие и синхрон на поле.",
+        strikeMult: 1.1,
+        techMult: 1.14,
+        domainChanceAdd: 0.07,
+        defendMitigationAdd: 0.05,
+      },
+      {
+        ids: ["gojo", "geto"],
+        name: "Сильнейший и лучший друг",
+        blurb: "Школьная связка — домен и техника читаются в унисон.",
+        techMult: 1.1,
+        domainChanceAdd: 0.08,
+        domainDmgMult: 1.08,
+      },
+      {
+        ids: ["maki", "panda"],
+        name: "Второй курс в деле",
+        blurb: "Маки и Панда — привычка сражаться плечом к плечу.",
+        strikeMult: 1.08,
+        techMult: 1.06,
+        defendMitigationAdd: 0.04,
+      },
+      {
+        ids: ["choso", "yuji"],
+        name: "Связь крови",
+        blurb: "Чосо и Юдзи — общий ритм, ярость и точность.",
+        strikeMult: 1.06,
+        techMult: 1.12,
+        critChanceAdd: 0.04,
+      },
+      {
+        ids: ["yuta", "maki"],
+        name: "Рейд в поместье Зенин",
+        blurb: "Юта и Маки — прорыв стеной особого класса.",
+        strikeMult: 1.07,
+        techMult: 1.1,
+      },
+      {
+        ids: ["toji", "maki"],
+        name: "Небесное ограничение Зенин",
+        blurb: "Тодзи и Маки — чистая физика и проклятое оружие.",
+        strikeMult: 1.14,
+        defendMitigationAdd: 0.03,
+      },
+      {
+        ids: ["kashimo", "hakari"],
+        name: "Игра смерти в Отборе",
+        blurb: "Касимо и Хакари — ставка на домен и CE до предела.",
+        techMult: 1.08,
+        domainChanceAdd: 0.06,
+        domainDmgMult: 1.1,
+      },
+      {
+        ids: ["sukuna", "megumi"],
+        name: "Сосуд и тени",
+        blurb: "Сукуна в теле и Десять теней — тёмное усиление.",
+        techMult: 1.12,
+        strikeMult: 1.05,
+        critChanceAdd: 0.03,
+      },
+      {
+        ids: ["higuruma", "takaba"],
+        name: "Зал и сцена",
+        blurb: "Хигурума и Такаба — закон и смех ломают ожидания врага.",
+        domainChanceAdd: 0.05,
+        techMult: 1.07,
+      },
+      {
+        ids: ["kenjaku", "geto"],
+        name: "Мозг в чужом теле",
+        blurb: "Кэндзиаку и наследие Гето — архив техник в одном ритме.",
+        techMult: 1.12,
+        domainChanceAdd: 0.06,
+        domainDmgMult: 1.08,
+      },
+      {
+        ids: ["maki", "panda", "toge"],
+        name: "Токийская второгодка",
+        blurb: "Маки, Панда и Тогэ — классический состав миссий.",
+        strikeMult: 1.08,
+        techMult: 1.1,
+        defendMitigationAdd: 0.06,
+        domainChanceAdd: 0.04,
+      },
+      {
+        ids: ["nanami", "mahito"],
+        name: "Ненависть по существу",
+        blurb: "Нанами против Махито — удар по «душевной геометрии».",
+        strikeMult: 1.1,
+        techMult: 1.08,
+        critChanceAdd: 0.05,
+      },
+      {
+        ids: ["yuji", "todo", "megumi"],
+        name: "Смена и брат",
+        blurb: "Юдзи, Тодо и Мегуми — совместный прессинг на поле.",
+        strikeMult: 1.1,
+        techMult: 1.1,
+        domainChanceAdd: 0.05,
+      },
+    ];
+
+    function neutralSynergy() {
+      return {
+        strike: 1,
+        tech: 1,
+        domainDmg: 1,
+        crit: 0,
+        domainCh: 0,
+        defEx: 0,
+        active: [],
+      };
+    }
+
+    function findSynergyMatches(teamIds) {
+      const set = new Set(teamIds);
+      return TEAM_SYNERGIES.filter((syn) => {
+        if (!syn.ids.every((id) => set.has(id))) return false;
+        if (syn.ids.length >= 3 && teamIds.length < 3) return false;
+        return true;
+      });
+    }
+
+    function mergeSynergies(matches) {
+      const o = neutralSynergy();
+      for (const m of matches) {
+        o.strike *= m.strikeMult || 1;
+        o.tech *= m.techMult || 1;
+        o.domainDmg *= m.domainDmgMult || 1;
+        o.crit += m.critChanceAdd || 0;
+        o.domainCh += m.domainChanceAdd || 0;
+        o.defEx += m.defendMitigationAdd || 0;
+        o.active.push(m);
+      }
+      o.strike = Math.min(o.strike, 1.28);
+      o.tech = Math.min(o.tech, 1.28);
+      o.domainDmg = Math.min(o.domainDmg, 1.25);
+      o.crit = Math.min(o.crit, 0.22);
+      o.domainCh = Math.min(o.domainCh, 0.18);
+      o.defEx = Math.min(o.defEx, 0.14);
+      return o;
+    }
+
+    function formatSynergyStatBits(syn) {
+      const bits = [];
+      if (syn.strike > 1.005) bits.push(`удар ×${syn.strike.toFixed(2)}`);
+      if (syn.tech > 1.005) bits.push(`тех ×${syn.tech.toFixed(2)}`);
+      if (syn.domainDmg > 1.005) bits.push(`домен ×${syn.domainDmg.toFixed(2)}`);
+      if (syn.crit > 0.003) bits.push(`крит +${(syn.crit * 100).toFixed(0)} п.п.`);
+      if (syn.domainCh > 0.003) bits.push(`шанс РД +${(syn.domainCh * 100).toFixed(0)} п.п.`);
+      if (syn.defEx > 0.003) bits.push(`к защите +${(syn.defEx * 100).toFixed(0)} п.п.`);
+      return bits.length ? bits.join(" · ") : "нет (×1, без п.п.)";
+    }
+
+    function synergyActNote(act, syn) {
+      if (!syn.active.length) return "";
+      const parts = [];
+      if (act === "strike" && syn.strike > 1.02) parts.push(`удар ×${syn.strike.toFixed(2)}`);
+      if (act === "technique" && syn.tech > 1.02) parts.push(`тех ×${syn.tech.toFixed(2)}`);
+      if (act === "defend" && syn.defEx > 0.02) parts.push(`защита +${(syn.defEx * 100).toFixed(0)} п.п.`);
+      if (act === "domain" && syn.domainDmg > 1.02) parts.push(`домен ×${syn.domainDmg.toFixed(2)}`);
+      if (!parts.length) return "";
+      return ` <span class="syn-note">〔${parts.join(" · ")}〕</span>`;
+    }
+
+    function renderSynergyHud() {
+      const root = document.getElementById("synergyHud");
+      if (!root) return;
+      const col = (syn, title) => {
+        const empty = !syn.active.length;
+        const names = empty ? "— нет связок" : syn.active.map((m) => m.name).join(" · ");
+        const stats = formatSynergyStatBits(syn);
+        return `<div class="synergy-hud__col${empty ? " synergy-hud__col--empty" : ""}">
+            <strong>${title}</strong>
+            <span class="synergy-hud__names">${names}</span>
+            <span class="synergy-hud__stats">${stats}</span>
+          </div>`;
+      };
+      root.innerHTML = `<div class="synergy-hud__title">Синергия</div>
+        <div class="synergy-hud__inner">${col(synergyP1, "Ты")}${col(synergyP2, "Враг")}</div>`;
+    }
+
+    const DIFFICULTY = {
+      easy: {
+        label: "Лёгкая",
+        enemyHpMult: 0.88,
+        enemyDamageMult: 0.84,
+        playerDamageMult: 1.1,
+        enemyCritChance: 0.07,
+        enemyStrikeWeight: 2,
+        enemyTechWeight: 2,
+        enemyDefendWeight: 3,
+        defendMitigation: 0.62,
+        domainSuccessChance: 0.44,
+        rollVarPlayer: 3,
+        rollVarEnemy: 3,
+        enemyTechBonusChance: 0.08,
+        playerCritChance: 0.18,
+      },
+      normal: {
+        label: "Нормальная",
+        enemyHpMult: 1,
+        enemyDamageMult: 1,
+        playerDamageMult: 1,
+        enemyCritChance: 0.12,
+        enemyStrikeWeight: 2,
+        enemyTechWeight: 2,
+        enemyDefendWeight: 2,
+        defendMitigation: 0.55,
+        domainSuccessChance: 0.34,
+        rollVarPlayer: 4,
+        rollVarEnemy: 4,
+        enemyTechBonusChance: 0.1,
+        playerCritChance: 0.15,
+      },
+      hard: {
+        label: "Сложная",
+        enemyHpMult: 1.12,
+        enemyDamageMult: 1.16,
+        playerDamageMult: 0.94,
+        enemyCritChance: 0.17,
+        enemyStrikeWeight: 3,
+        enemyTechWeight: 3,
+        enemyDefendWeight: 1,
+        defendMitigation: 0.48,
+        domainSuccessChance: 0.27,
+        rollVarPlayer: 4,
+        rollVarEnemy: 5,
+        enemyTechBonusChance: 0.14,
+        playerCritChance: 0.12,
+      },
+      extreme: {
+        label: "Экстрим",
+        enemyHpMult: 1.26,
+        enemyDamageMult: 1.3,
+        playerDamageMult: 0.87,
+        enemyCritChance: 0.22,
+        enemyStrikeWeight: 4,
+        enemyTechWeight: 4,
+        enemyDefendWeight: 1,
+        defendMitigation: 0.42,
+        domainSuccessChance: 0.2,
+        rollVarPlayer: 5,
+        rollVarEnemy: 6,
+        enemyTechBonusChance: 0.18,
+        playerCritChance: 0.09,
+      },
+    };
+
+    let difficultyId = "normal";
+
+    function getDifficulty() {
+      return DIFFICULTY[difficultyId] || DIFFICULTY.normal;
+    }
+
+    function pickEnemyAct() {
+      const d = getDifficulty();
+      const pool = [];
+      for (let i = 0; i < d.enemyStrikeWeight; i++) pool.push("strike");
+      for (let i = 0; i < d.enemyTechWeight; i++) pool.push("technique");
+      for (let i = 0; i < d.enemyDefendWeight; i++) pool.push("defend");
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    /** Снижает входящий урон с учётом защиты персонажа (def). */
+    function applyIncomingDefense(raw, defender) {
+      const dr = Math.min(0.2, (defender.def || 10) * 0.0065);
+      return Math.max(1, Math.floor(raw * (1 - dr)));
+    }
+
+    /** Снижает исходящий урон по цели с высоким def. */
+    function applyTargetArmor(raw, target) {
+      const ar = Math.min(0.14, (target.def || 10) * 0.0045);
+      return Math.max(1, Math.floor(raw * (1 - ar)));
+    }
+
+    const CHARS = [
+      {
+        id: "yuta",
+        name: "Yuta Okkotsu",
+        emoji: "🗡️",
+        hp: 116,
+        atk: 13,
+        tech: 17,
+        def: 11,
+        strikePool: [
+          "Катана особого класса — рубящий выпад.",
+          "Рика: монструозный захват и удар когтями.",
+          "Ближний бой с усилением проклятой энергии.",
+        ],
+        techPool: [
+          "Копирование: «Проклятая речь» (Cursed Speech) — «Замри!»",
+          "Рика выпускает сгусток CE в упор.",
+          "Копирование чужой техники — точный повтор удара.",
+        ],
+        domainHit: "Расширение домена: «Подлинная взаимная любовь» (Authentic Mutual Love) — копии техник сыплются без остановки.",
+        domainMiss: "Домен не удаётся зафиксировать — противник выскальзывает из повторяющихся копий.",
+        defendLine: "Реверсивная техника залечивает раны и сжимает дистанцию.",
+      },
+      {
+        id: "yuji",
+        name: "Yuji Itadori",
+        emoji: "👊",
+        hp: 106,
+        atk: 15,
+        tech: 13,
+        def: 12,
+        strikePool: [
+          "«Разнонаправленный кулак» (Divergent Fist) — CE приходит на долю секунды после удара.",
+          "Сокрушительный апперкот с плотной проклятой энергией.",
+          "Рывок с захватом и броском «как в спортзале», но на убойной скорости.",
+        ],
+        techPool: [
+          "«Чёрная вспышка» (Black Flash) — удар в пиковый момент CE, 2.5× сила.",
+          "Серия Divergent Fist — противник ловит второй импульс CE.",
+          "Сверхчеловеческий замах: плотный слой CE на кулаке.",
+        ],
+        domainHit: "Нет своего DE — зато цепь «Чёрной вспышки» накрывает поле давлением, сравнимым с доменом.",
+        domainMiss: "Микросекунды CE не совпали — вспышка не цепляет, остаётся обычный удар.",
+        defendLine: "Плотный накопленный CE на предплечьях — блок и сдвиг корпуса.",
+      },
+      {
+        id: "choso",
+        name: "Choso",
+        emoji: "🩸",
+        hp: 110,
+        atk: 13,
+        tech: 16,
+        def: 12,
+        strikePool: [
+          "Кровь сгущается в кулак — удар манипуляцией крови (Blood Manipulation).",
+          "Резкий выпад сконденсированной кровью в ближний бой.",
+        ],
+        techPool: [
+          "«Пронзающая кровь» (Piercing Blood) — сверхскоростной струйный выстрел.",
+          "«Сверхновая» (Supernova) — кровь разлетается во все стороны.",
+          "«Король мух» (Wing King) — режущий вихрь из крови.",
+        ],
+        domainHit: "Накопленная «Сверхновая» накрывает поле боя — давление как у домена.",
+        domainMiss: "Кровь не успевает взорваться плотно — противник уходит из эпицентра.",
+        defendLine: "Кровяной щит и плотный слой CE — стойка на выживание.",
+      },
+      {
+        id: "ryu",
+        name: "Ryu Ishigori",
+        emoji: "☄️",
+        hp: 100,
+        atk: 12,
+        tech: 20,
+        def: 8,
+        strikePool: [
+          "Гранитный кулак с разрядом CE — удар ближнего боя.",
+          "Взрыв CE из точки контакта (Cursed Energy Discharge).",
+        ],
+        techPool: [
+          "«Гранитный взрыв» (Granite Blast) — плотный луч проклятой энергии.",
+          "Непрерывный залп CE в форме «гранита».",
+        ],
+        domainHit: "Расширение домена: «Гроб железной горы» (Coffin of the Iron Mountain) — тяжесть и разрушение накрывают всё.",
+        domainMiss: "Построение домена рвётся — остаётся лишь осколок Granite Blast.",
+        defendLine: "CE обволакивает тело плотным слоем — классическая защита.",
+      },
+      {
+        id: "sukuna",
+        name: "Sukuna",
+        emoji: "⛩️",
+        hp: 122,
+        atk: 17,
+        tech: 19,
+        def: 12,
+        strikePool: [
+          "«Разрубание» (Dismantle) — рубящий слэш по цели.",
+          "«Рассечение» (Cleave) — разрез по «закону», что подходит под удар.",
+        ],
+        techPool: [
+          "«Рассечение» (Cleave) — мгновенный разрез согласно условию.",
+          "«Стрела пламени» (Open / Flame Arrow) — огненный залп.",
+          "«Разрубание» (Dismantle) серией — рубящий дождь.",
+        ],
+        domainHit: "Расширение домена: «Святилище зла» (Malevolent Shrine / Fukuma Mizushi) — бесконечные slash и cleave.",
+        domainMiss: "Противник смещает «закон» удара — лишь царапина Dismantle.",
+        defendLine: "Реверсивная техника и плотный слой CE — тело короля проклятий непробиваемо.",
+      },
+      {
+        id: "gojo",
+        name: "Gojo Satoru",
+        emoji: "🤞🏻",
+        hp: 126,
+        atk: 14,
+        tech: 22,
+        def: 15,
+        strikePool: [
+          "«Бесконечность» (Infinity) — противник не достаёт, затем удар вблизи.",
+          "Ближний бой с Шестью глазами — идеальное чтение дистанции.",
+        ],
+        techPool: [
+          "«Синий» (Lapse Blue) — притяжение и схлопывание пространства.",
+          "«Красный» (Reversal Red) — отталкивание с реверсией.",
+          "«Полый фиолетовый» (Hollow Purple) — сингулярность CE (Blue + Red).",
+        ],
+        domainHit: "Расширение домена: «Безграничная пустота» (Unlimited Void / Mugen Kūsho) — бесконечная информация ломает защиту.",
+        domainMiss: "Противник на долю секунды выходит из «центра» — удар лишь задевает Infinity.",
+        defendLine: "Infinity на полную — удары противника замедляются до нуля.",
+      },
+      {
+        id: "megumi",
+        name: "Megumi Fushiguro",
+        emoji: "👥",
+        hp: 96,
+        atk: 11,
+        tech: 15,
+        def: 12,
+        strikePool: [
+          "«Десять теней» (Ten Shadows): божественные псы (Divine Dogs) — рвущий выпад из тени.",
+          "Теневой клинок и совместная атака с шикигами.",
+        ],
+        techPool: [
+          "«Нуэ» (Nue) — молния и натиск из воздуха.",
+          "«Большой змей» (Great Serpent) — обвивание и удавка.",
+          "«Макс-слон» (Max Elephant) — ливень CE и масса.",
+          "«Жаба» (Toad) — захват липким языком.",
+        ],
+        domainHit: "Расширение домена: «Сад химерных теней» (Chimera Shadow Garden) — тьма и шикигами накрывают арену.",
+        domainMiss: "Тень не успевает развернуться — противник вырывается до полного сада.",
+        defendLine: "«Кроличий побег» (Rabbit Escape) — звери отвлекают, ты уходишь из линии удара.",
+      },
+      {
+        id: "mechamaru",
+        name: "Mechamaru",
+        emoji: "🦿",
+        hp: 106,
+        atk: 15,
+        tech: 12,
+        def: 14,
+        strikePool: [
+          "«Абсолютный Мехамару» (Ultimate Mechamaru) — удар массивной рукой брони.",
+          "Стальной таран и оптический прицел — точка удара.",
+        ],
+        techPool: [
+          "«Призматическая пушка» (Piercing Cannon / Prism) — сквозной луч.",
+          "Залп ракет и CE из корпуса Mode: Absolute.",
+        ],
+        domainHit: "«Мод: Абсолют» (Mode: Absolute) — полный разряд ядра, урон уровня домена (без настоящего DE).",
+        domainMiss: "Перегрев ядра — залп срывается, остаётся лёгкий осколок CE.",
+        defendLine: "Бронеплиты и гашение удара — тяжёлая оборонительная стойка.",
+      },
+      {
+        id: "takaba",
+        name: "Takaba Fumihiko",
+        emoji: "🎭",
+        hp: 102,
+        atk: 12,
+        tech: 19,
+        def: 9,
+        strikePool: [
+          "Физическая комедия — реквизит и «случайный» удар по сцене.",
+          "Броский выпад с микрофонной стойкой (если смешно — больно).",
+        ],
+        techPool: [
+          "«Комик» (Comedian) — шутка становится реальностью, пока смешно.",
+          "Импровизация: «зрители в восторге» — CE материализует панчлайн.",
+          "Саркастический удар по эго противника — усиление через юмор.",
+        ],
+        domainHit: "«Комик» на максимум — реальность подстраивается под punchline, как под давлением домена.",
+        domainMiss: "Зал не смеётся вовремя — шутка не цепляет, CE рассыпается.",
+        defendLine: "«Это было шуткой!» — реальность смягчает удар, пока ты держишь лицо.",
+      },
+      {
+        id: "todo",
+        name: "Todo Aoi",
+        emoji: "👏",
+        hp: 108,
+        atk: 16,
+        tech: 14,
+        def: 13,
+        strikePool: [
+          "Чёрная вспышка (Black Flash) — удар в 2.5 раза сильнее стандарта CE.",
+          "Мощный хук с грубой, но плотной проклятой энергией.",
+          "Ближний бой «идеального брата» — давление без лишних слов.",
+        ],
+        techPool: [
+          "«Буги-вуги» (Boogie Woogie) — хлопок меняет местами тебя и объект с CE.",
+          "«Буги-вуги»: смена вектора атаки — противник бьёт по пустоте.",
+          "Хлопок + удар с разворота — дезориентация и импакт.",
+        ],
+        domainHit: "«Буги-вуги» на всё поле — ритм хлопков ломает позиции до уровня доменного давления.",
+        domainMiss: "Противник читает такт — смена мест почти не даёт зацепа.",
+        defendLine: "Хлопок сбрасывает линию удара — ты оказываешься «не там», где ждали.",
+      },
+      {
+        id: "kashimo",
+        name: "Hajime Kashimo",
+        emoji: "⚡️",
+        hp: 112,
+        atk: 14,
+        tech: 19,
+        def: 11,
+        strikePool: [
+          "Молния CE — удар током в упор (стиль древнего колдуна).",
+          "Сверхскоростной выпад под напряжением «янтарного зверя».",
+        ],
+        techPool: [
+          "«Мифический зверь: Янтарь» (Mythical Beast Amber) — зверь из молнии обрушивается на цель.",
+          "Разряд янтарной молнии — пробой защиты на дистанции.",
+          "Янтарный зверь крушит ландшафт серией ударов.",
+        ],
+        domainHit: "Поле боя становится гнездом молнии — «Янтарный зверь» и разряды накрывают всё, как расширение домена.",
+        domainMiss: "CE не успевает сомкнуться в зверя — остаётся лишь дуга разряда.",
+        defendLine: "Плотный слой CE-экрана — ток уходит в землю.",
+      },
+      {
+        id: "hakari",
+        name: "Kinji Hakari",
+        emoji: "🎰",
+        hp: 108,
+        atk: 13,
+        tech: 18,
+        def: 10,
+        strikePool: [
+          "Удар с накопленным CE — как выигрышная шариковая ярость.",
+          "Ближний бой с «риском», который сам себе подогревает.",
+        ],
+        techPool: [
+          "«Беспокойный игрок» (Restless Gambler) — ставка на CE, урон растёт с азартом.",
+          "«Частный поезд чистой любви» (Private Pure Love Train) — техника в духе пачинко-арены.",
+          "Джекпот режима — проклятая энергия льётся бесконечным потоком.",
+        ],
+        domainHit: "Расширение домена: «Смертельная лотерея бездействия» (Idle Death Gamble) — правила игры переписывают бой.",
+        domainMiss: "Барабан не выстраивает линию — остаётся слабый залп CE.",
+        defendLine: "«Фриспин» удачи — CE обволакивает и гасит удар в последний момент.",
+      },
+      {
+        id: "higuruma",
+        name: "Hiromi Higuruma",
+        emoji: "⚖️",
+        hp: 100,
+        atk: 11,
+        tech: 18,
+        def: 11,
+        strikePool: [
+          "Молоток судьи — короткий, но точный удар по «виновной» зоне.",
+          "Ближний бой адвоката: CE сжат в удар молотка.",
+        ],
+        techPool: [
+          "«Судья» (Judgeman) — вердикт усиливает следующий удар.",
+          "«Конфискация» (Confiscation) — забирает «орудие» или преимущество у противника в бою.",
+          "Судебный удар молотом по приговору.",
+        ],
+        domainHit: "Расширение домена: «Смертельный приговор» (Deadly Sentencing) — зал суда и закон, что рвёт защиту.",
+        domainMiss: "Процедура не выдерживает — приговор отклонён, остаётся лёгкий удар молотка.",
+        defendLine: "Возражение и пересмотр дела — CE уходит в процедурную защиту.",
+      },
+      {
+        id: "nobara",
+        name: "Nobara Kugisaki",
+        emoji: "🔨",
+        hp: 98,
+        atk: 12,
+        tech: 16,
+        def: 10,
+        strikePool: [
+          "Молоток и гвоздь — удар по вбитому крепежу (техника соломенной куклы).",
+          "Серия ударов молотком с CE по телу противника.",
+        ],
+        techPool: [
+          "«Резонанс» (Resonance) — удар по гвоздю отзывается в теле цели.",
+          "«Шпилька» (Hairpin) — финальный разряд через гвоздь.",
+          "Гвозди в тело + молоток — цепная детонация CE.",
+        ],
+        domainHit: "Полный «Резонанс» по полю — гвозди и CE пульсируют везде, как давление домена.",
+        domainMiss: "Гвоздь не входит в ритм — вспышка Resonance почти гаснет.",
+        defendLine: "Отскок назад + гвоздь в землю — отвод удара и контроль дистанции.",
+      },
+      {
+        id: "mahoraga",
+        name: "(БОСС) Mahoraga",
+        emoji: "☸",
+        hp: 148,
+        atk: 20,
+        tech: 21,
+        def: 17,
+        strikePool: [
+          "«Восьмиручный меч: Дивергентная сила» (Eight-Handled Sword) — рубящий шторм.",
+          "Удар когтями и хвостом божественного генерала.",
+          "Сокрушительный взмах меча, рассекающий CE всплески.",
+        ],
+        techPool: [
+          "Колесо на спине завершает оборот — адаптация к уже виденной технике.",
+          "Восстановление и контратака: Махорага «учится» ритму боя.",
+          "Поток CE генерала — удар, усиленный предыдущими фазами.",
+        ],
+        domainHit: "Колесо адаптации фиксирует закон поля — «Махорага» накрывает арену давлением уровня домена (божественный генерал).",
+        domainMiss: "Оборот колеса не завершён — адаптация не сработала, лишь тяжёлый удар.",
+        defendLine: "Панцирь и вращение колеса — входящий удар гасится адаптацией.",
+      },
+      {
+        id: "toji",
+        name: "Toji Fushiguro",
+        emoji: "🔪",
+        hp: 118,
+        atk: 18,
+        tech: 10,
+        def: 14,
+        strikePool: [
+          "«Небесное ограничение» (Heavenly Restriction) — тело без CE, но скорость и сила особого класса.",
+          "Инвертированное Небесное копьё / разрез особым проклятым оружием.",
+          "Ножевой бой: серия ударов быстрее реакции CE.",
+        ],
+        techPool: [
+          "Оружейный мастер: цепной клинок и удар с отвода дистанции.",
+          "«Играющее облако» (Playful Cloud) — три секции, удар волной CE из инструмента.",
+          "Гашение «чтения» CE — давление чистой физикой.",
+        ],
+        domainHit: "У Тодзи нет РД — зато шквал ударов и оружия накрывает поле давлением, сравнимым с доменом.",
+        domainMiss: "Противник успевает выставить барьер — серия рвётся, остаётся один резкий выпад.",
+        defendLine: "Уклон и парирование без лишнего CE — минимальный контакт, максимум эффективности.",
+      },
+      {
+        id: "nanami",
+        name: "Kento Nanami",
+        emoji: "👔",
+        hp: 108,
+        atk: 13,
+        tech: 16,
+        def: 13,
+        strikePool: [
+          "Чистый удар с расчётом — дистанция и тайминг как у банкира.",
+          "Рубящий выпад по «слабой линии» 7:3.",
+        ],
+        techPool: [
+          "«Соотношение» (Ratio Technique) — деление цели по слабой точке 7:3.",
+          "«Сверхурочные» (Overtime) — после 18:00 CE и урон резко усиливаются.",
+          "Дополнительный удар по уже «разделённой» зоне.",
+        ],
+        domainHit: "«Сверхурочные» на полную — каждый удар бьёт по соотношению, как под доменным законом.",
+        domainMiss: "Линия тела не даёт чистого 7:3 — Ratio не ложится, остаётся обычный удар.",
+        defendLine: "Галстук и воротник в натяг — CE плотным слоем на критических точках.",
+      },
+      {
+        id: "toge",
+        name: "Toge Inumaki",
+        emoji: "🍙",
+        hp: 92,
+        atk: 9,
+        tech: 18,
+        def: 9,
+        strikePool: [
+          "Толчок сенбэ / ближний толчок — отвлекающий удар перед словом.",
+          "Лёгкий удар локтем, чтобы выиграть дистанцию для речи.",
+        ],
+        techPool: [
+          "«Проклятая речь» (Cursed Speech) — «Разлетайся!»",
+          "«Проклятая речь» — «Замри!» / «Спи!»",
+          "«Клыки змеи» (Snake Fang) — направленный взрыв CE по цели.",
+        ],
+        domainHit: "Слова заполняют пространство — серия команд Cursed Speech давит, как расширение домена.",
+        domainMiss: "Горло пересохло — речь срывается, остаётся слабый импульс CE.",
+        defendLine: "«Не двигайся» на себя — CE стягивает удар в сторону.",
+      },
+      {
+        id: "maki",
+        name: "Maki Zenin",
+        emoji: "👓",
+        hp: 104,
+        atk: 17,
+        tech: 12,
+        def: 13,
+        strikePool: [
+          "«Небесное ограничение» — удар копьём/клинком проклятого оружия.",
+          "Сверхсильный вращающий удар — чистая мощь без избытка CE.",
+          "Подсечка и удар в корпус на ближней дистанции.",
+        ],
+        techPool: [
+          "Связка ударов оружием — чтение движения лучше любого «среднего» мага.",
+          "Бросок копья сквозь CE-всплеск противника.",
+          "Натиск «Маки особого класса» — скорость после пробуждения.",
+        ],
+        domainHit: "Нет классического РД — зато шквал клинков и копья создаёт поле давления уровня домена.",
+        domainMiss: "Оружие цепляет барьер — импульс гасится, остаётся царапина.",
+        defendLine: "Парирование клинком и сдвиг — минимальная площадь удара.",
+      },
+      {
+        id: "panda",
+        name: "Panda",
+        emoji: "🐼",
+        hp: 118,
+        atk: 12,
+        tech: 13,
+        def: 14,
+        strikePool: [
+          "Режим «Панда» — мощные, но контролируемые удары лапами.",
+          "Телесный таран с накоплением CE в кулаке.",
+        ],
+        techPool: [
+          "«Горилла» (Gorilla Mode) — ярость и разрушительная серия.",
+          "«Трицератопс» (Triceratops Mode) — таран и пробой с лба.",
+          "Смена ядра — внезапный скачок стиля боя.",
+        ],
+        domainHit: "Три ядра в резонансе — удары и CE накладываются волнами, как доменное давление.",
+        domainMiss: "Переключение ядра срывается — остаётся один неуклюжий выпад.",
+        defendLine: "Перераспределение CE между ядрами — удар гасится «не тем» слоем.",
+      },
+      {
+        id: "jogo",
+        name: "Jogo",
+        emoji: "🌋",
+        hp: 116,
+        atk: 16,
+        tech: 18,
+        def: 11,
+        strikePool: [
+          "Удар кулаком из застывшей лавы и пепла.",
+          "Ближний бой вулканического проклятия — жар в точке контакта.",
+        ],
+        techPool: [
+          "«Катастрофические пламена» (Disaster Flames) — столб огня снизу вверх.",
+          "Метеор из сжатой магмы и CE.",
+          "Взрывной залп жара, оплавляющий защиту.",
+        ],
+        domainHit: "Расширение домена Джого — лава и «катастрофические пламена» (Disaster Flames) заполняют замкнутое пространство.",
+        domainMiss: "Поле жара не сомкнулось — противник вырывается из эпицентра.",
+        defendLine: "Плотная кора базальта и CE — удар гасится жаром навстречу.",
+      },
+      {
+        id: "mahito",
+        name: "Mahito",
+        emoji: "🖐️",
+        hp: 106,
+        atk: 12,
+        tech: 19,
+        def: 11,
+        strikePool: [
+          "Касание ладонью — подготовка души к трансфигурации.",
+          "Резкий удар по уже «связанной» зоне тела.",
+        ],
+        techPool: [
+          "«Бездельная трансфигурация» (Idle Transfiguration) — искажение формы цели.",
+          "«Мгновенный дух» (Instant Spirit Body of Distorted Killing) — всплеск искажённого тела.",
+          "Сшивание души и тела — контроль через касание.",
+        ],
+        domainHit: "Расширение домена: «Воплощение совершенства» (Self-Embodiment of Perfection) — касание становится законом поля.",
+        domainMiss: "Душа «скользит» — Self-EP не фиксируется, остаётся слабый хват.",
+        defendLine: "Трансфигурация своей руки в щит — форма гасит удар.",
+      },
+      {
+        id: "geto",
+        name: "Suguru Geto",
+        emoji: "🌀",
+        hp: 110,
+        atk: 12,
+        tech: 18,
+        def: 12,
+        strikePool: [
+          "Удар, усиленный выпущенным проклятым духом вблизи.",
+          "Ближний бой с плащом и потоком CE.",
+        ],
+        techPool: [
+          "«Манипуляция проклятыми духами» (Cursed Spirit Manipulation) — залп особого класса.",
+          "«Максимум: Узумаки» (Maximum: Uzumaki) — спираль поглощённых духов.",
+          "Высвобождение накопленных духов цепью ударов.",
+        ],
+        domainHit: "Воронка поглощённых духов накрывает арену — давление, сравнимое с расширением домена (Uzumaki / стая).",
+        domainMiss: "Связь со стаей рвётся — остаётся один слабый выброс.",
+        defendLine: "Духи выстраиваются плотным веером — удар принимают они.",
+      },
+      {
+        id: "yuki",
+        name: "Yuki Tsukumo",
+        emoji: "🏍️",
+        hp: 122,
+        atk: 14,
+        tech: 20,
+        def: 14,
+        strikePool: [
+          "Удар с виртуальной массой — «Звёздная ярость» (Star Rage) ломает инерцию.",
+          "Ближний бой с Гарудой в синхроне.",
+        ],
+        techPool: [
+          "«Звёздная ярость» (Star Rage) — добавленная масса к ударам и объектам.",
+          "«Гаруда» (Garuda) — шикигами несёт удар сверху.",
+          "Комбо: масса + взмах — CE сжат в одну точку.",
+        ],
+        domainHit: "Простой домен / поле Star Rage — виртуальная масса накрывает всё, закон боя смещается.",
+        domainMiss: "Масса не укладывается в ритм — противник выходит из-под пика.",
+        defendLine: "Гаруда перехватывает линию удара — масса уходит в шикигами.",
+      },
+      {
+        id: "kenjaku",
+        name: "Kenjaku",
+        emoji: "🧠",
+        hp: 114,
+        atk: 14,
+        tech: 20,
+        def: 13,
+        strikePool: [
+          "Удар с телом «носителя» — CE чужих техник в одном кулаке.",
+          "Расчётливый выпад после чтения паттерна боя.",
+        ],
+        techPool: [
+          "«Антигравитационная система» (Anti-Gravity) — срыв опоры и удар в падении.",
+          "«Узумаки» (Uzumaki) — спираль поглощённых техник (наследие Гето).",
+          "Смена наследия: неожиданный эффект из архива мозга.",
+        ],
+        domainHit: "Расширение домена: «Утробное изобилие» (Womb Profusion) — поле рождает новые правила и удары техник.",
+        domainMiss: "Поле не успевает развернуться — остаётся обрывок чужого CE.",
+        defendLine: "Чужой опыт тела — барьер из уже «виденной» защиты.",
+      },
+      {
+        id: "uro",
+        name: "Takako Uro",
+        emoji: "🌫️",
+        hp: 104,
+        atk: 12,
+        tech: 18,
+        def: 10,
+        strikePool: [
+          "Манипуляция небом: «рыба» в воздухе — режущий выпад по искривлённой траектории.",
+          "Сдвиг опоры «пола» — противник теряет баланс, ты бьёшь в падении.",
+        ],
+        techPool: [
+          "Искривление пространства — удар сквозь невозможный угол (Sky Manipulation).",
+          "Плотный слой тумана и CE — сдавливание в ловушке неба.",
+          "Волна «небесной рыбы» — серия ударов по дуге, закрывающей уходы.",
+        ],
+        domainHit: "Расширение домена: «Трёхформенная беседка» (Threefold Affliction) — небо становится полом, рыба и пространство смыкаются в закон поля.",
+        domainMiss: "Граница неба не фиксируется — остаётся лишь осколок искривления и слабый CE.",
+        defendLine: "Слой дымки и сдвиг вектора — удар противника уходит «мимо опоры».",
+      },
+      {
+        id: "uraume",
+        name: "Uraume",
+        emoji: "❄️",
+        hp: 98,
+        atk: 10,
+        tech: 17,
+        def: 11,
+        strikePool: [
+          "Ледяной клинок из конденсата CE — режущий выпад в ближний бой.",
+          "Удар накатом — скользкий пол под ногами противника.",
+        ],
+        techPool: [
+          "«Ледяной налёт» — стена мороза и осколки льда в полёт.",
+          "Заморозка конечностей цепочкой CE по контакту с поверхностью.",
+          "Ледяной шип из-под ног — внезапное пронзание снизу.",
+        ],
+        domainHit: "Расширение домена: «Ледяной надгробный холм» (Ice Fall / гроб льда) — всё поле покрывается вечным холодом и шипами, движение цели ломается.",
+        domainMiss: "Лёд трескается по шву — противник вырывается из наката, остаётся лёгкий морозный удар.",
+        defendLine: "Кокон льда и CE — удар гасится слоем, что тут же отрастает.",
+      },
+      {
+        id: "kurourushi",
+        name: "Kurourushi",
+        emoji: "🦂",
+        hp: 112,
+        atk: 16,
+        tech: 12,
+        def: 13,
+        strikePool: [
+          "Рой проклятых насекомых накрывает цель — режущие челюсти и крылья.",
+          "Тяжёлый таран «главного» жука с плотным слоем CE.",
+        ],
+        techPool: [
+          "Волна роя — отравление и разрывы по всему силуэту цели.",
+          "Концентрация роя в одной точке — пробой как у техники.",
+          "Подземный выход роя — захват снизу и сдавливание.",
+        ],
+        domainHit: "Расширение домена: «Метрополия насекомых» (Cockroach / insect swarm DE) — замкнутое пространство заполняется роем; каждый контакт режет и высасывает CE.",
+        domainMiss: "Рой не смыкается в периметр — противник вырывается из кластера, остаётся укус и царапины.",
+        defendLine: "Плотный слой хитина и роя — удар распределяется по сотням тел.",
+      },
+    ];
+
+    function dmStep(t, ok, w1, w2) {
+      return { t, o: [[ok, true], [w1, false], [w2, false]] };
+    }
+
+    const DOMAIN_Q2_POOL = [
+      dmStep(
+        "Стабилизация поля: куда уводишь излишек CE барьера?",
+        "В периметр стен домена, чтобы территория держалась",
+        "В открытое небо без якоря",
+        "Обратно в кулак без смены фазы",
+      ),
+      dmStep(
+        "Фаза закрепления: что нельзя рвать до завершения расширения?",
+        "Связь печати с внутренним якорем территории",
+        "Темп дыхания противника",
+        "Случайный порыв ветра снаружи",
+      ),
+      dmStep(
+        "Чтобы правило домена не развалилось в первые секунды:",
+        "Сомкнуть границу до полного объёма, без «дыр»",
+        "Сначала ударить по врагу, потом барьер",
+        "Снизить CE почти до нуля ради экономии",
+      ),
+      dmStep(
+        "Последний рывок: как «запереть» закон поля?",
+        "Провести финальную линию CE по контуру и зафиксировать",
+        "Отпустить контроль и наблюдать",
+        "Сменить противника на другого",
+      ),
+    ];
+
+    const DOMAIN_Q1_BY_ID = {
+      _default: dmStep(
+        "Первый шаг простого DE: что сомкнуть в первую очередь?",
+        "Границы внутреннего пространства и барьера",
+        "Только кулак без поля",
+        "Ждать хода противника без построения",
+      ),
+      yuta: dmStep(
+        "В «Подлинной взаимной любви» техники копируются:",
+        "Бесконечным потоком без выбора, пока поле живо",
+        "Строго по одной за раунд",
+        "Только если цель уже без сознания",
+      ),
+      yuji: dmStep(
+        "Давление «как у домена» у Юдзи строится на:",
+        "Серии Чёрной вспышки в идеальном ритме CE",
+        "Только Divergent Fist без пика CE",
+        "Случайном размахе без накопления",
+      ),
+      choso: dmStep(
+        "«Сверхновая» до уровня домена питается:",
+        "Накопленной плотностью крови и CE в одной точке",
+        "Только холодом вокруг",
+        "Только ветром",
+      ),
+      ryu: dmStep(
+        "«Гроб железной горы» опирается на:",
+        "Массу CE, «тяжелее гранита», сжимающую пространство",
+        "Лёгкость шагов",
+        "Случайный звук",
+      ),
+      sukuna: dmStep(
+        "В «Святилище зла» удар по цели внутри поля:",
+        "Исполняется автоматически — slash/cleave не ждут разрешения",
+        "Срабатывает только после вашего крика",
+        "Зависит от числа зрителей",
+      ),
+      gojo: dmStep(
+        "В «Безграничной пустоте» поток для жертвы — это:",
+        "Всё сразу: бесконечная перегрузка информацией",
+        "Один повторяющийся образ",
+        "Ровно три коротких факта и тишина",
+      ),
+      megumi: dmStep(
+        "«Сад химерных теней» требует для полноты:",
+        "Среду, где тень стабильна и шикигами могут развернуться",
+        "Прямой яркий солнечный свет",
+        "Полностью сухую площадку без тени",
+      ),
+      mechamaru: dmStep(
+        "Mode: Absolute без классического DE держится на:",
+        "Стабильности ядра и контроле перегрева разряда",
+        "Скорости речи",
+        "Количестве зрителей",
+      ),
+      takaba: dmStep(
+        "«Комик» на уровне домена срабатывает, когда:",
+        "Зал и «логика шутки» сходятся в одну punchline-реальность",
+        "Никто не смеётся",
+        "Вы сами не верите в шутку",
+      ),
+      todo: dmStep(
+        "«Буги-вуги» на всё поле ломает позиции через:",
+        "Ритм хлопков и смену мест с целью в такте",
+        "Один-единственный хлопок",
+        "Только силу ног без хлопков",
+      ),
+      kashimo: dmStep(
+        "Поле Хакима как расширение — это:",
+        "Гнездо молний и «Янтарного зверя», CE смыкается контуром",
+        "Только статика без разрядов",
+        "Любой дождь без CE",
+      ),
+      hakari: dmStep(
+        "В «Смертельной лотерее бездействия» правило поля:",
+        "Игра переписывает исходы и риск удара внутри DE",
+        "Игра только декор без CE",
+        "Игра не влияет на бой",
+      ),
+      higuruma: dmStep(
+        "«Смертельный приговор» фиксирует в поле:",
+        "Процесс суда и вердикт как закон, рвущий защиту",
+        "Только звук молотка без процедуры",
+        "Только взгляд судьи",
+      ),
+      nobara: dmStep(
+        "Резонанс «на всё поле» — это:",
+        "Сеть гвоздей и CE в общем ритме с целью",
+        "Один гвоздь в угол арены",
+        "Случайный шум без гвоздей",
+      ),
+      mahoraga: dmStep(
+        "Колесо «Махораги» в доменном давлении:",
+        "Фиксирует и переписывает закон под удар",
+        "Только украшение без эффекта",
+        "Заменяет любую технику без адаптации",
+      ),
+      toji: dmStep(
+        "У Тодзи нет DE — «поле давления» идёт от:",
+        "Шквала физики, оружия и смены линий без CE",
+        "Плотной CE-ауры",
+        "Молитвы и удачи",
+      ),
+      nanami: dmStep(
+        "«Сверхурочные» на максимум — суть в:",
+        "Каждом ударе по жёсткому соотношению (Ratio)",
+        "Случайных углах без расчёта",
+        "Только работе ног",
+      ),
+      toge: dmStep(
+        "Cursed Speech на площадь требует:",
+        "Плотную цепочку коротких команд без разрыва голоса",
+        "Длинный монолог на одном слове",
+        "Полное молчание между фразами",
+      ),
+      maki: dmStep(
+        "Heaven restriction даёт «давление поля» за счёт:",
+        "Сверхчувств и чистой физики без CE тела",
+        "Внешней CE-ауры",
+        "Случайного везения",
+      ),
+      panda: dmStep(
+        "Три ядра Панды в «доменном» резонансе синхронизируют:",
+        "Фазу удара между пандой, гориллой и бабушкой",
+        "Только бабушку всегда",
+        "Случайное ядро без выбора",
+      ),
+      jogo: dmStep(
+        "DE Джого наполняется:",
+        "Катастрофическими пламенами и лавой в замкнутом объёме",
+        "Льдом и снегом",
+        "Только ветром без жара",
+      ),
+      mahito: dmStep(
+        "«Воплощение совершенности» — закон поля:",
+        "Касание души/тела становится правилом трансфигурации",
+        "Только визуальный эффект",
+        "Только звук шагов",
+      ),
+      geto: dmStep(
+        "Воронка духов Гето даёт давление как у DE, когда:",
+        "Стая и Uzumaki плотно связаны с центром поля",
+        "Один слабый дух без связи",
+        "Без какой-либо печати",
+      ),
+      yuki: dmStep(
+        "Star Rage как простое DE опирается на:",
+        "Виртуальную массу, накладываемую на удары и объекты",
+        "Только гравитацию планеты",
+        "Случайный вес без CE",
+      ),
+      kenjaku: dmStep(
+        "«Утробное изобилие» порождает в поле:",
+        "Новые «рождения» техник и правил внутри территории",
+        "Только одного клона",
+        "Только бурю без смысла",
+      ),
+      uro: dmStep(
+        "Sky Manipulation Уро в расширении ломает бой через:",
+        "Искривление «пола» и небесных траекторий (рыба в небе)",
+        "Только лёгкий туман без геометрии",
+        "Только дождь без CE",
+      ),
+      uraume: dmStep(
+        "Лёд Ураумэ как область домена:",
+        "Накатывает слой, лишающий тепла и опоры, с якорем CE",
+        "Только декоративный иней",
+        "Только вода без холода",
+      ),
+      kurourushi: dmStep(
+        "«Метрополия насекомых» смыкается, когда:",
+        "Рой сводится в плотный периметр вокруг цели",
+        "Жуки разбегаются хаотично",
+        "Один жук остаётся в центре",
+      ),
+    };
+
+    function shuffleDomainOpts(pairs) {
+      const arr = pairs.map(([text, ok]) => ({ text, ok: !!ok }));
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+      }
+      return arr;
+    }
+
+    function closeDomainModal() {
+      const root = document.getElementById("domainModalBody");
+      const modal = document.getElementById("domainModal");
+      if (root) root.innerHTML = "";
+      if (modal) {
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+      }
+    }
+
+    function runDomainStepMiniGame(p1, done) {
+      const qA = DOMAIN_Q1_BY_ID[p1.id] || DOMAIN_Q1_BY_ID._default;
+      const qB = DOMAIN_Q2_POOL[Math.floor(Math.random() * DOMAIN_Q2_POOL.length)];
+      const steps = [qA, qB];
+      const root = document.getElementById("domainModalBody");
+      const modal = document.getElementById("domainModal");
+      let idx = 0;
+      function fail() {
+        closeDomainModal();
+        done(false);
+      }
+      function paint() {
+        if (idx >= steps.length) {
+          closeDomainModal();
+          done(true);
+          return;
+        }
+        const st = steps[idx];
+        const opts = shuffleDomainOpts(st.o);
+        const title = `${p1.emoji} Расширение домена — ${p1.name}`;
+        root.innerHTML = `<h3 id="domainModalTitle">${title}</h3><div class="dm-step">Шаг ${idx + 1} из ${steps.length}</div><p class="dm-text">${st.t}</p><div class="dm-btns">${opts
+          .map(
+            (x, i) =>
+              `<button type="button" class="dm-btn" data-i="${i}" data-ok="${x.ok ? 1 : 0}">${x.text}</button>`,
+          )
+          .join("")}</div>`;
+        root.querySelectorAll(".dm-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (btn.getAttribute("data-ok") === "1") {
+              idx += 1;
+              paint();
+            } else fail();
+          });
+        });
+      }
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      paint();
+    }
+
+    let synergyP1 = neutralSynergy();
+    let synergyP2 = neutralSynergy();
+
+    let team1Pick = [];
+    let team2Pick = [];
+    let team1 = [];
+    let team2 = [];
+    let idx1 = 0;
+    let idx2 = 0;
+    let p1 = null;
+    let p2 = null;
+    let hp1, hp2, max1, max2;
+    let battleOver = false;
+    let defendStreak = 0;
+    let prevHp1 = 0;
+    let prevHp2 = 0;
+    let autoBattleTimer = null;
+
+    function formatTeamPickLabel(ids) {
+      if (!ids.length) return "—";
+      return ids
+        .map((id) => {
+          const ch = CHARS.find((x) => x.id === id);
+          return ch ? `${ch.emoji} ${ch.name}` : id;
+        })
+        .join(" · ");
+    }
+
+    function formatTeamList(teamArr) {
+      return teamArr.map((c) => `${c.emoji} ${c.name}`).join(", ");
+    }
+
+    function updateBattleBenchs() {
+      const el1 = document.getElementById("bench1");
+      const el2 = document.getElementById("bench2");
+      if (!el1 || !el2) return;
+      const rest1 = team1.slice(idx1 + 1);
+      const rest2 = team2.slice(idx2 + 1);
+      el1.innerHTML = rest1.length
+        ? `<strong>Запас:</strong> ${rest1.map((c) => `${c.emoji} ${c.name}`).join(" · ")}`
+        : "";
+      el2.innerHTML = rest2.length
+        ? `<strong>Запас:</strong> ${rest2.map((c) => `${c.emoji} ${c.name}`).join(" · ")}`
+        : "";
+    }
+
+    function trySwapTeam1() {
+      if (!team1.length || idx1 >= team1.length - 1) return false;
+      idx1 += 1;
+      p1 = team1[idx1];
+      max1 = p1.hp;
+      hp1 = max1;
+      defendStreak = 0;
+      prevHp1 = hp1;
+      document.getElementById("e1").textContent = p1.emoji;
+      document.getElementById("n1").textContent = p1.name;
+      appendLog(`Замена — за команду 1 на поле выходит <strong>${p1.name}</strong>.`, "system");
+      updateBattleBenchs();
+      updateHpBars();
+      return true;
+    }
+
+    function trySwapTeam2() {
+      if (!team2.length || idx2 >= team2.length - 1) return false;
+      const d = getDifficulty();
+      idx2 += 1;
+      p2 = team2[idx2];
+      max2 = Math.max(1, Math.round(p2.hp * d.enemyHpMult));
+      hp2 = max2;
+      defendStreak = 0;
+      prevHp2 = hp2;
+      document.getElementById("e2").textContent = p2.emoji;
+      document.getElementById("n2").textContent = p2.name;
+      appendLog(`Замена — за команду 2 на поле выходит <strong>${p2.name}</strong>.`, "system");
+      updateBattleBenchs();
+      updateHpBars();
+      return true;
+    }
+
+    const roster1 = document.getElementById("roster1");
+    const roster2 = document.getElementById("roster2");
+    const label1 = document.getElementById("label1");
+    const label2 = document.getElementById("label2");
+    const startBtn = document.getElementById("start");
+    const setupEl = document.getElementById("setup");
+    const battleEl = document.getElementById("battle");
+    const logEl = document.getElementById("log");
+    const fxOverlay = document.getElementById("fxOverlay");
+
+    function clearFxOverlay() {
+      fxOverlay.className = "fx-overlay";
+    }
+
+    function triggerFxOverlay(cls, ms) {
+      clearFxOverlay();
+      void fxOverlay.offsetWidth;
+      fxOverlay.classList.add(cls);
+      setTimeout(clearFxOverlay, ms);
+    }
+
+    function triggerScreenShake() {
+      document.body.classList.add("is-shake");
+      setTimeout(() => document.body.classList.remove("is-shake"), 450);
+    }
+
+    function clearAutoBattleTimer() {
+      if (autoBattleTimer !== null) {
+        clearTimeout(autoBattleTimer);
+        autoBattleTimer = null;
+      }
+    }
+
+    function scheduleAutoBattleStep() {
+      clearAutoBattleTimer();
+      const autoEl = document.getElementById("autoBattle");
+      if (!autoEl || !autoEl.checked || battleOver || !battleEl.classList.contains("active")) return;
+      autoBattleTimer = setTimeout(() => {
+        autoBattleTimer = null;
+        runAutoBattleAction();
+      }, 520);
+    }
+
+    function pickAutoBattleAction() {
+      const hp1r = hp1 / Math.max(1, max1);
+      const hp2r = hp2 / Math.max(1, max2);
+      let wStrike = 30;
+      let wTech = 28;
+      let wDef = 16;
+      let wDomain = 14;
+      if (hp1r < 0.38) {
+        wStrike -= 8;
+        wTech -= 4;
+        wDef += 20;
+        wDomain -= 8;
+      }
+      if (hp2r < 0.25) {
+        wStrike += 10;
+        wTech += 8;
+        wDomain += 10;
+        wDef = Math.max(6, wDef - 12);
+      }
+      return weightedPick([
+        { act: "strike", w: Math.max(10, wStrike) },
+        { act: "technique", w: Math.max(10, wTech) },
+        { act: "defend", w: Math.max(8, wDef) },
+        { act: "domain", w: Math.max(8, wDomain) },
+      ]);
+    }
+
+    function runAutoBattleAction() {
+      const autoEl = document.getElementById("autoBattle");
+      if (!autoEl || !autoEl.checked || battleOver || !battleEl.classList.contains("active")) return;
+      const act = pickAutoBattleAction();
+      if (act === "domain") {
+        const d = getDifficulty();
+        const success = Math.random() < Math.min(0.92, d.domainSuccessChance + synergyP1.domainCh);
+        applyPlayerDomainHit(success);
+        return;
+      }
+      const btn = document.querySelector(`#actions .act-btn[data-act="${act}"]`);
+      if (btn && !btn.disabled) btn.click();
+    }
+
+    function renderRosters() {
+      roster1.innerHTML = "";
+      roster2.innerHTML = "";
+      const marks = ["①", "②", "③"];
+      CHARS.forEach((c) => {
+        const i1 = team1Pick.indexOf(c.id);
+        const i2 = team2Pick.indexOf(c.id);
+
+        const b1 = document.createElement("button");
+        b1.type = "button";
+        b1.className = "char-btn" + (i1 >= 0 ? " p1-pick" : "");
+        b1.innerHTML = (i1 >= 0 ? `<span class="slot-mark">${marks[i1]}</span>` : "") + `${c.emoji} ${c.name}`;
+        b1.disabled = team2Pick.includes(c.id);
+        b1.addEventListener("click", () => {
+          const j = team1Pick.indexOf(c.id);
+          if (j >= 0) team1Pick.splice(j, 1);
+          else if (team1Pick.length < 3) team1Pick.push(c.id);
+          else team1Pick[2] = c.id;
+          renderRosters();
+          updateLabels();
+        });
+        roster1.appendChild(b1);
+
+        const b2 = document.createElement("button");
+        b2.type = "button";
+        b2.className = "char-btn" + (i2 >= 0 ? " p2-pick" : "");
+        b2.innerHTML = (i2 >= 0 ? `<span class="slot-mark">${marks[i2]}</span>` : "") + `${c.emoji} ${c.name}`;
+        b2.disabled = team1Pick.includes(c.id);
+        b2.addEventListener("click", () => {
+          const j = team2Pick.indexOf(c.id);
+          if (j >= 0) team2Pick.splice(j, 1);
+          else if (team2Pick.length < 3) team2Pick.push(c.id);
+          else team2Pick[2] = c.id;
+          renderRosters();
+          updateLabels();
+        });
+        roster2.appendChild(b2);
+      });
+    }
+
+    function updateLabels() {
+      label1.textContent = formatTeamPickLabel(team1Pick);
+      label2.textContent = formatTeamPickLabel(team2Pick);
+      startBtn.disabled = !(team1Pick.length >= 1 && team2Pick.length >= 1);
+    }
+
+    function appendLog(html, variant) {
+      const line = document.createElement("div");
+      line.className = "log-line" + (variant ? " log-line--" + variant : "");
+      line.innerHTML = html;
+      logEl.appendChild(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function roll(base, variance, varianceOverride) {
+      const v = varianceOverride !== undefined ? varianceOverride : (variance ?? 4);
+      const b = Math.max(0, base);
+      return Math.max(1, b + Math.floor(Math.random() * (v * 2 + 1)) - v);
+    }
+
+    function applyPlayerDomainHit(success) {
+      if (battleOver || !p1 || !p2) return;
+      const d = getDifficulty();
+      let raw;
+      let dmg;
+      let msg;
+      let logVariant;
+      if (success) {
+        raw = roll(Math.floor(22 * ((p1.tech + p1.atk) / 20)), null, d.rollVarPlayer);
+        raw = Math.max(1, Math.floor(raw * d.playerDamageMult * synergyP1.domainDmg));
+        dmg = applyTargetArmor(raw, p2);
+        msg = `<span class="turn">Твой ход:</span> ${p1.domainHit} Урон: ${dmg}${synergyActNote("domain", synergyP1)}.`;
+        logVariant = "domain";
+        triggerFxOverlay("is-domain", 600);
+        triggerScreenShake();
+      } else {
+        raw = roll(4, null, d.rollVarPlayer);
+        raw = Math.max(1, Math.floor(raw * d.playerDamageMult * synergyP1.domainDmg));
+        dmg = applyTargetArmor(raw, p2);
+        msg = `<span class="turn">Твой ход:</span> ${p1.domainMiss} Слабый зацеп: ${dmg}${synergyActNote("domain", synergyP1)}.`;
+        logVariant = "domain-miss";
+      }
+      hp2 = Math.max(0, hp2 - dmg);
+      appendLog(msg, logVariant);
+      updateHpBars();
+      checkEnd();
+      if (!battleOver) enemyTurn();
+    }
+
+    function enemyTurn() {
+      if (battleOver || !p1 || !p2) return;
+      const d = getDifficulty();
+      const act = pickEnemyAct();
+      const mult = act === "technique" ? p2.tech / 10 : act === "strike" ? p2.atk / 10 : 0;
+      let dmg = 0;
+      let line = "";
+
+      if (act === "defend") {
+        line = `<span class="enemy">Ход противника:</span> ${p2.defendLine}`;
+        appendLog(line, "enemy");
+        if (!battleOver) scheduleAutoBattleStep();
+        return;
+      }
+
+      let critLine = "";
+      if (act === "strike") {
+        dmg = roll(Math.floor(8 * mult), null, d.rollVarEnemy);
+        const crit = Math.random() < Math.min(0.85, d.enemyCritChance + synergyP2.crit);
+        if (crit) {
+          dmg = Math.floor(dmg * 1.45);
+          critLine = `<span class="crit">Крит!</span> `;
+          triggerScreenShake();
+          triggerFxOverlay("is-crit", 480);
+        }
+        dmg = Math.max(1, Math.floor(dmg * synergyP2.strike));
+      } else {
+        dmg = roll(Math.floor(7 * mult), null, d.rollVarEnemy);
+        if (Math.random() < d.enemyTechBonusChance) dmg = Math.floor(dmg * 1.35);
+        dmg = Math.max(1, Math.floor(dmg * synergyP2.tech * synergyP2.domainDmg));
+      }
+
+      dmg = Math.max(1, Math.floor(dmg * d.enemyDamageMult));
+      dmg = applyIncomingDefense(dmg, p1);
+      const mit = Math.min(0.78, d.defendMitigation + synergyP1.defEx);
+      const reduced = defendStreak > 0 ? Math.max(1, Math.floor(dmg * (1 - mit))) : dmg;
+      const pickLine = act === "strike" ? pick(p2.strikePool) : pick(p2.techPool);
+      line =
+        critLine +
+        `<span class="enemy">Ход противника:</span> ${pickLine} Урон: ${dmg}${synergyActNote(act, synergyP2)}.`;
+      if (defendStreak > 0) line += ` (защита снижает до ${reduced})`;
+      hp1 = Math.max(0, hp1 - reduced);
+      defendStreak = 0;
+      appendLog(line, act === "strike" && line.includes("Крит") ? "crit" : "enemy");
+      updateHpBars();
+      checkEnd();
+      if (!battleOver) scheduleAutoBattleStep();
+    }
+
+    function updateHpBars() {
+      const el1 = document.getElementById("hp1b");
+      const el2 = document.getElementById("hp2b");
+      const f1 = document.getElementById("fighter1");
+      const f2 = document.getElementById("fighter2");
+
+      document.getElementById("hp1t").textContent = `${hp1} / ${max1}`;
+      document.getElementById("hp2t").textContent = `${hp2} / ${max2}`;
+      el1.style.width = `${(hp1 / max1) * 100}%`;
+      el2.style.width = `${(hp2 / max2) * 100}%`;
+
+      if (hp1 < prevHp1) {
+        el1.classList.remove("hp-hit");
+        void el1.offsetWidth;
+        el1.classList.add("hp-hit");
+        f1.classList.remove("is-pulse");
+        void f1.offsetWidth;
+        f1.classList.add("is-pulse");
+        triggerFxOverlay("is-hit-p1", 400);
+      }
+      if (hp2 < prevHp2) {
+        el2.classList.remove("hp-hit");
+        void el2.offsetWidth;
+        el2.classList.add("hp-hit");
+        f2.classList.remove("is-pulse");
+        void f2.offsetWidth;
+        f2.classList.add("is-pulse");
+        triggerFxOverlay("is-hit-p2", 400);
+      }
+      prevHp1 = hp1;
+      prevHp2 = hp2;
+    }
+
+    function checkEnd() {
+      if (hp1 <= 0) {
+        if (trySwapTeam1()) return;
+        battleOver = true;
+        clearAutoBattleTimer();
+        appendLog(`<span class="end">Победа команды 2 (${formatTeamList(team2)})! Ты проиграл.</span>`, "end");
+        setActionsDisabled(true);
+        return;
+      }
+      if (hp2 <= 0) {
+        if (trySwapTeam2()) return;
+        battleOver = true;
+        clearAutoBattleTimer();
+        appendLog(`<span class="end">Победа команды 1 (${formatTeamList(team1)})! Команда противника повержена.</span>`, "end");
+        setActionsDisabled(true);
+      }
+    }
+
+    function setActionsDisabled(dis) {
+      document.querySelectorAll(".act-btn").forEach((b) => { b.disabled = dis; });
+    }
+
+    function startBattle() {
+      if (team1Pick.length < 1 || team2Pick.length < 1) return;
+      team1 = team1Pick.map((id) => CHARS.find((x) => x.id === id)).filter(Boolean);
+      team2 = team2Pick.map((id) => CHARS.find((x) => x.id === id)).filter(Boolean);
+      if (!team1.length || !team2.length) return;
+      idx1 = 0;
+      idx2 = 0;
+      p1 = team1[0];
+      p2 = team2[0];
+      const d = getDifficulty();
+      max1 = p1.hp;
+      max2 = Math.max(1, Math.round(p2.hp * d.enemyHpMult));
+      hp1 = max1;
+      hp2 = max2;
+      prevHp1 = hp1;
+      prevHp2 = hp2;
+      battleOver = false;
+      defendStreak = 0;
+      setupEl.style.display = "none";
+      battleEl.classList.add("active");
+      document.getElementById("e1").textContent = p1.emoji;
+      document.getElementById("e2").textContent = p2.emoji;
+      document.getElementById("n1").textContent = p1.name;
+      document.getElementById("n2").textContent = p2.name;
+      logEl.innerHTML = "";
+      appendLog(
+        `Командный бой: <strong>${formatTeamList(team1)}</strong> против <strong class="red">${formatTeamList(team2)}</strong>. Сложность: <strong>${d.label}</strong> (HP активного врага ${max2}).`,
+        "system",
+      );
+      synergyP1 = mergeSynergies(findSynergyMatches(team1Pick));
+      synergyP2 = mergeSynergies(findSynergyMatches(team2Pick));
+      renderSynergyHud();
+      synergyP1.active.forEach((m) => {
+        appendLog(`✦ <strong>Связка (ты):</strong> «${m.name}» — ${m.blurb}`, "synergy");
+      });
+      synergyP2.active.forEach((m) => {
+        appendLog(`✦ <strong>Связка (враг):</strong> «${m.name}» — ${m.blurb}`, "synergy");
+      });
+      appendLog("Твой ход — выбери действие.", "system");
+      updateBattleBenchs();
+      updateHpBars();
+      setActionsDisabled(false);
+      const autoEl = document.getElementById("autoBattle");
+      if (autoEl && autoEl.checked) scheduleAutoBattleStep();
+    }
+
+    document.getElementById("start").addEventListener("click", startBattle);
+
+    document.getElementById("autoBattle").addEventListener("change", (e) => {
+      if (!e.target.checked) {
+        clearAutoBattleTimer();
+        return;
+      }
+      if (battleEl.classList.contains("active") && !battleOver) scheduleAutoBattleStep();
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      clearAutoBattleTimer();
+      closeDomainModal();
+      clearFxOverlay();
+      document.body.classList.remove("is-shake");
+      battleEl.classList.remove("active");
+      setupEl.style.display = "block";
+      team1 = [];
+      team2 = [];
+      idx1 = 0;
+      idx2 = 0;
+      p1 = null;
+      p2 = null;
+      synergyP1 = neutralSynergy();
+      synergyP2 = neutralSynergy();
+      renderSynergyHud();
+      renderRosters();
+      updateLabels();
+    });
+
+    document.getElementById("actions").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-act]");
+      if (!btn || battleOver) return;
+      clearAutoBattleTimer();
+      const act = btn.getAttribute("data-act");
+      const d = getDifficulty();
+      let dmg = 0;
+      let msg = "";
+
+      let logVariant = "turn";
+      let raw = 0;
+
+      if (act === "strike") {
+        raw = roll(Math.floor(9 * (p1.atk / 10)), null, d.rollVarPlayer);
+        if (Math.random() < Math.min(0.88, d.playerCritChance + synergyP1.crit)) {
+          raw = Math.floor(raw * 1.5);
+          msg = `<span class="crit">Критический удар!</span> `;
+          logVariant = "crit";
+          triggerScreenShake();
+          triggerFxOverlay("is-crit", 480);
+        }
+        raw = Math.max(1, Math.floor(raw * d.playerDamageMult * synergyP1.strike));
+        dmg = applyTargetArmor(raw, p2);
+        msg += `<span class="turn">Твой ход:</span> ${pick(p1.strikePool)} Урон противнику: ${dmg}${synergyActNote("strike", synergyP1)}.`;
+      } else if (act === "technique") {
+        raw = roll(Math.floor(8 * (p1.tech / 10)), null, d.rollVarPlayer);
+        raw = Math.max(1, Math.floor(raw * d.playerDamageMult * synergyP1.tech));
+        dmg = applyTargetArmor(raw, p2);
+        msg = `<span class="turn">Твой ход:</span> ${pick(p1.techPool)} Урон: ${dmg}${synergyActNote("technique", synergyP1)}.`;
+      } else if (act === "domain") {
+        setActionsDisabled(true);
+        runDomainStepMiniGame(p1, (success) => {
+          setActionsDisabled(false);
+          applyPlayerDomainHit(success);
+        });
+        return;
+      } else if (act === "defend") {
+        defendStreak = 1;
+        msg = `<span class="turn">Твой ход:</span> ${p1.defendLine} Следующий удар врага ослаблен${synergyActNote("defend", synergyP1)}.`;
+        appendLog(msg, "turn");
+        if (!battleOver) enemyTurn();
+        return;
+      }
+
+      hp2 = Math.max(0, hp2 - dmg);
+      appendLog(msg, logVariant);
+      updateHpBars();
+      checkEnd();
+      if (!battleOver) {
+        enemyTurn();
+      }
+    });
+
+    document.getElementById("diffRow").addEventListener("click", (e) => {
+      const btn = e.target.closest(".diff-btn");
+      if (!btn) return;
+      const id = btn.getAttribute("data-diff");
+      if (!id || !DIFFICULTY[id]) return;
+      difficultyId = id;
+      document.querySelectorAll(".diff-btn").forEach((b) => b.classList.toggle("is-on", b === btn));
+    });
+
+    renderRosters();
+    updateLabels();
+    renderSynergyHud();
+  </script>
+</body>
+</html>
