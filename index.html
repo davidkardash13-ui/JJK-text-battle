@@ -645,6 +645,111 @@
     #setup.panel--setup {
       padding: 1.45rem clamp(1rem, 2.5vw, 1.5rem) 1.55rem;
     }
+    .roster-filter-bar {
+      margin-bottom: 1.1rem;
+      padding: 0.75rem 0.85rem 0.9rem;
+      border-radius: 12px;
+      border: 1px solid rgba(120, 120, 160, 0.14);
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .roster-filter-bar__row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 0.65rem;
+    }
+    .filter-toggle-btn {
+      font-family: inherit;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.85rem;
+      border-radius: 10px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: linear-gradient(165deg, rgba(30, 40, 55, 0.9), rgba(12, 14, 22, 0.95));
+      color: var(--text);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .filter-toggle-btn:hover {
+      border-color: rgba(56, 189, 248, 0.55);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.12);
+    }
+    .filter-toggle-btn.is-open {
+      border-color: rgba(168, 85, 247, 0.55);
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.2);
+    }
+    .filter-toggle-btn.has-filters::after {
+      content: " ·";
+      color: var(--accent2);
+    }
+    .roster-filter-panel {
+      display: none;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .roster-filter-panel.is-open {
+      display: flex;
+    }
+    .roster-filter-panel__search {
+      width: 100%;
+      max-width: 22rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 0.5rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(10, 10, 18, 0.9);
+      color: var(--text);
+    }
+    .roster-filter-panel__search::placeholder {
+      color: var(--muted);
+    }
+    .filter-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .filter-chip {
+      font-family: inherit;
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(120, 120, 160, 0.35);
+      background: rgba(22, 22, 34, 0.85);
+      color: rgba(240, 238, 245, 0.88);
+      transition: background 0.12s ease, border-color 0.12s ease;
+    }
+    .filter-chip:hover {
+      border-color: rgba(168, 85, 247, 0.45);
+    }
+    .filter-chip.is-on {
+      border-color: rgba(168, 85, 247, 0.65);
+      background: linear-gradient(165deg, rgba(60, 40, 90, 0.45), rgba(18, 18, 28, 0.95));
+      color: #fff;
+    }
+    .filter-clear-btn {
+      font-family: inherit;
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.35rem 0.55rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: transparent;
+      color: var(--muted);
+      align-self: flex-start;
+    }
+    .filter-clear-btn:hover {
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
     .setup-teams {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1449,6 +1554,16 @@
     </header>
 
     <section id="setup" class="panel panel--setup">
+      <div class="roster-filter-bar" id="rosterFilterBar">
+        <div class="roster-filter-bar__row">
+          <button type="button" class="filter-toggle-btn" id="rosterFilterToggle" aria-expanded="false" aria-controls="rosterFilterPanel">Фильтр и поиск</button>
+        </div>
+        <div class="roster-filter-panel" id="rosterFilterPanel" role="region" aria-label="Фильтр ростера">
+          <input type="search" class="roster-filter-panel__search" id="rosterSearchInput" placeholder="Поиск по имени…" autocomplete="off" />
+          <div class="filter-tag-row" id="rosterFilterTags" role="group" aria-label="Категории"></div>
+          <button type="button" class="filter-clear-btn" id="rosterFilterClear">Сбросить фильтр</button>
+        </div>
+      </div>
       <div class="setup-teams">
         <div class="setup-team setup-team--p1">
           <div class="setup-team__head">Команда 1<span>ты · до 3</span></div>
@@ -1526,7 +1641,7 @@
 
   <script>
     /** Увеличивай при каждом значимом изменении (одна точка правды для UI). */
-    const APP_VERSION = "1.2.1";
+    const APP_VERSION = "1.2.2";
 
     function pick(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
@@ -2598,7 +2713,7 @@
       {
         id: "naoya",
         name: "Naoya Zenin",
-        emoji: "🎞️",
+        emoji: "📽️",
         hp: 108,
         atk: 17,
         tech: 16,
@@ -2659,6 +2774,90 @@
         defendLine: "Прыжок с линии следов — удар шикигами не находит якоря.",
       },
       {
+        id: "dhruv",
+        name: "Dhruv Lakdawala",
+        emoji: "🔵",
+        hp: 100,
+        atk: 11,
+        tech: 16,
+        def: 10,
+        strikePool: [
+          "Ближний выпад с плотным слоем CE — расчётливый удар колониста.",
+          "Давление дистанции: ты задаёшь ритм, противник попадает в ловушку темпа.",
+        ],
+        techPool: [
+          "«Демон Лапласа» (Laplace's Demon) — вероятность и исход подстраиваются под твой расчёт.",
+          "Навигация по «карте» боя: следующий удар приходит туда, где цель окажется слабее.",
+          "Сгусток CE с предсказанием траектории — попадание в разрыв защиты.",
+        ],
+        domainHit: "Поле смыкается в «замкнутую модель» — каждый ход ведёт к худшему для врага исходу, как под давлением домена.",
+        domainMiss: "Модель рвётся на шуме — остаётся точечный расчётный удар без полного контура DE.",
+        defendLine: "Сдвиг по вероятности — удар проходит мимо выбранной точки контакта.",
+      },
+      {
+        id: "reggie",
+        name: "Reggie Star",
+        emoji: "🏷️",
+        hp: 102,
+        atk: 12,
+        tech: 17,
+        def: 9,
+        strikePool: [
+          "Контрактный таран: плечом и кулаком после «подписи» сделки CE.",
+          "Бумажный залп — край квитанции режет воздух как импровизированный клинок.",
+        ],
+        techPool: [
+          "«Контракт» (Contract) — чек и обязательство материализуют урон, пока условие выполнено.",
+          "Накопленные квитанции сыплются потоком: каждый лист — отложенный удар CE.",
+          "Финальный пункт договора — один мощный залп по «задолженности» противника.",
+        ],
+        domainHit: "Расширение домена: «100 возможных решений» — правила сделки переписывают поле боя; каждый пункт давит на цель.",
+        domainMiss: "Договор не скрепляется печатью — остаётся слабый залп бумаги и CE.",
+        defendLine: "«Расторжение» — квитанция гасит входящий удар как оплату долга.",
+      },
+      {
+        id: "iori_hazenoki",
+        name: "Iori Hazenoki",
+        emoji: "💣",
+        hp: 98,
+        atk: 13,
+        tech: 15,
+        def: 9,
+        strikePool: [
+          "Удар после отрыва — взрывная волна срывает баланс противника.",
+          "Ближний хват: ты тянешь цель в зону детонации CE.",
+        ],
+        techPool: [
+          "«Взрывные зрачки» — снаряды CE вылетают из глаз, детонация на дистанции.",
+          "Серия мини-зарядов: поле превращается в линию огней.",
+          "Финальный заряд — один тяжёлый взрыв, ломающий стойку.",
+        ],
+        domainHit: "Цепь детонаций замыкает периметр — каждый метр арены под взрывным законом, как в расширении домена.",
+        domainMiss: "Заряд не взводится вовремя — остаётся осколок CE и дым.",
+        defendLine: "Контролируемый подрыв в пустоту — удар противника уходит в эпицентр без тебя.",
+      },
+      {
+        id: "naoya_cs",
+        name: "Naoya Zenin (Cursed Spirit)",
+        emoji: "🎞️",
+        hp: 118,
+        atk: 18,
+        tech: 18,
+        def: 12,
+        strikePool: [
+          "Форма проклятого духа: «проекция» в черве — рывок, который не укладывается в кадры.",
+          "Тело-лезвие — таран с искажением траектории между кадрами плёнки.",
+        ],
+        techPool: [
+          "Ускорение за пределы кадра — противник видит тебя уже после удара.",
+          "«Временная клетка» в сжатом виде: нити CE режут пространство между фазами.",
+          "Финальный кадр — накопленный импульс в одной точке, как удар домена.",
+        ],
+        domainHit: "Расширение домена: «Временная клетка лунного дворца» — в форме духа плёнка смыкается без щелей; движение жертвы ломается законом кадра.",
+        domainMiss: "Плёнка рвётся на переходе форм — остаётся один мощный кадр без полного DE.",
+        defendLine: "Сдвиг фазы — удар проходит по пустому кадру, ты уже в другой плоскости.",
+      },
+      {
         id: "modulo_yuji",
         boss: true,
         name: "(БОСС) Modulo Yuji",
@@ -2681,6 +2880,84 @@
         defendLine: "Сдвиг фазы на единицу — входящий удар попадает в «пустой» остаток.",
       },
     ];
+
+    /** Категории для фильтра ростера (id → подпись). Персонаж может иметь несколько тегов. */
+    const ROSTER_TAG_DEFS = [
+      { id: "migration", label: "Смертельная миграция" },
+      { id: "curse", label: "Проклятия" },
+      { id: "sorcerer", label: "Маги" },
+      { id: "zenin", label: "Клан Зенин" },
+    ];
+
+    const CHAR_TAGS_BY_ID = {
+      yuta: ["sorcerer"],
+      yuji: ["sorcerer", "migration"],
+      choso: ["curse", "sorcerer", "migration"],
+      ryu: ["sorcerer", "migration"],
+      sukuna: ["curse", "sorcerer"],
+      heian_sukuna: ["curse"],
+      gojo: ["sorcerer"],
+      megumi: ["sorcerer", "migration"],
+      mechamaru: ["sorcerer"],
+      takaba: ["sorcerer", "migration"],
+      todo: ["sorcerer", "migration"],
+      kashimo: ["sorcerer", "migration"],
+      hakari: ["sorcerer", "migration"],
+      higuruma: ["sorcerer", "migration"],
+      nobara: ["sorcerer"],
+      mahoraga: ["curse"],
+      toji: ["sorcerer", "zenin"],
+      nanami: ["sorcerer"],
+      toge: ["sorcerer"],
+      maki: ["sorcerer", "zenin"],
+      panda: ["sorcerer"],
+      jogo: ["curse"],
+      mahito: ["curse"],
+      geto: ["sorcerer"],
+      yuki: ["sorcerer"],
+      kenjaku: ["sorcerer"],
+      uro: ["sorcerer", "migration"],
+      uraume: ["sorcerer"],
+      kurourushi: ["curse"],
+      locust_guy: ["curse"],
+      mei_mei: ["sorcerer"],
+      mai_zenin: ["sorcerer", "zenin"],
+      miwa: ["sorcerer"],
+      kamo: ["sorcerer"],
+      momo: ["sorcerer"],
+      hanami: ["curse"],
+      naoya: ["sorcerer", "zenin"],
+      shigemo: ["sorcerer", "migration"],
+      dabura: ["sorcerer"],
+      dhruv: ["sorcerer", "migration"],
+      reggie: ["sorcerer", "migration"],
+      iori_hazenoki: ["sorcerer", "migration"],
+      naoya_cs: ["curse", "zenin"],
+      modulo_yuji: ["sorcerer"],
+    };
+
+    let rosterActiveTagIds = new Set();
+    let rosterSearchNorm = "";
+
+    function charMatchesRosterFilter(c) {
+      if (c.boss) return false;
+      if (team1Pick.includes(c.id) || team2Pick.includes(c.id)) return true;
+      if (rosterSearchNorm) {
+        const hay = `${c.name} ${c.emoji || ""}`.toLowerCase();
+        if (!hay.includes(rosterSearchNorm)) return false;
+      }
+      if (!rosterActiveTagIds.size) return true;
+      const tags = CHAR_TAGS_BY_ID[c.id];
+      if (!tags || !tags.length) return false;
+      return tags.some((t) => rosterActiveTagIds.has(t));
+    }
+
+    function updateFilterToggleAppearance() {
+      const btn = document.getElementById("rosterFilterToggle");
+      if (!btn) return;
+      const active = rosterActiveTagIds.size > 0 || rosterSearchNorm.length > 0;
+      btn.classList.toggle("has-filters", active);
+    }
 
     function dmStep(t, ok, w1, w2) {
       return { t, o: [[ok, true], [w1, false], [w2, false]] };
@@ -2935,6 +3212,30 @@
         "Кадры плёнки и CE закрывают объём без пропусков",
         "Один кадр в секунду",
         "Плёнка без проявителя",
+      ),
+      naoya_cs: dmStep(
+        "В форме духа «Временная клетка» смыкается, когда:",
+        "Кадры и червеобразная фаза закрывают объём без разрывов",
+        "Ты движешься только прямо",
+        "CE отключена полностью",
+      ),
+      dhruv: dmStep(
+        "«Модель Лапласа» как давление поля держится на:",
+        "Сведённых исходах и якоре CE без шума в расчёте",
+        "Случайных числах без связи с полем",
+        "Одном ударе без подготовки",
+      ),
+      reggie: dmStep(
+        "Договор Reggie на площадь сходится, если:",
+        "Пункты контракта и CE связаны с контуром без дыр",
+        "Бумага без печати",
+        "Только крик без CE",
+      ),
+      iori_hazenoki: dmStep(
+        "Цепь детонаций Иори замыкается, когда:",
+        "Заряды и CE держат периметр без осечки",
+        "Один глаз закрыт",
+        "Взрыв без CE",
       ),
       shigemo: dmStep(
         "Цепь чудес Сигэмо как домен работает, когда:",
@@ -3250,7 +3551,7 @@
       roster1.innerHTML = "";
       roster2.innerHTML = "";
       const marks = ["①", "②", "③"];
-      CHARS.filter((c) => !c.boss).forEach((c) => {
+      CHARS.filter(charMatchesRosterFilter).forEach((c) => {
         const i1 = team1Pick.indexOf(c.id);
         const i2 = team2Pick.indexOf(c.id);
 
@@ -3823,6 +4124,56 @@
       difficultyId = id;
       document.querySelectorAll(".diff-btn").forEach((b) => b.classList.toggle("is-on", b === btn));
     });
+
+    (function initRosterFilterUi() {
+      const row = document.getElementById("rosterFilterTags");
+      const toggle = document.getElementById("rosterFilterToggle");
+      const panel = document.getElementById("rosterFilterPanel");
+      const search = document.getElementById("rosterSearchInput");
+      const clearBtn = document.getElementById("rosterFilterClear");
+      if (!row || row.dataset.built) return;
+      row.dataset.built = "1";
+      ROSTER_TAG_DEFS.forEach((def) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "filter-chip";
+        b.textContent = def.label;
+        b.dataset.tag = def.id;
+        b.addEventListener("click", () => {
+          if (rosterActiveTagIds.has(def.id)) rosterActiveTagIds.delete(def.id);
+          else rosterActiveTagIds.add(def.id);
+          b.classList.toggle("is-on", rosterActiveTagIds.has(def.id));
+          updateFilterToggleAppearance();
+          renderRosters();
+        });
+        row.appendChild(b);
+      });
+      if (toggle && panel) {
+        toggle.addEventListener("click", () => {
+          const open = !panel.classList.contains("is-open");
+          panel.classList.toggle("is-open", open);
+          toggle.classList.toggle("is-open", open);
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+      }
+      if (search) {
+        search.addEventListener("input", (e) => {
+          rosterSearchNorm = (e.target.value || "").trim().toLowerCase();
+          updateFilterToggleAppearance();
+          renderRosters();
+        });
+      }
+      if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+          rosterActiveTagIds.clear();
+          rosterSearchNorm = "";
+          if (search) search.value = "";
+          row.querySelectorAll(".filter-chip").forEach((c) => c.classList.remove("is-on"));
+          updateFilterToggleAppearance();
+          renderRosters();
+        });
+      }
+    })();
 
     renderRosters();
     updateLabels();
