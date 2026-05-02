@@ -304,222 +304,6 @@
       opacity: 0.45;
       cursor: default;
     }
-    .maho-cutscene {
-      position: fixed;
-      inset: 0;
-      z-index: 165;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem 1rem;
-      background: radial-gradient(ellipse 90% 70% at 50% 40%, rgba(30, 15, 45, 0.97), rgba(2, 2, 10, 0.96));
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-    .maho-cutscene.is-open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .maho-cutscene__inner {
-      max-width: 28rem;
-      width: 100%;
-      text-align: center;
-    }
-    .maho-cutscene__wheel {
-      font-size: clamp(2.8rem, 10vw, 4.2rem);
-      line-height: 1;
-      margin: 0 auto 1.35rem;
-      display: block;
-      width: fit-content;
-      animation: mahoWheelSpin 3.2s linear infinite;
-      filter: drop-shadow(0 0 18px rgba(251, 191, 36, 0.5)) drop-shadow(0 0 28px rgba(168, 85, 247, 0.35));
-      user-select: none;
-    }
-    @keyframes mahoWheelSpin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    .maho-cutscene__text {
-      font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 0.82rem;
-      line-height: 1.65;
-      color: rgba(245, 240, 255, 0.92);
-      text-align: left;
-      min-height: 6rem;
-      margin-bottom: 1.25rem;
-    }
-    .maho-cutscene__line {
-      margin: 0 0 0.65rem;
-      padding: 0.35rem 0;
-      border-left: 2px solid rgba(251, 191, 36, 0.45);
-      padding-left: 0.75rem;
-      animation: mahoLineIn 0.45s var(--ease-out) both;
-    }
-    @keyframes mahoLineIn {
-      from {
-        opacity: 0;
-        transform: translateX(-8px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    .maho-cutscene__btn {
-      font-family: inherit;
-      font-weight: 700;
-      font-size: 0.88rem;
-      cursor: pointer;
-      padding: 0.65rem 1.4rem;
-      border-radius: 10px;
-      border: 1px solid rgba(251, 191, 36, 0.55);
-      background: linear-gradient(165deg, rgba(80, 50, 30, 0.5), rgba(18, 14, 28, 0.95));
-      color: #fef3c7;
-      box-shadow: 0 0 24px rgba(251, 191, 36, 0.15);
-      transition: transform 0.15s, border-color 0.15s, box-shadow 0.2s;
-    }
-    .maho-cutscene__btn:hover {
-      border-color: rgba(253, 224, 71, 0.85);
-      box-shadow: 0 0 28px rgba(251, 191, 36, 0.28);
-      transform: translateY(-1px);
-    }
-    .heian-cutscene {
-      position: fixed;
-      inset: 0;
-      z-index: 165;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem 1rem;
-      background: radial-gradient(ellipse 90% 70% at 50% 38%, rgba(50, 8, 18, 0.97), rgba(4, 2, 8, 0.97));
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-    .heian-cutscene.is-open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .heian-cutscene__inner {
-      max-width: 28rem;
-      width: 100%;
-      text-align: center;
-    }
-    .heian-cutscene__torii {
-      font-size: clamp(2.8rem, 10vw, 4.2rem);
-      line-height: 1;
-      margin: 0 auto 1.35rem;
-      display: block;
-      width: fit-content;
-      animation: mahoWheelSpin 3.2s linear infinite;
-      filter: drop-shadow(0 0 20px rgba(225, 29, 72, 0.55)) drop-shadow(0 0 32px rgba(127, 29, 29, 0.45));
-      user-select: none;
-    }
-    .heian-cutscene__text {
-      font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 0.82rem;
-      line-height: 1.65;
-      color: rgba(255, 245, 248, 0.93);
-      text-align: left;
-      min-height: 6rem;
-      margin-bottom: 1.25rem;
-    }
-    .heian-cutscene__line {
-      margin: 0 0 0.65rem;
-      padding: 0.35rem 0;
-      border-left: 2px solid rgba(225, 29, 72, 0.55);
-      padding-left: 0.75rem;
-      animation: mahoLineIn 0.45s var(--ease-out) both;
-    }
-    .heian-cutscene__btn {
-      font-family: inherit;
-      font-weight: 700;
-      font-size: 0.88rem;
-      cursor: pointer;
-      padding: 0.65rem 1.4rem;
-      border-radius: 10px;
-      border: 1px solid rgba(225, 29, 72, 0.55);
-      background: linear-gradient(165deg, rgba(70, 15, 28, 0.65), rgba(14, 8, 12, 0.96));
-      color: #fecdd3;
-      box-shadow: 0 0 24px rgba(225, 29, 72, 0.2);
-      transition: transform 0.15s, border-color 0.15s, box-shadow 0.2s;
-    }
-    .heian-cutscene__btn:hover {
-      border-color: rgba(251, 113, 133, 0.85);
-      box-shadow: 0 0 28px rgba(225, 29, 72, 0.32);
-      transform: translateY(-1px);
-    }
-    .modulo-cutscene {
-      position: fixed;
-      inset: 0;
-      z-index: 165;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem 1rem;
-      background: radial-gradient(ellipse 88% 72% at 50% 42%, rgba(12, 18, 40, 0.98), rgba(2, 4, 14, 0.98));
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-    .modulo-cutscene.is-open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modulo-cutscene__inner {
-      max-width: 28rem;
-      width: 100%;
-      text-align: center;
-    }
-    .modulo-cutscene__eye {
-      font-size: clamp(2.8rem, 10vw, 4.2rem);
-      line-height: 1;
-      margin: 0 auto 1.35rem;
-      display: block;
-      width: fit-content;
-      animation: moduloEyePulse 2.4s ease-in-out infinite;
-      filter: drop-shadow(0 0 22px rgba(56, 189, 248, 0.45)) drop-shadow(0 0 36px rgba(168, 85, 247, 0.4));
-      user-select: none;
-    }
-    @keyframes moduloEyePulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.07); opacity: 0.9; }
-    }
-    .modulo-cutscene__text {
-      font-family: "JetBrains Mono", ui-monospace, monospace;
-      font-size: 0.82rem;
-      line-height: 1.65;
-      color: rgba(236, 242, 255, 0.94);
-      text-align: left;
-      min-height: 6rem;
-      margin-bottom: 1.25rem;
-    }
-    .modulo-cutscene__line {
-      margin: 0 0 0.65rem;
-      padding: 0.35rem 0;
-      border-left: 2px solid rgba(56, 189, 248, 0.5);
-      padding-left: 0.75rem;
-      animation: mahoLineIn 0.45s var(--ease-out) both;
-    }
-    .modulo-cutscene__btn {
-      font-family: inherit;
-      font-weight: 700;
-      font-size: 0.88rem;
-      cursor: pointer;
-      padding: 0.65rem 1.4rem;
-      border-radius: 10px;
-      border: 1px solid rgba(56, 189, 248, 0.55);
-      background: linear-gradient(165deg, rgba(25, 45, 85, 0.55), rgba(10, 12, 28, 0.96));
-      color: #e0f2fe;
-      box-shadow: 0 0 24px rgba(56, 189, 248, 0.18);
-      transition: transform 0.15s, border-color 0.15s, box-shadow 0.2s;
-    }
-    .modulo-cutscene__btn:hover {
-      border-color: rgba(125, 211, 252, 0.9);
-      box-shadow: 0 0 28px rgba(56, 189, 248, 0.32);
-      transform: translateY(-1px);
-    }
     .char-btn.char-btn--elite {
       border-color: rgba(244, 63, 94, 0.42);
       background: linear-gradient(155deg, rgba(52, 18, 32, 0.75), rgba(14, 8, 18, 0.97));
@@ -1829,9 +1613,6 @@
       .start-btn { animation: none; }
       .start-btn::before { animation: none; }
       h1 { animation: none; background-position: center; }
-      .maho-cutscene__wheel { animation: none; }
-      .heian-cutscene__torii { animation: none; }
-      .modulo-cutscene__eye { animation: none; }
       .fighters__vs span { animation: none; }
       .vs-badge { animation: none; }
     }
@@ -1852,27 +1633,6 @@
   <div class="fx-overlay" id="fxOverlay" aria-hidden="true"></div>
   <div class="domain-modal" id="domainModal" aria-hidden="true">
     <div class="domain-modal__panel" id="domainModalBody" role="dialog" aria-modal="true" aria-labelledby="domainModalTitle"></div>
-  </div>
-  <div class="maho-cutscene" id="mahoCutscene" aria-hidden="true">
-    <div class="maho-cutscene__inner">
-      <div class="maho-cutscene__wheel" aria-hidden="true">☸</div>
-      <div class="maho-cutscene__text" id="mahoCutsceneText"></div>
-      <button type="button" class="maho-cutscene__btn" id="mahoCutsceneBtn" hidden>Продолжить бой</button>
-    </div>
-  </div>
-  <div class="heian-cutscene" id="heianCutscene" aria-hidden="true">
-    <div class="heian-cutscene__inner">
-      <div class="heian-cutscene__torii" aria-hidden="true">⛩</div>
-      <div class="heian-cutscene__text" id="heianCutsceneText"></div>
-      <button type="button" class="heian-cutscene__btn" id="heianCutsceneBtn" hidden>Продолжить бой</button>
-    </div>
-  </div>
-  <div class="modulo-cutscene" id="moduloCutscene" aria-hidden="true">
-    <div class="modulo-cutscene__inner">
-      <div class="modulo-cutscene__eye" aria-hidden="true">👁</div>
-      <div class="modulo-cutscene__text" id="moduloCutsceneText"></div>
-      <button type="button" class="modulo-cutscene__btn" id="moduloCutsceneBtn" hidden>Продолжить бой</button>
-    </div>
   </div>
 
   <div class="wrap">
@@ -1973,7 +1733,7 @@
 
   <script>
     /** Увеличивай при каждом значимом изменении (одна точка правды для UI). */
-    const APP_VERSION = "1.10.0";
+    const APP_VERSION = "1.11.0";
 
     function pick(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
@@ -4064,9 +3824,6 @@
     let prevHp1 = 0;
     let prevHp2 = 0;
     let autoBattleTimer = null;
-    let mahoCutsceneTimers = [];
-    let heianCutsceneTimers = [];
-    let moduloCutsceneTimers = [];
 
     function updateBattleBenchs() {
       const el1 = document.getElementById("bench1");
@@ -4650,204 +4407,6 @@
       document.querySelectorAll(".act-btn").forEach((b) => { b.disabled = dis; });
     }
 
-    function closeMahoragaCutscene() {
-      mahoCutsceneTimers.forEach((tid) => clearTimeout(tid));
-      mahoCutsceneTimers = [];
-      const el = document.getElementById("mahoCutscene");
-      const textEl = document.getElementById("mahoCutsceneText");
-      const btn = document.getElementById("mahoCutsceneBtn");
-      if (el) {
-        el.classList.remove("is-open");
-        el.setAttribute("aria-hidden", "true");
-      }
-      if (textEl) textEl.innerHTML = "";
-      if (btn) {
-        btn.hidden = true;
-        btn.onclick = null;
-      }
-    }
-
-    function closeHeianCutscene() {
-      heianCutsceneTimers.forEach((tid) => clearTimeout(tid));
-      heianCutsceneTimers = [];
-      const el = document.getElementById("heianCutscene");
-      const textEl = document.getElementById("heianCutsceneText");
-      const btn = document.getElementById("heianCutsceneBtn");
-      if (el) {
-        el.classList.remove("is-open");
-        el.setAttribute("aria-hidden", "true");
-      }
-      if (textEl) textEl.innerHTML = "";
-      if (btn) {
-        btn.hidden = true;
-        btn.onclick = null;
-      }
-    }
-
-    function closeModuloCutscene() {
-      moduloCutsceneTimers.forEach((tid) => clearTimeout(tid));
-      moduloCutsceneTimers = [];
-      const el = document.getElementById("moduloCutscene");
-      const textEl = document.getElementById("moduloCutsceneText");
-      const btn = document.getElementById("moduloCutsceneBtn");
-      if (el) {
-        el.classList.remove("is-open");
-        el.setAttribute("aria-hidden", "true");
-      }
-      if (textEl) textEl.innerHTML = "";
-      if (btn) {
-        btn.hidden = true;
-        btn.onclick = null;
-      }
-    }
-
-    function showHeianCutscene(onDone, skipReenableActions) {
-      const el = document.getElementById("heianCutscene");
-      const textEl = document.getElementById("heianCutsceneText");
-      const btn = document.getElementById("heianCutsceneBtn");
-      if (!el || !textEl || !btn) {
-        onDone();
-        return;
-      }
-      closeHeianCutscene();
-      const lines = [
-        "Воздух сухой — как в старой столице. Ты ещё не сделал ход, а CE уже пахнет кровью и ладаном.",
-        "Это не «тот же Сукуна в другой одежде». Эпоха Хэйан не спрашивала разрешения — она просто забирала поле.",
-        "Четыре руки, взгляд без скидки: «Святилище» здесь не театр, а приговор, вырезанный в пространстве.",
-        "Ворота ⛩ в голове скрипят от натяжения. Следующий кадр — уже бой: кто первым нарушит тишину.",
-      ];
-      textEl.innerHTML = "";
-      btn.hidden = true;
-      el.classList.add("is-open");
-      el.setAttribute("aria-hidden", "false");
-      setActionsDisabled(true);
-      let i = 0;
-      function tick() {
-        if (i >= lines.length) {
-          btn.hidden = false;
-          return;
-        }
-        const p = document.createElement("p");
-        p.className = "heian-cutscene__line";
-        p.textContent = lines[i];
-        textEl.appendChild(p);
-        i += 1;
-        if (i < lines.length) {
-          heianCutsceneTimers.push(setTimeout(tick, 560));
-        } else {
-          heianCutsceneTimers.push(
-            setTimeout(() => {
-              btn.hidden = false;
-            }, 280),
-          );
-        }
-      }
-      tick();
-      btn.onclick = () => {
-        closeHeianCutscene();
-        if (!skipReenableActions) setActionsDisabled(false);
-        onDone();
-      };
-    }
-
-    function showMahoragaCutscene(onDone, skipReenableActions) {
-      const el = document.getElementById("mahoCutscene");
-      const textEl = document.getElementById("mahoCutsceneText");
-      const btn = document.getElementById("mahoCutsceneBtn");
-      if (!el || !textEl || !btn) {
-        onDone();
-        return;
-      }
-      closeMahoragaCutscene();
-      const lines = [
-        "Тень на земле тянется слишком длинной — будто кто-то вычертил круг до того, как разрешили начать.",
-        "«Восьмидужный меч расходящегося сияния — божественный генерал Махорага». Имя само по себе не бьёт. Бьёт тишина сразу после.",
-        "На спине — колесо. Один полный оборот — и удар уже не по старым правилам. Адаптация не спорит: она перевешивает чашу.",
-        "Поле боя ещё пустое для клинка — но уже чужое: будто закон схватки переписали, не спросив ни тебя, ни врага.",
-      ];
-      textEl.innerHTML = "";
-      btn.hidden = true;
-      el.classList.add("is-open");
-      el.setAttribute("aria-hidden", "false");
-      setActionsDisabled(true);
-      let i = 0;
-      function tick() {
-        if (i >= lines.length) {
-          btn.hidden = false;
-          return;
-        }
-        const p = document.createElement("p");
-        p.className = "maho-cutscene__line";
-        p.textContent = lines[i];
-        textEl.appendChild(p);
-        i += 1;
-        if (i < lines.length) {
-          mahoCutsceneTimers.push(setTimeout(tick, 560));
-        } else {
-          mahoCutsceneTimers.push(
-            setTimeout(() => {
-              btn.hidden = false;
-            }, 280),
-          );
-        }
-      }
-      tick();
-      btn.onclick = () => {
-        closeMahoragaCutscene();
-        if (!skipReenableActions) setActionsDisabled(false);
-        onDone();
-      };
-    }
-
-    function showModuloCutscene(onDone, skipReenableActions) {
-      const el = document.getElementById("moduloCutscene");
-      const textEl = document.getElementById("moduloCutsceneText");
-      const btn = document.getElementById("moduloCutsceneBtn");
-      if (!el || !textEl || !btn) {
-        onDone();
-        return;
-      }
-      closeModuloCutscene();
-      const lines = [
-        "Ты слышишь не шаги — отсчёт. Как будто бой уже идёт в другой системе координат, а ты всё ещё переводишь удары в привычные секунды.",
-        "«Modulo Yuji»: тот же силуэт, но фаза CE не совпадает с твоей. Чёрная вспышка здесь не случайность — она приходит на остаток такта, который ты не видишь.",
-        "Глаз 👁 в поле — не украшение. Он вычитает лишнее: твой ритм, твой следующий выдох, твою «очевидную» защиту.",
-        "Расширение домена не спрашивает, целое ли у тебя число ударов. Оно берёт остаток — и превращает его в закон. Следующий такт — уже не твой отсчёт.",
-      ];
-      textEl.innerHTML = "";
-      btn.hidden = true;
-      el.classList.add("is-open");
-      el.setAttribute("aria-hidden", "false");
-      setActionsDisabled(true);
-      let i = 0;
-      function tick() {
-        if (i >= lines.length) {
-          btn.hidden = false;
-          return;
-        }
-        const p = document.createElement("p");
-        p.className = "modulo-cutscene__line";
-        p.textContent = lines[i];
-        textEl.appendChild(p);
-        i += 1;
-        if (i < lines.length) {
-          moduloCutsceneTimers.push(setTimeout(tick, 560));
-        } else {
-          moduloCutsceneTimers.push(
-            setTimeout(() => {
-              btn.hidden = false;
-            }, 280),
-          );
-        }
-      }
-      tick();
-      btn.onclick = () => {
-        closeModuloCutscene();
-        if (!skipReenableActions) setActionsDisabled(false);
-        onDone();
-      };
-    }
-
     function startBattle() {
       if (team1Pick.length < 1 || team2Pick.length < 1) return;
       team1 = team1Pick.map((id) => CHARS.find((x) => x.id === id)).filter(Boolean);
@@ -4876,12 +4435,6 @@
       setFighterCharAttrs();
       logEl.innerHTML = "";
 
-      const hasMahoraga = team1Pick.includes("mahoraga") || team2Pick.includes("mahoraga");
-      const hasHeianSukuna =
-        team1Pick.includes("heian_sukuna") || team2Pick.includes("heian_sukuna");
-      const hasModuloYuji =
-        team1Pick.includes("modulo_yuji") || team2Pick.includes("modulo_yuji");
-
       function beginBattleLogsAndUi() {
         appendLog(
           `Командный бой: <strong>${formatTeamListHtml(team1)}</strong> против <strong class="red">${formatTeamListHtml(team2)}</strong>. Сложность: <strong>${d.label}</strong> (HP активного врага ${max2}).`,
@@ -4908,31 +4461,7 @@
         if (autoEl && autoEl.checked) scheduleAutoBattleStep();
       }
 
-      if (hasMahoraga && hasHeianSukuna && hasModuloYuji) {
-        setActionsDisabled(true);
-        showMahoragaCutscene(
-          () =>
-            showHeianCutscene(() => showModuloCutscene(beginBattleLogsAndUi, true), true),
-          true,
-        );
-      } else if (hasMahoraga && hasHeianSukuna) {
-        setActionsDisabled(true);
-        showMahoragaCutscene(() => showHeianCutscene(beginBattleLogsAndUi), true);
-      } else if (hasMahoraga && hasModuloYuji) {
-        setActionsDisabled(true);
-        showMahoragaCutscene(() => showModuloCutscene(beginBattleLogsAndUi, true), true);
-      } else if (hasHeianSukuna && hasModuloYuji) {
-        setActionsDisabled(true);
-        showHeianCutscene(() => showModuloCutscene(beginBattleLogsAndUi, true), true);
-      } else if (hasMahoraga) {
-        showMahoragaCutscene(beginBattleLogsAndUi);
-      } else if (hasHeianSukuna) {
-        showHeianCutscene(beginBattleLogsAndUi);
-      } else if (hasModuloYuji) {
-        showModuloCutscene(beginBattleLogsAndUi);
-      } else {
-        beginBattleLogsAndUi();
-      }
+      beginBattleLogsAndUi();
     }
 
     document.getElementById("start").addEventListener("click", startBattle);
@@ -4947,9 +4476,6 @@
 
     document.getElementById("reset").addEventListener("click", () => {
       clearAutoBattleTimer();
-      closeMahoragaCutscene();
-      closeHeianCutscene();
-      closeModuloCutscene();
       setActionsDisabled(false);
       closeDomainModal();
       clearFxOverlay();
