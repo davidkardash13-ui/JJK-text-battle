@@ -9,33 +9,47 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #06060a;
-      --panel: rgba(16, 16, 24, 0.72);
-      --panel-solid: #101018;
-      --border: rgba(120, 120, 160, 0.18);
-      --border-bright: rgba(180, 190, 255, 0.35);
-      --text: #f0eef5;
-      --muted: #8b8898;
-      --accent: #e11d48;
-      --accent-glow: rgba(225, 29, 72, 0.45);
-      --accent2: #38bdf8;
-      --accent2-glow: rgba(56, 189, 248, 0.4);
-      --curse: #a855f7;
-      --curse-glow: rgba(168, 85, 247, 0.35);
+      --bg: #030308;
+      --bg-mid: #0a0a12;
+      --panel: rgba(14, 14, 22, 0.78);
+      --panel-solid: #0e0e16;
+      --border: rgba(130, 130, 175, 0.22);
+      --border-bright: rgba(190, 200, 255, 0.42);
+      --text: #f4f2f8;
+      --muted: #9a97a8;
+      --accent: #f43f5e;
+      --accent-glow: rgba(244, 63, 94, 0.5);
+      --accent2: #22d3ee;
+      --accent2-glow: rgba(34, 211, 238, 0.45);
+      --curse: #c084fc;
+      --curse-glow: rgba(192, 132, 252, 0.42);
       --win: #4ade80;
       --gold: #fbbf24;
+      --glass-top: rgba(255, 255, 255, 0.09);
+      --glass-edge: rgba(255, 255, 255, 0.04);
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --radius-panel: 18px;
+      --shadow-elev: 0 24px 64px -20px rgba(0, 0, 0, 0.75);
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
     body {
       margin: 0;
       min-height: 100vh;
       font-family: "Outfit", system-ui, sans-serif;
-      background: var(--bg);
+      background: radial-gradient(ellipse 120% 80% at 50% -20%, var(--bg-mid) 0%, var(--bg) 55%);
       color: var(--text);
       position: relative;
       overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection {
+      background: rgba(168, 85, 247, 0.35);
+      color: #fff;
     }
     .ambient {
       position: fixed;
@@ -71,13 +85,57 @@
     .ambient__orb--3 {
       width: min(50vw, 320px);
       height: min(50vw, 320px);
-      background: radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.38) 0%, transparent 65%);
       top: 40%;
       left: 50%;
       transform: translateX(-50%);
       animation-delay: -12s;
       animation-duration: 25s;
-      opacity: 0.4;
+      opacity: 0.45;
+    }
+    .ambient__orb--4 {
+      width: min(60vw, 380px);
+      height: min(60vw, 380px);
+      background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, transparent 62%);
+      bottom: 5%;
+      left: 50%;
+      transform: translateX(-50%);
+      animation-delay: -8s;
+      animation-duration: 28s;
+      opacity: 0.5;
+      filter: blur(72px);
+    }
+    .ambient__mesh {
+      position: absolute;
+      inset: -30%;
+      opacity: 0.35;
+      background:
+        conic-gradient(from 120deg at 30% 40%, rgba(56, 189, 248, 0.08), transparent 40%, rgba(168, 85, 247, 0.07), transparent 75%, rgba(225, 29, 72, 0.06));
+      animation: meshSpin 48s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes meshSpin {
+      to { transform: rotate(360deg); }
+    }
+    .ambient__sparkles {
+      position: absolute;
+      inset: 0;
+      opacity: 0.22;
+      background-image:
+        radial-gradient(1.2px 1.2px at 12% 18%, rgba(255, 255, 255, 0.55), transparent),
+        radial-gradient(1px 1px at 88% 42%, rgba(200, 220, 255, 0.4), transparent),
+        radial-gradient(1px 1px at 35% 72%, rgba(255, 255, 255, 0.35), transparent),
+        radial-gradient(1.2px 1.2px at 62% 28%, rgba(168, 85, 247, 0.45), transparent),
+        radial-gradient(1px 1px at 78% 85%, rgba(56, 189, 248, 0.4), transparent),
+        radial-gradient(1px 1px at 22% 55%, rgba(255, 255, 255, 0.3), transparent);
+      background-size: 100% 100%;
+      animation: sparkleDrift 22s ease-in-out infinite;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    @keyframes sparkleDrift {
+      0%, 100% { opacity: 0.18; transform: translate(0, 0) scale(1); }
+      50% { opacity: 0.28; transform: translate(-1.5%, 1%) scale(1.02); }
     }
     .ambient__grid {
       position: absolute;
@@ -86,8 +144,8 @@
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
       background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
-      opacity: 0.5;
+      mask-image: radial-gradient(ellipse 75% 65% at 50% 38%, black 18%, transparent 78%);
+      opacity: 0.42;
     }
     .ambient__vignette {
       position: absolute;
@@ -116,41 +174,55 @@
       z-index: 50;
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.12s ease-out;
+      transition: opacity 0.1s ease-out;
+      mix-blend-mode: screen;
     }
     .fx-overlay.is-crit {
       opacity: 1;
-      background: radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.25) 0%, transparent 55%);
-      animation: fxCritPulse 0.45s ease-out forwards;
+      mix-blend-mode: normal;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(251, 191, 36, 0.55) 0%, transparent 42%),
+        radial-gradient(circle at 30% 60%, rgba(255, 237, 160, 0.2) 0%, transparent 50%),
+        repeating-conic-gradient(from 0deg, transparent 0deg 8deg, rgba(251, 191, 36, 0.04) 8deg 10deg);
+      animation: fxCritPulse 0.52s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
     }
     .fx-overlay.is-domain {
       opacity: 1;
+      mix-blend-mode: screen;
       background:
-        radial-gradient(ellipse 100% 80% at 50% 50%, rgba(168, 85, 247, 0.35) 0%, rgba(225, 29, 72, 0.12) 45%, transparent 70%);
-      animation: fxDomainPulse 0.55s ease-out forwards;
+        radial-gradient(ellipse 110% 85% at 50% 48%, rgba(168, 85, 247, 0.45) 0%, rgba(88, 28, 135, 0.15) 38%, transparent 68%),
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(225, 29, 72, 0.18) 0%, transparent 55%),
+        conic-gradient(from 200deg at 50% 50%, transparent, rgba(192, 132, 252, 0.12), transparent);
+      animation: fxDomainPulse 0.62s var(--ease-out) forwards;
     }
     .fx-overlay.is-hit-p1 {
       opacity: 1;
-      background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.12) 30%, transparent 60%);
-      animation: fxHitFlash 0.35s ease-out forwards;
+      mix-blend-mode: screen;
+      background:
+        linear-gradient(100deg, transparent 0%, rgba(34, 211, 238, 0.35) 28%, rgba(56, 189, 248, 0.12) 45%, transparent 72%),
+        linear-gradient(90deg, rgba(14, 165, 233, 0.08) 0%, transparent 40%);
+      animation: fxHitFlash 0.38s ease-out forwards;
     }
     .fx-overlay.is-hit-p2 {
       opacity: 1;
-      background: linear-gradient(270deg, transparent 0%, rgba(225, 29, 72, 0.14) 35%, transparent 65%);
-      animation: fxHitFlash 0.35s ease-out forwards;
+      mix-blend-mode: screen;
+      background:
+        linear-gradient(260deg, transparent 0%, rgba(244, 63, 94, 0.38) 30%, rgba(225, 29, 72, 0.1) 48%, transparent 70%),
+        linear-gradient(270deg, rgba(190, 18, 60, 0.1) 0%, transparent 42%);
+      animation: fxHitFlash 0.38s ease-out forwards;
     }
     @keyframes fxCritPulse {
-      0% { opacity: 0; }
-      30% { opacity: 1; }
-      100% { opacity: 0; }
+      0% { opacity: 0; filter: brightness(1.4) saturate(1.3); }
+      25% { opacity: 1; filter: brightness(1.15) saturate(1.15); }
+      100% { opacity: 0; filter: brightness(1); }
     }
     @keyframes fxDomainPulse {
-      0% { opacity: 0; transform: scale(1.1); filter: blur(4px); }
-      40% { opacity: 1; filter: blur(0); }
-      100% { opacity: 0; transform: scale(1); }
+      0% { opacity: 0; transform: scale(1.08); filter: blur(6px) saturate(1.4); }
+      35% { opacity: 1; filter: blur(0) saturate(1.2); }
+      100% { opacity: 0; transform: scale(1); filter: blur(0); }
     }
     @keyframes fxHitFlash {
-      0% { opacity: 0.8; }
+      0% { opacity: 0.95; }
       100% { opacity: 0; }
     }
     .domain-modal {
@@ -161,9 +233,9 @@
       align-items: center;
       justify-content: center;
       padding: 1rem;
-      background: rgba(4, 4, 14, 0.88);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: radial-gradient(ellipse 90% 80% at 50% 40%, rgba(20, 10, 40, 0.45), rgba(2, 2, 10, 0.92));
+      backdrop-filter: blur(14px) saturate(1.2);
+      -webkit-backdrop-filter: blur(14px) saturate(1.2);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.22s ease;
@@ -177,11 +249,11 @@
       width: 100%;
       max-height: min(88vh, 32rem);
       overflow-y: auto;
-      padding: 1.2rem 1.15rem 1.25rem;
-      border-radius: 14px;
-      border: 1px solid rgba(168, 85, 247, 0.5);
-      background: linear-gradient(165deg, rgba(38, 22, 58, 0.97), rgba(10, 10, 20, 0.99));
-      box-shadow: 0 0 48px rgba(139, 92, 246, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      padding: 1.25rem 1.2rem 1.3rem;
+      border-radius: 16px;
+      border: 1px solid rgba(192, 132, 252, 0.45);
+      background: linear-gradient(165deg, rgba(42, 26, 68, 0.98), rgba(8, 8, 18, 0.99));
+      box-shadow: 0 0 56px rgba(139, 92, 246, 0.35), 0 24px 64px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
     .domain-modal h3 {
       font-family: "Syne", "Outfit", sans-serif;
@@ -480,9 +552,9 @@
       align-items: center;
       justify-content: center;
       padding: 1rem;
-      background: rgba(3, 3, 10, 0.88);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: radial-gradient(ellipse 100% 90% at 50% 45%, rgba(40, 8, 20, 0.35), rgba(2, 2, 8, 0.94));
+      backdrop-filter: blur(12px) saturate(1.15);
+      -webkit-backdrop-filter: blur(12px) saturate(1.15);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease;
@@ -496,11 +568,11 @@
       max-width: 44rem;
       max-height: min(90vh, 38rem);
       overflow-y: auto;
-      padding: 1.2rem 1.25rem 1.35rem;
-      border-radius: 14px;
-      border: 1px solid rgba(225, 29, 72, 0.45);
-      background: linear-gradient(165deg, rgba(45, 12, 22, 0.96), rgba(12, 10, 18, 0.99));
-      box-shadow: 0 0 40px rgba(225, 29, 72, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      padding: 1.3rem 1.3rem 1.4rem;
+      border-radius: 16px;
+      border: 1px solid rgba(244, 63, 94, 0.42);
+      background: linear-gradient(165deg, rgba(52, 14, 26, 0.97), rgba(10, 8, 16, 0.99));
+      box-shadow: 0 0 48px rgba(244, 63, 94, 0.22), 0 28px 72px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
     .boss-menu__head {
       display: flex;
@@ -575,39 +647,54 @@
       padding: 0 0.35rem;
     }
     body.is-shake {
-      animation: screenShake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      animation: screenShake 0.48s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
     @keyframes screenShake {
       0%, 100% { transform: translate(0, 0); }
-      20% { transform: translate(-4px, 2px); }
-      40% { transform: translate(4px, -2px); }
-      60% { transform: translate(-3px, -1px); }
-      80% { transform: translate(3px, 1px); }
+      15% { transform: translate(-5px, 3px); }
+      30% { transform: translate(5px, -3px); }
+      45% { transform: translate(-4px, -2px); }
+      60% { transform: translate(4px, 2px); }
+      75% { transform: translate(-2px, 1px); }
     }
     .wrap {
       position: relative;
       z-index: 1;
-      max-width: 920px;
+      max-width: min(960px, 100%);
       margin: 0 auto;
-      padding: 1.5rem clamp(0.85rem, 3vw, 1.35rem) 3rem;
+      padding: 1.65rem clamp(0.9rem, 3.2vw, 1.5rem) 3.25rem;
     }
     .title-block {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.65rem;
+      position: relative;
+    }
+    .title-block::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -0.5rem;
+      transform: translateX(-50%);
+      width: min(420px, 88vw);
+      height: 140px;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(56, 189, 248, 0.12), transparent 70%);
+      pointer-events: none;
+      z-index: -1;
     }
     h1 {
       font-family: "Syne", "Outfit", sans-serif;
-      font-size: clamp(1.35rem, 4.5vw, 1.85rem);
+      font-size: clamp(1.4rem, 4.8vw, 2rem);
       font-weight: 800;
-      letter-spacing: 0.04em;
-      margin: 0 0 0.4rem;
-      background: linear-gradient(105deg, #fff 0%, #bae6fd 35%, #fda4af 70%, #fff 100%);
-      background-size: 200% auto;
+      letter-spacing: 0.03em;
+      margin: 0 0 0.5rem;
+      line-height: 1.15;
+      background: linear-gradient(115deg, #ffffff 0%, #a5f3fc 22%, #e879f9 48%, #fda4af 72%, #fef08a 100%);
+      background-size: 220% auto;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      animation: titleShine 6s ease-in-out infinite;
-      filter: drop-shadow(0 0 24px rgba(56, 189, 248, 0.25)) drop-shadow(0 0 20px rgba(225, 29, 72, 0.2));
+      animation: titleShine 7s ease-in-out infinite;
+      filter: drop-shadow(0 0 28px rgba(34, 211, 238, 0.3)) drop-shadow(0 0 22px rgba(244, 63, 94, 0.22));
     }
     @keyframes titleShine {
       0%, 100% { background-position: 0% center; }
@@ -624,33 +711,52 @@
     }
     .sub {
       color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.45;
-      max-width: 28rem;
+      font-size: 0.94rem;
+      line-height: 1.55;
+      max-width: 30rem;
       margin: 0 auto;
+      text-wrap: balance;
     }
     .panel {
-      background: var(--panel);
-      backdrop-filter: blur(20px) saturate(1.35);
-      -webkit-backdrop-filter: blur(20px) saturate(1.35);
+      position: relative;
+      background: linear-gradient(165deg, rgba(22, 22, 34, 0.82) 0%, rgba(12, 12, 20, 0.72) 100%);
+      backdrop-filter: blur(24px) saturate(1.5);
+      -webkit-backdrop-filter: blur(24px) saturate(1.5);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.35rem 1.25rem;
-      margin-bottom: 1rem;
+      border-radius: var(--radius-panel);
+      padding: 1.4rem 1.3rem;
+      margin-bottom: 1.1rem;
       box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
-        0 20px 50px -20px rgba(0, 0, 0, 0.65),
-        0 0 80px -40px rgba(56, 189, 248, 0.15);
+        0 0 0 1px var(--glass-edge) inset,
+        0 1px 0 var(--glass-top) inset,
+        var(--shadow-elev),
+        0 0 100px -36px rgba(34, 211, 238, 0.18),
+        0 0 90px -40px rgba(168, 85, 247, 0.12);
+    }
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(145deg, rgba(56, 189, 248, 0.22), transparent 40%, transparent 60%, rgba(244, 63, 94, 0.15));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.65;
     }
     #setup.panel--setup {
       padding: 1.45rem clamp(1rem, 2.5vw, 1.5rem) 1.55rem;
     }
     .roster-filter-bar {
       margin-bottom: 1.1rem;
-      padding: 0.75rem 0.85rem 0.9rem;
-      border-radius: 12px;
-      border: 1px solid rgba(120, 120, 160, 0.14);
-      background: rgba(0, 0, 0, 0.2);
+      padding: 0.8rem 0.9rem 0.95rem;
+      border-radius: 14px;
+      border: 1px solid rgba(130, 130, 175, 0.2);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(8, 8, 16, 0.35));
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03) inset, 0 12px 40px -24px rgba(0, 0, 0, 0.5);
     }
     .roster-filter-bar__row {
       display: flex;
@@ -766,18 +872,22 @@
       display: flex;
       flex-direction: column;
       min-height: 0;
-      padding: 0.95rem 0.85rem 1rem;
-      border-radius: 14px;
+      padding: 1rem 0.9rem 1.05rem;
+      border-radius: 15px;
       border: 1px solid var(--border);
-      background: linear-gradient(165deg, rgba(12, 12, 22, 0.55), rgba(8, 8, 14, 0.75));
+      background: linear-gradient(165deg, rgba(14, 14, 26, 0.72), rgba(6, 6, 14, 0.88));
     }
     .setup-team--p1 {
-      border-color: rgba(56, 189, 248, 0.28);
-      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.06) inset, 0 12px 32px -18px rgba(56, 189, 248, 0.12);
+      border-color: rgba(34, 211, 238, 0.32);
+      box-shadow:
+        0 0 0 1px rgba(34, 211, 238, 0.08) inset,
+        0 16px 44px -20px rgba(34, 211, 238, 0.2);
     }
     .setup-team--p2 {
-      border-color: rgba(225, 29, 72, 0.28);
-      box-shadow: 0 0 0 1px rgba(225, 29, 72, 0.06) inset, 0 12px 32px -18px rgba(225, 29, 72, 0.12);
+      border-color: rgba(244, 63, 94, 0.32);
+      box-shadow:
+        0 0 0 1px rgba(244, 63, 94, 0.08) inset,
+        0 16px 44px -20px rgba(244, 63, 94, 0.18);
     }
     .setup-team__head {
       font-size: 0.68rem;
@@ -881,15 +991,19 @@
       font-family: inherit;
       cursor: pointer;
       border: 1px solid var(--border);
-      background: linear-gradient(145deg, rgba(30, 30, 42, 0.95), rgba(18, 18, 28, 0.98));
+      background: linear-gradient(155deg, rgba(34, 34, 48, 0.95), rgba(16, 16, 26, 0.98));
       color: var(--text);
-      padding: 0.7rem 0.55rem;
-      border-radius: 10px;
+      padding: 0.72rem 0.55rem;
+      border-radius: 12px;
       font-size: 0.82rem;
       font-weight: 600;
       text-align: center;
-      transition: transform 0.18s var(--ease-out), box-shadow 0.2s, border-color 0.2s, background 0.2s;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+      transition: transform 0.18s var(--ease-out), box-shadow 0.22s, border-color 0.2s, background 0.2s;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    .char-btn:focus-visible {
+      outline: 2px solid rgba(34, 211, 238, 0.65);
+      outline-offset: 2px;
     }
     .char-btn:hover:not(:disabled) {
       border-color: var(--border-bright);
@@ -923,10 +1037,11 @@
       margin: 1rem 0;
       font-family: "JetBrains Mono", monospace;
       font-size: 0.8rem;
-      padding: 0.85rem 1.1rem;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.15));
-      border: 1px solid var(--border);
+      padding: 0.95rem 1.15rem;
+      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.28));
+      border: 1px solid rgba(130, 130, 175, 0.22);
+      box-shadow: 0 0 40px -18px rgba(168, 85, 247, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
     }
     .vs-row span { color: var(--muted); }
     .vs-row strong {
@@ -940,12 +1055,20 @@
     .vs-badge {
       font-family: "Syne", sans-serif;
       font-weight: 800;
-      font-size: 0.95rem;
-      letter-spacing: 0.15em;
-      color: rgba(255, 255, 255, 0.35);
-      padding: 0.2rem 0.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 6px;
+      font-size: 1.02rem;
+      letter-spacing: 0.2em;
+      padding: 0.4rem 0.72rem;
+      border-radius: 10px;
+      border: 1px solid rgba(192, 132, 252, 0.45);
+      background: linear-gradient(165deg, rgba(48, 28, 78, 0.75), rgba(10, 8, 20, 0.96));
+      color: #f5d0fe;
+      text-shadow: 0 0 22px rgba(232, 121, 249, 0.5), 0 0 36px rgba(34, 211, 238, 0.12);
+      box-shadow: 0 0 28px rgba(168, 85, 247, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      animation: vsBadgePulse 3.5s ease-in-out infinite;
+    }
+    @keyframes vsBadgePulse {
+      0%, 100% { filter: brightness(1); box-shadow: 0 0 28px rgba(168, 85, 247, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+      50% { filter: brightness(1.08); box-shadow: 0 0 42px rgba(168, 85, 247, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
     }
     .start-btn {
       display: block;
@@ -1016,12 +1139,12 @@
     }
     .hp-bar {
       position: relative;
-      height: 11px;
-      background: rgba(0, 0, 0, 0.45);
+      height: 13px;
+      background: rgba(0, 0, 0, 0.55);
       border-radius: 999px;
       overflow: visible;
-      margin-top: 0.45rem;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+      margin-top: 0.5rem;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset, 0 4px 16px rgba(0, 0, 0, 0.35);
     }
     .hp-bar__track {
       border-radius: 999px;
@@ -1038,12 +1161,12 @@
       position: relative;
     }
     .hp-bar i.p1 {
-      background: linear-gradient(90deg, #0369a1, #38bdf8, #7dd3fc);
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.55);
+      background: linear-gradient(90deg, #0c4a6e, #0891b2, #22d3ee, #a5f3fc);
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
     .hp-bar i.p2 {
-      background: linear-gradient(90deg, #881337, #e11d48, #fb7185);
-      box-shadow: 0 0 16px rgba(225, 29, 72, 0.5);
+      background: linear-gradient(90deg, #881337, #e11d48, #f43f5e, #fda4af);
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.22);
     }
     .hp-bar i::after {
       content: "";
@@ -1096,19 +1219,39 @@
     .fighters__vs span {
       font-family: "Syne", sans-serif;
       font-weight: 800;
-      font-size: 1.1rem;
-      color: rgba(255, 255, 255, 0.2);
-      text-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
-      letter-spacing: 0.08em;
+      font-size: clamp(1.05rem, 3.5vw, 1.35rem);
+      letter-spacing: 0.12em;
+      padding: 0.5rem 0.55rem;
+      border-radius: 12px;
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      background: linear-gradient(180deg, rgba(20, 16, 36, 0.9), rgba(6, 6, 14, 0.98));
+      color: #e9d5ff;
+      text-shadow: 0 0 28px rgba(192, 132, 252, 0.55), 0 0 48px rgba(34, 211, 238, 0.15);
+      box-shadow: 0 0 36px rgba(168, 85, 247, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      animation: arenaVsGlow 2.8s ease-in-out infinite;
+    }
+    @keyframes arenaVsGlow {
+      0%, 100% { opacity: 1; filter: brightness(1); }
+      50% { opacity: 0.92; filter: brightness(1.12); }
     }
     .fighter {
-      padding: 1.1rem 1rem;
-      border-radius: 14px;
+      padding: 1.15rem 1.05rem;
+      border-radius: 16px;
       border: 1px solid var(--border);
-      background: linear-gradient(165deg, rgba(22, 22, 32, 0.95), rgba(12, 12, 20, 0.98));
+      background: linear-gradient(165deg, rgba(24, 24, 36, 0.96), rgba(10, 10, 18, 0.99));
       position: relative;
       overflow: hidden;
-      transition: border-color 0.25s, box-shadow 0.25s;
+      transition: border-color 0.25s, box-shadow 0.3s;
+      box-shadow: 0 12px 40px -22px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    }
+    .fighter::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 255, 255, 0.06), transparent 55%);
+      pointer-events: none;
+      mix-blend-mode: overlay;
     }
     .fighter::before {
       content: "";
@@ -1191,17 +1334,17 @@
     }
     .log {
       font-family: "JetBrains Mono", monospace;
-      font-size: 0.76rem;
-      line-height: 1.5;
-      max-height: 300px;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      max-height: min(320px, 42vh);
       overflow-y: auto;
-      padding: 0.65rem;
-      background: rgba(6, 6, 12, 0.85);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.5) inset, 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+      padding: 0.75rem 0.7rem;
+      background: linear-gradient(180deg, rgba(5, 5, 12, 0.92), rgba(10, 10, 20, 0.88));
+      border-radius: 14px;
+      border: 1px solid rgba(100, 100, 140, 0.22);
+      box-shadow: 0 0 48px rgba(0, 0, 0, 0.55) inset, 0 0 0 1px rgba(255, 255, 255, 0.04) inset, 0 8px 32px -16px rgba(34, 211, 238, 0.06);
       scrollbar-width: thin;
-      scrollbar-color: rgba(56, 189, 248, 0.35) transparent;
+      scrollbar-color: rgba(34, 211, 238, 0.4) transparent;
     }
     .log::-webkit-scrollbar { width: 6px; }
     .log::-webkit-scrollbar-thumb {
@@ -1241,11 +1384,11 @@
     }
     .synergy-hud {
       margin: 0 0 1rem;
-      padding: 0.75rem 0.85rem;
-      border-radius: 12px;
-      border: 1px solid rgba(251, 191, 36, 0.35);
-      background: linear-gradient(135deg, rgba(40, 25, 55, 0.85), rgba(20, 18, 35, 0.92));
-      box-shadow: 0 0 32px rgba(244, 114, 182, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      padding: 0.85rem 0.95rem;
+      border-radius: 14px;
+      border: 1px solid rgba(251, 191, 36, 0.42);
+      background: linear-gradient(135deg, rgba(48, 28, 62, 0.88), rgba(16, 14, 32, 0.94));
+      box-shadow: 0 0 40px rgba(244, 114, 182, 0.14), 0 0 50px -20px rgba(251, 191, 36, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.07);
     }
     .synergy-hud__title {
       font-size: 0.65rem;
@@ -1290,6 +1433,91 @@
     .synergy-hud__col:first-child .synergy-hud__names {
       color: #7dd3fc;
     }
+    .summon-hud {
+      margin: 0 0 1rem;
+      padding: 0.85rem 0.95rem 0.9rem;
+      border-radius: 14px;
+      border: 1px solid rgba(168, 85, 247, 0.32);
+      background: linear-gradient(165deg, rgba(28, 22, 48, 0.75), rgba(8, 8, 18, 0.94));
+      box-shadow: 0 8px 32px -18px rgba(168, 85, 247, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    .summon-hud__title {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 800;
+      color: rgba(216, 180, 254, 0.95);
+      margin: 0 0 0.55rem;
+    }
+    .summon-hud__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem 1rem;
+    }
+    @media (max-width: 640px) {
+      .summon-hud__inner { grid-template-columns: 1fr; }
+    }
+    .summon-hud__col strong {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 0.2rem;
+    }
+    .summon-hud__col--p2 strong { color: #fecdd3; }
+    .summon-hud__kind {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.45rem;
+    }
+    .summon-hud__na {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .summon-hud__slots {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+    .summon-slot {
+      flex: 1;
+      min-width: 2.1rem;
+      text-align: center;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.38rem 0.25rem;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: opacity 0.2s, filter 0.2s;
+    }
+    .summon-slot--on {
+      color: #e9d5ff;
+      background: linear-gradient(180deg, rgba(88, 50, 120, 0.55), rgba(24, 16, 40, 0.95));
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      border-color: rgba(192, 132, 252, 0.45);
+    }
+    .summon-slot--off {
+      opacity: 0.38;
+      color: rgba(255, 255, 255, 0.35);
+      background: rgba(0, 0, 0, 0.35);
+    }
+    .summon-hud__col--p1 .summon-slot--on {
+      border-color: rgba(34, 211, 238, 0.4);
+      box-shadow: 0 0 14px rgba(34, 211, 238, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .summon-hud__col--p2 .summon-slot--on {
+      border-color: rgba(244, 63, 94, 0.38);
+      box-shadow: 0 0 14px rgba(244, 63, 94, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    .mech-proc {
+      display: inline;
+      color: rgba(251, 191, 36, 0.95);
+      font-weight: 600;
+    }
+    .log-line--mech-proc .mech-proc { color: #fde68a; }
     .synergy-hud__stats {
       font-family: "JetBrains Mono", monospace;
       font-size: 0.68rem;
@@ -1352,6 +1580,11 @@
     }
     .act-btn:active:not(:disabled) { transform: translateY(0); }
     .act-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+    .act-btn:focus-visible {
+      outline: 2px solid rgba(192, 132, 252, 0.75);
+      outline-offset: 2px;
+      z-index: 1;
+    }
     .act-btn[data-act="strike"]::after {
       background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.2), transparent 55%);
     }
@@ -1482,6 +1715,8 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
       }
+      .ambient__mesh { animation: none; }
+      .ambient__sparkles { animation: none; opacity: 0.12; }
       .hp-bar__shine { animation: none; opacity: 0; }
       .start-btn { animation: none; }
       .start-btn::before { animation: none; }
@@ -1489,6 +1724,8 @@
       .maho-cutscene__wheel { animation: none; }
       .heian-cutscene__torii { animation: none; }
       .modulo-cutscene__eye { animation: none; }
+      .fighters__vs span { animation: none; }
+      .vs-badge { animation: none; }
     }
   </style>
 </head>
@@ -1497,6 +1734,9 @@
     <div class="ambient__orb ambient__orb--1"></div>
     <div class="ambient__orb ambient__orb--2"></div>
     <div class="ambient__orb ambient__orb--3"></div>
+    <div class="ambient__orb ambient__orb--4"></div>
+    <div class="ambient__mesh"></div>
+    <div class="ambient__sparkles"></div>
     <div class="ambient__grid"></div>
     <div class="ambient__vignette"></div>
     <div class="ambient__grain"></div>
@@ -1599,6 +1839,7 @@
     <section id="battle" class="panel">
       <h2>Арена</h2>
       <div class="synergy-hud" id="synergyHud" aria-live="polite"></div>
+      <div class="summon-hud" id="summonHud" aria-live="polite"></div>
       <div class="fighters">
         <div class="fighter fighter--p1" id="fighter1">
           <h3><span class="emoji" id="e1"></span><span id="n1"></span></h3>
@@ -1641,7 +1882,7 @@
 
   <script>
     /** Увеличивай при каждом значимом изменении (одна точка правды для UI). */
-    const APP_VERSION = "1.2.2";
+    const APP_VERSION = "1.6.0";
 
     function pick(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
@@ -1662,115 +1903,142 @@
         ids: ["todo", "yuji"],
         name: "Идеальный брат × Юдзи",
         blurb: "Тодо хлопает в такт — чёрная вспышка и Буги-вуги раскрывают комбо.",
-        strikeMult: 1.22,
-        techMult: 1.14,
-        critChanceAdd: 0.12,
-        domainChanceAdd: 0.06,
+        combatHint: "После удара или техники шанс сорвать ход противника (Буги-вуги).",
+        fx: [{ kind: "skip_enemy_turn", chance: 0.14, acts: ["strike", "technique"] }],
       },
       {
         ids: ["yuji", "nobara", "megumi"],
         name: "Тройка первокурсников Токио",
         blurb: "Мегуми, Нобара и Юдзи — прикрытие и синхрон на поле.",
-        strikeMult: 1.1,
-        techMult: 1.14,
-        domainChanceAdd: 0.07,
-        defendMitigationAdd: 0.05,
+        combatHint: "Один раз за бой: при низком HP команда стабилизирует поле и лечит активного бойца.",
+        fx: [{ kind: "tokyo_cover", hpRatio: 0.34, healFrac: 0.14 }],
       },
       {
         ids: ["gojo", "geto"],
         name: "Сильнейший и лучший друг",
         blurb: "Школьная связка — домен и техника читаются в унисон.",
-        techMult: 1.1,
-        domainChanceAdd: 0.08,
-        domainDmgMult: 1.08,
+        combatHint: "Первое успешное расширение домена в бою наносит дополнительный «ритуальный» урон.",
+        fx: [{ kind: "ritual_domain_extra", min: 12, max: 24, once: true }],
       },
       {
         ids: ["maki", "panda"],
         name: "Второй курс в деле",
         blurb: "Маки и Панда — привычка сражаться плечом к плечу.",
-        strikeMult: 1.08,
-        techMult: 1.06,
-        defendMitigationAdd: 0.04,
+        combatHint: "После защиты следующий твой удар получает фиксированный бонус к урону (настройка корпуса).",
+        fx: [{ kind: "tag_after_defend", min: 9, max: 21 }],
       },
       {
         ids: ["choso", "yuji"],
         name: "Связь крови",
         blurb: "Чосо и Юдзи — общий ритм, ярость и точность.",
-        strikeMult: 1.06,
-        techMult: 1.12,
-        critChanceAdd: 0.04,
+        combatHint: "После техники кровь может «догрызть» врага дополнительным уроном.",
+        fx: [{ kind: "blood_bleed_after_tech", chance: 0.2, min: 3, max: 12 }],
       },
       {
         ids: ["yuta", "maki"],
         name: "Рейд в поместье Зенин",
         blurb: "Юта и Маки — прорыв стеной особого класса.",
-        strikeMult: 1.07,
-        techMult: 1.1,
+        combatHint: "Первый удар после выхода на поле пробивает часть «брони» (усиление базы).",
+        fx: [{ kind: "raid_armor_ignore", frac: 0.26 }],
       },
       {
         ids: ["toji", "maki"],
         name: "Небесное ограничение Зенин",
         blurb: "Тодзи и Маки — чистая физика и проклятое оружие.",
-        strikeMult: 1.14,
-        defendMitigationAdd: 0.03,
+        combatHint: "Удары иногда наносят дополнительный чистый урон клановым нажимом.",
+        fx: [{ kind: "zenin_extra_strike", chance: 0.2, min: 5, max: 17 }],
       },
       {
         ids: ["kashimo", "hakari"],
         name: "Игра смерти в Отборе",
         blurb: "Касимо и Хакари — ставка на домен и CE до предела.",
-        techMult: 1.08,
-        domainChanceAdd: 0.06,
-        domainDmgMult: 1.1,
+        combatHint: "Один раз за бой: провал мини-игры домена может перевернуться в успех (риск отбора).",
+        fx: [{ kind: "domain_risk_reroll", chance: 0.28, once: true }],
       },
       {
         ids: ["sukuna", "megumi"],
         name: "Сосуд и тени",
         blurb: "Сукуна в теле и Десять теней — тёмное усиление.",
-        techMult: 1.12,
-        strikeMult: 1.05,
-        critChanceAdd: 0.03,
+        combatHint: "Один раз за бой первый удар получает теневой добой к урону.",
+        fx: [{ kind: "shadow_vessel", once: true, frac: 0.26 }],
       },
       {
         ids: ["higuruma", "takaba"],
         name: "Зал и сцена",
         blurb: "Хигурума и Такаба — закон и смех ломают ожидания врага.",
-        domainChanceAdd: 0.05,
-        techMult: 1.07,
+        combatHint: "После твоего удара зал иногда «ломает сценарий» — враг вынужден бить только в ближний бой.",
+        fx: [{ kind: "force_enemy_strike", chance: 0.13 }],
       },
       {
         ids: ["kenjaku", "geto"],
         name: "Мозг в чужом теле",
         blurb: "Кэндзиаку и наследие Гето — архив техник в одном ритме.",
-        techMult: 1.12,
-        domainChanceAdd: 0.06,
-        domainDmgMult: 1.08,
+        combatHint: "После успешного домена следующая атака врага ослаблена проклятой меткой.",
+        fx: [{ kind: "curse_mark_after_domain", factor: 0.62 }],
       },
       {
         ids: ["maki", "panda", "toge"],
         name: "Токийская второгодка",
         blurb: "Маки, Панда и Тогэ — классический состав миссий.",
-        strikeMult: 1.08,
-        techMult: 1.1,
-        defendMitigationAdd: 0.06,
-        domainChanceAdd: 0.04,
+        combatHint: "Каждые 5 ходов боя (счётчик) при использовании техники — дополнительный залп «курса».",
+        fx: [{ kind: "kyoto_pulse", everyNTurns: 5, min: 7, max: 16, needsAct: "technique" }],
       },
       {
         ids: ["nanami", "mahito"],
         name: "Ненависть по существу",
         blurb: "Нанами против Махито — удар по «душевной геометрии».",
-        strikeMult: 1.1,
-        techMult: 1.08,
-        critChanceAdd: 0.05,
+        combatHint: "После удара можно пометить врага — его следующий удар по тебе слабее.",
+        fx: [{ kind: "mark_enemy_weak", chance: 0.24, nextFactor: 0.68 }],
       },
       {
         ids: ["yuji", "todo", "megumi"],
         name: "Смена и брат",
         blurb: "Юдзи, Тодо и Мегуми — совместный прессинг на поле.",
-        strikeMult: 1.1,
-        techMult: 1.1,
-        domainChanceAdd: 0.05,
+        combatHint: "После удара иногда следует второй, ослабленный удар в той же смене.",
+        fx: [{ kind: "double_tap_strike", chance: 0.11, frac: 0.42 }],
       },
     ];
+
+    /** Счётчики и флаги одного боя (синергии и механики без «голых» множителей). */
+    let battleState = {};
+
+    function resetBattleState() {
+      battleState = {
+        globalTurn: 0,
+        skipEnemyTurn: false,
+        forceEnemyStrikeNext: false,
+        enemyDamageFactor: 1,
+        ritualDomainUsed: false,
+        domainRerollUsed: false,
+        pierceDefendUsed: false,
+        curseMarkActive: false,
+        weakMarkFromSynergy: false,
+        tokyoCoverUsed: false,
+        strikeCountP1: 0,
+        techCountP1: 0,
+        raidArmorActive: false,
+        tagStrikeBonus: 0,
+        lastPlayerAct: null,
+        lastSynergyFx: [],
+        shadowVesselUsed: false,
+        shadowVesselEnemyUsed: false,
+        nextEnemyOutgoingFactor: 1,
+        nextPlayerOutgoingFactor: 1,
+        skipPlayerTurn: false,
+        forcePlayerStrikeNext: false,
+        tagEnemyStrikeBonus: 0,
+        tokyoCoverEnemyUsed: false,
+        ritualDomainEnemyUsed: false,
+        domainRerollEnemyUsed: false,
+        raidArmorEnemyActive: false,
+        yujiStrikes: 0,
+        yujiEnemyStrikes: 0,
+        playerMoves: 0,
+        enemyMoves: 0,
+        summonP1: null,
+        summonP2: null,
+      };
+    }
 
     function neutralSynergy() {
       return {
@@ -1781,6 +2049,7 @@
         domainCh: 0,
         defEx: 0,
         active: [],
+        fx: [],
       };
     }
 
@@ -1796,43 +2065,265 @@
     function mergeSynergies(matches) {
       const o = neutralSynergy();
       for (const m of matches) {
-        o.strike *= m.strikeMult || 1;
-        o.tech *= m.techMult || 1;
-        o.domainDmg *= m.domainDmgMult || 1;
-        o.crit += m.critChanceAdd || 0;
-        o.domainCh += m.domainChanceAdd || 0;
-        o.defEx += m.defendMitigationAdd || 0;
         o.active.push(m);
+        if (m.fx && m.fx.length) o.fx.push(...m.fx);
       }
-      o.strike = Math.min(o.strike, 1.28);
-      o.tech = Math.min(o.tech, 1.28);
-      o.domainDmg = Math.min(o.domainDmg, 1.25);
-      o.crit = Math.min(o.crit, 0.22);
-      o.domainCh = Math.min(o.domainCh, 0.18);
-      o.defEx = Math.min(o.defEx, 0.14);
       return o;
     }
 
-    function formatSynergyStatBits(syn) {
-      const bits = [];
-      if (syn.strike > 1.005) bits.push(`удар ×${syn.strike.toFixed(2)}`);
-      if (syn.tech > 1.005) bits.push(`тех ×${syn.tech.toFixed(2)}`);
-      if (syn.domainDmg > 1.005) bits.push(`домен ×${syn.domainDmg.toFixed(2)}`);
-      if (syn.crit > 0.003) bits.push(`крит +${(syn.crit * 100).toFixed(0)} п.п.`);
-      if (syn.domainCh > 0.003) bits.push(`шанс РД +${(syn.domainCh * 100).toFixed(0)} п.п.`);
-      if (syn.defEx > 0.003) bits.push(`к защите +${(syn.defEx * 100).toFixed(0)} п.п.`);
-      return bits.length ? bits.join(" · ") : "нет (×1, без п.п.)";
+    function rollInt(min, max) {
+      return min + Math.floor(Math.random() * (max - min + 1));
     }
 
-    function synergyActNote(act, syn) {
-      if (!syn.active.length) return "";
-      const parts = [];
-      if (act === "strike" && syn.strike > 1.02) parts.push(`удар ×${syn.strike.toFixed(2)}`);
-      if (act === "technique" && syn.tech > 1.02) parts.push(`тех ×${syn.tech.toFixed(2)}`);
-      if (act === "defend" && syn.defEx > 0.02) parts.push(`защита +${(syn.defEx * 100).toFixed(0)} п.п.`);
-      if (act === "domain" && syn.domainDmg > 1.02) parts.push(`домен ×${syn.domainDmg.toFixed(2)}`);
-      if (!parts.length) return "";
-      return ` <span class="syn-note">〔${parts.join(" · ")}〕</span>`;
+    function synergyFxListSummary(syn) {
+      if (!syn.active.length) return "—";
+      const hints = syn.active.map((m) => m.combatHint || m.blurb).filter(Boolean);
+      return hints.length ? hints.join(" · ") : syn.active.map((m) => m.name).join(" · ");
+    }
+
+    function formatSynergyStatBits(syn) {
+      if (!syn.active.length) return "нет связок";
+      return synergyFxListSummary(syn);
+    }
+
+    function synergyActNote() {
+      return "";
+    }
+
+    function runSynergyHooksPlayerAfterDamage(act, baseDmg) {
+      if (!synergyP1.fx || !synergyP1.fx.length) return;
+      for (const fx of synergyP1.fx) {
+        if (fx.kind === "skip_enemy_turn" && fx.acts && fx.acts.includes(act)) {
+          if (synergyRollSuccess(fx.chance, "p1")) {
+            battleState.skipEnemyTurn = true;
+            appendLog(
+              `✦ <strong>Синергия (Буги-вуги):</strong> хлопок сбивает темп — <strong>противник пропускает ход</strong>.`,
+              "synergy",
+            );
+          }
+        }
+        if (fx.kind === "blood_bleed_after_tech" && act === "technique") {
+          if (synergyRollSuccess(fx.chance, "p1")) {
+            const ex = rollInt(fx.min, fx.max);
+            hp2 = Math.max(0, hp2 - ex);
+            appendLog(`✦ <strong>Синергия (кровь):</strong> кровяной след добивает ещё на <strong>${ex}</strong>.`, "synergy");
+            updateHpBars();
+          }
+        }
+        if (fx.kind === "zenin_extra_strike" && act === "strike") {
+          if (synergyRollSuccess(fx.chance, "p1")) {
+            const ex = rollInt(fx.min, fx.max);
+            hp2 = Math.max(0, hp2 - ex);
+            appendLog(`✦ <strong>Синергия (Зенин):</strong> клановый нажим — дополнительно <strong>${ex}</strong>.`, "synergy");
+            updateHpBars();
+          }
+        }
+        if (fx.kind === "force_enemy_strike" && (act === "strike" || act === "technique")) {
+          if (synergyRollSuccess(fx.chance, "p1")) {
+            battleState.forceEnemyStrikeNext = true;
+            appendLog(`✦ <strong>Синергия (зал/сцена):</strong> враг вынужден ответить только <strong>ударом</strong> в следующий раз.`, "synergy");
+          }
+        }
+        if (fx.kind === "mark_enemy_weak" && act === "strike") {
+          if (synergyRollSuccess(fx.chance, "p1")) {
+            battleState.nextEnemyOutgoingFactor = Math.min(battleState.nextEnemyOutgoingFactor, fx.nextFactor);
+            appendLog(`✦ <strong>Синергия (метка):</strong> следующий удар врага по тебе ослаблен.`, "synergy");
+          }
+        }
+        if (fx.kind === "double_tap_strike" && act === "strike") {
+          if (synergyRollSuccess(fx.chance, "p1")) {
+            const ex = Math.max(1, Math.floor(baseDmg * fx.frac));
+            hp2 = Math.max(0, hp2 - ex);
+            appendLog(`✦ <strong>Синергия (смена):</strong> второй заход в связке — ещё <strong>${ex}</strong>.`, "synergy");
+            updateHpBars();
+          }
+        }
+        if (fx.kind === "shadow_vessel" && act === "strike" && fx.once && !battleState.shadowVesselUsed) {
+          battleState.shadowVesselUsed = true;
+          const ex = Math.max(1, Math.floor(baseDmg * fx.frac));
+          hp2 = Math.max(0, hp2 - ex);
+          appendLog(`✦ <strong>Синергия (сосуд/тени):</strong> тень добивает ещё <strong>${ex}</strong>.`, "synergy");
+          updateHpBars();
+        }
+      }
+    }
+
+    /** Зеркальные эффекты связок команды врага после урона по игроку. */
+    function runSynergyHooksEnemyAfterDamage(act, baseDmg) {
+      if (!synergyP2.fx || !synergyP2.fx.length) return;
+      for (const fx of synergyP2.fx) {
+        if (fx.kind === "skip_enemy_turn" && fx.acts && fx.acts.includes(act)) {
+          if (synergyRollSuccess(fx.chance, "p2")) {
+            battleState.skipPlayerTurn = true;
+            appendLog(
+              `✦ <strong>Синергия (враг, Буги-вуги):</strong> ритм ломается — <strong>ты пропускаешь ход</strong>.`,
+              "synergy",
+            );
+          }
+        }
+        if (fx.kind === "blood_bleed_after_tech" && act === "technique") {
+          if (synergyRollSuccess(fx.chance, "p2")) {
+            const ex = rollInt(fx.min, fx.max);
+            hp1 = Math.max(0, hp1 - ex);
+            appendLog(`✦ <strong>Синергия (враг, кровь):</strong> добой по следу — ещё <strong>${ex}</strong>.`, "synergy");
+            updateHpBars();
+          }
+        }
+        if (fx.kind === "zenin_extra_strike" && act === "strike") {
+          if (synergyRollSuccess(fx.chance, "p2")) {
+            const ex = rollInt(fx.min, fx.max);
+            hp1 = Math.max(0, hp1 - ex);
+            appendLog(`✦ <strong>Синергия (враг, Зенин):</strong> дополнительно <strong>${ex}</strong>.`, "synergy");
+            updateHpBars();
+          }
+        }
+        if (fx.kind === "force_enemy_strike" && (act === "strike" || act === "technique")) {
+          if (synergyRollSuccess(fx.chance, "p2")) {
+            battleState.forcePlayerStrikeNext = true;
+            appendLog(`✦ <strong>Синергия (враг, зал):</strong> сценарий сужается — твой следующий ход только <strong>удар</strong>.`, "synergy");
+          }
+        }
+        if (fx.kind === "mark_enemy_weak" && act === "strike") {
+          if (synergyRollSuccess(fx.chance, "p2")) {
+            battleState.nextPlayerOutgoingFactor = Math.min(battleState.nextPlayerOutgoingFactor, fx.nextFactor);
+            appendLog(`✦ <strong>Синергия (враг, метка):</strong> твой следующий удар по полю слабее.`, "synergy");
+          }
+        }
+        if (fx.kind === "double_tap_strike" && act === "strike") {
+          if (synergyRollSuccess(fx.chance, "p2")) {
+            const ex = Math.max(1, Math.floor(baseDmg * fx.frac));
+            hp1 = Math.max(0, hp1 - ex);
+            appendLog(`✦ <strong>Синергия (враг, смена):</strong> второй заход — ещё <strong>${ex}</strong>.`, "synergy");
+            updateHpBars();
+          }
+        }
+        if (fx.kind === "shadow_vessel" && act === "strike" && fx.once && !battleState.shadowVesselEnemyUsed) {
+          battleState.shadowVesselEnemyUsed = true;
+          const ex = Math.max(1, Math.floor(baseDmg * fx.frac));
+          hp1 = Math.max(0, hp1 - ex);
+          appendLog(`✦ <strong>Синергия (враг, сосуд):</strong> тень добивает ещё <strong>${ex}</strong>.`, "synergy");
+          updateHpBars();
+        }
+      }
+    }
+
+    function runSynergyHooksEnemyAfterDefend() {
+      if (!synergyP2.fx || !synergyP2.fx.length) return;
+      for (const fx of synergyP2.fx) {
+        if (fx.kind === "tag_after_defend") {
+          battleState.tagEnemyStrikeBonus = rollInt(fx.min, fx.max);
+          appendLog(
+            `✦ <strong>Синергия (враг, второй курс):</strong> следующий удар врага +<strong>${battleState.tagEnemyStrikeBonus}</strong>.`,
+            "synergy",
+          );
+        }
+      }
+    }
+
+    function runSynergyHooksBattleStartEnemy() {
+      if (!synergyP2.fx || !synergyP2.fx.length) return;
+      for (const fx of synergyP2.fx) {
+        if (fx.kind === "tokyo_cover") {
+          appendLog(`✦ <strong>Синергия (враг, Токио):</strong> при критическом HP сработает прикрытие (один раз).`, "synergy");
+        }
+        if (fx.kind === "ritual_domain_extra") {
+          appendLog(`✦ <strong>Синергия (враг, школа):</strong> первое успешное РД — доп. ритуальный урон (если враг откроет домен).`, "synergy");
+        }
+        if (fx.kind === "kyoto_pulse") {
+          appendLog(`✦ <strong>Синергия (враг, второгодка):</strong> каждые ${fx.everyNTurns} ходов врага техника может дать залп.`, "synergy");
+        }
+      }
+    }
+
+    function tryTokyoCoverHealEnemy() {
+      const fxList = synergyP2.fx || [];
+      const fx = fxList.find((f) => f.kind === "tokyo_cover");
+      if (!fx || battleState.tokyoCoverEnemyUsed) return;
+      const ratio = hp2 / Math.max(1, max2);
+      if (ratio < fx.hpRatio) {
+        battleState.tokyoCoverEnemyUsed = true;
+        const heal = Math.max(1, Math.floor(max2 * fx.healFrac));
+        hp2 = Math.min(max2, hp2 + heal);
+        appendLog(`✦ <strong>Синергия (враг, тройка Токио):</strong> прикрытие — <strong>+${heal} HP</strong> врагу.`, "synergy");
+        updateHpBars();
+      }
+    }
+
+    function tryKyotoPulseEnemy(act) {
+      const fx = (synergyP2.fx || []).find((f) => f.kind === "kyoto_pulse");
+      if (!fx || act !== fx.needsAct) return;
+      const m = battleState.enemyMoves || 0;
+      if (m < fx.everyNTurns || m % fx.everyNTurns !== 0) return;
+      const ex = rollInt(fx.min, fx.max);
+      hp1 = Math.max(0, hp1 - ex);
+      appendLog(`✦ <strong>Синергия (враг, второгодка):</strong> залп курса — <strong>${ex}</strong>.`, "synergy");
+      updateHpBars();
+    }
+
+    function runSynergyHooksPlayerAfterDefend() {
+      if (!synergyP1.fx || !synergyP1.fx.length) return;
+      for (const fx of synergyP1.fx) {
+        if (fx.kind === "tag_after_defend") {
+          battleState.tagStrikeBonus = rollInt(fx.min, fx.max);
+          appendLog(
+            `✦ <strong>Синергия (второй курс):</strong> следующий удар получает +<strong>${battleState.tagStrikeBonus}</strong> к урону.`,
+            "synergy",
+          );
+        }
+      }
+    }
+
+    function runSynergyHooksBattleStart() {
+      if (!synergyP1.fx || !synergyP1.fx.length) return;
+      for (const fx of synergyP1.fx) {
+        if (fx.kind === "tokyo_cover") {
+          appendLog(`✦ <strong>Синергия (тройка Токио):</strong> при критическом HP сработает прикрытие (один раз).`, "synergy");
+        }
+        if (fx.kind === "ritual_domain_extra") {
+          appendLog(`✦ <strong>Синергия (Годжо/Гето):</strong> первое успешное РД нанесёт дополнительный ритуальный урон.`, "synergy");
+        }
+        if (fx.kind === "kyoto_pulse") {
+          appendLog(`✦ <strong>Синергия (второгодка):</strong> каждые ${fx.everyNTurns} ходов техника может дать вспомогательный залп.`, "synergy");
+        }
+      }
+    }
+
+    function tryTokyoCoverHeal() {
+      const fxList = synergyP1.fx || [];
+      const fx = fxList.find((f) => f.kind === "tokyo_cover");
+      if (!fx || battleState.tokyoCoverUsed) return;
+      const ratio = hp1 / Math.max(1, max1);
+      if (ratio < fx.hpRatio) {
+        battleState.tokyoCoverUsed = true;
+        const heal = Math.max(1, Math.floor(max1 * fx.healFrac));
+        hp1 = Math.min(max1, hp1 + heal);
+        appendLog(`✦ <strong>Синергия (тройка Токио):</strong> прикрытие — <strong>+${heal} HP</strong>.`, "synergy");
+        updateHpBars();
+      }
+    }
+
+    function tryKyotoPulse(act) {
+      const fx = (synergyP1.fx || []).find((f) => f.kind === "kyoto_pulse");
+      if (!fx || act !== fx.needsAct) return;
+      const m = battleState.playerMoves || 0;
+      if (m < fx.everyNTurns || m % fx.everyNTurns !== 0) return;
+      const ex = rollInt(fx.min, fx.max);
+      hp2 = Math.max(0, hp2 - ex);
+      appendLog(`✦ <strong>Синергия (второгодка):</strong> синхрон курса — дополнительно <strong>${ex}</strong>.`, "synergy");
+      updateHpBars();
+    }
+
+    function mechCritAdd(p) {
+      if (!p) return 0;
+      const t = {
+        shigemo: 0.07,
+        sukuna: 0.04,
+        todo: 0.04,
+        kashimo: 0.05,
+        yuji: 0.04,
+        mei_mei: 0.03,
+      };
+      return t[p.id] || 0;
     }
 
     function renderSynergyHud() {
@@ -1923,6 +2414,30 @@
 
     function getDifficulty() {
       return DIFFICULTY[difficultyId] || DIFFICULTY.normal;
+    }
+
+    /** Баланс: шансы синергий и сила механик зависят от сложности (игрок слегка сильнее на лёгкой, враг — на экстриме). */
+    function getBattleBalance() {
+      const id = difficultyId || "normal";
+      if (id === "easy")
+        return { synP1: 1.12, synP2: 0.88, mechDefP1: 1.1, mechDefP2: 0.9, flatP1: 1.06, flatP2: 0.94 };
+      if (id === "hard")
+        return { synP1: 0.9, synP2: 1.08, mechDefP1: 0.92, mechDefP2: 1.08, flatP1: 0.94, flatP2: 1.08 };
+      if (id === "extreme")
+        return { synP1: 0.82, synP2: 1.15, mechDefP1: 0.85, mechDefP2: 1.12, flatP1: 0.88, flatP2: 1.14 };
+      return { synP1: 1, synP2: 1, mechDefP1: 1, mechDefP2: 1, flatP1: 1, flatP2: 1 };
+    }
+
+    function synergyRollSuccess(baseChance, side) {
+      const b = getBattleBalance();
+      const m = side === "p2" ? b.synP2 : b.synP1;
+      return Math.random() < Math.min(0.92, Math.max(0.03, baseChance * m));
+    }
+
+    function scaleFlatBonus(amount, side) {
+      const b = getBattleBalance();
+      const m = side === "p2" ? b.flatP2 : b.flatP1;
+      return Math.max(0, Math.floor(amount * m));
     }
 
     function pickEnemyAct() {
@@ -2959,6 +3474,82 @@
       btn.classList.toggle("has-filters", active);
     }
 
+    /** Персонажи с призывом: до 3 раз за бой даёт небольшой добой при ударе/технике (если урон прошёл). */
+    const SUMMON_BY_ID = {
+      mahito: { label: "Преображённые", short: ["I", "II", "III"] },
+      mechamaru: { label: "Роботы", short: ["α", "β", "γ"] },
+      megumi: { label: "Шикигами", short: ["①", "②", "③"] },
+      geto: { label: "Духи", short: ["A", "B", "C"] },
+      kurourushi: { label: "Рой", short: ["◇", "◇", "◇"] },
+      dabura: { label: "Слоны", short: ["1", "2", "3"] },
+      locust_guy: { label: "Саранча", short: ["×", "×", "×"] },
+      mei_mei: { label: "Вороны", short: ["▸", "▸", "▸"] },
+      nobara: { label: "Куклы", short: ["●", "●", "●"] },
+      jogo: { label: "Искры", short: ["♦", "♦", "♦"] },
+    };
+
+    function initSummonSlots(fighter) {
+      if (!fighter || !SUMMON_BY_ID[fighter.id]) return null;
+      return [1, 1, 1];
+    }
+
+    function summonSlotsHtml(slots, cfg) {
+      if (!cfg) return `<span class="summon-hud__na">—</span>`;
+      const labels = cfg.short;
+      return `<div class="summon-hud__slots" role="group" aria-label="Слоты призыва">${[0, 1, 2]
+        .map(
+          (i) =>
+            `<span class="summon-slot${slots && slots[i] ? " summon-slot--on" : " summon-slot--off"}" title="${cfg.label} · ${labels[i]}">${labels[i]}</span>`,
+        )
+        .join("")}</div>`;
+    }
+
+    function renderSummonHud() {
+      const root = document.getElementById("summonHud");
+      if (!root) return;
+      if (!p1 || !p2) {
+        root.innerHTML = "";
+        return;
+      }
+      const c1 = SUMMON_BY_ID[p1.id];
+      const c2 = SUMMON_BY_ID[p2.id];
+      const s1 = battleState.summonP1;
+      const s2 = battleState.summonP2;
+      root.innerHTML = `<div class="summon-hud__title">Призыв</div>
+        <div class="summon-hud__inner">
+          <div class="summon-hud__col summon-hud__col--p1">
+            <strong>${p1.emoji} ${p1.name}</strong>
+            <span class="summon-hud__kind">${c1 ? c1.label : "—"}</span>
+            ${summonSlotsHtml(s1, c1)}
+          </div>
+          <div class="summon-hud__col summon-hud__col--p2">
+            <strong>${p2.emoji} ${p2.name}</strong>
+            <span class="summon-hud__kind">${c2 ? c2.label : "—"}</span>
+            ${summonSlotsHtml(s2, c2)}
+          </div>
+        </div>`;
+    }
+
+    /** Добой призыва после расчёта брони/отмен; только если базовый урон > 0. */
+    function tryConsumeSummonBonus(attacker, attackerIsP1) {
+      const cfg = SUMMON_BY_ID[attacker && attacker.id];
+      if (!cfg) return { bonus: 0 };
+      const key = attackerIsP1 ? "summonP1" : "summonP2";
+      let slots = battleState[key];
+      if (!slots) return { bonus: 0 };
+      const idx = slots.findIndex((x) => x > 0);
+      if (idx < 0) return { bonus: 0 };
+      slots = slots.slice();
+      slots[idx] = 0;
+      battleState[key] = slots;
+      renderSummonHud();
+      return { bonus: rollInt(2, 7), label: cfg.label };
+    }
+
+    function setCharButtonRosterTitle(btn, c) {
+      btn.removeAttribute("title");
+    }
+
     function dmStep(t, ok, w1, w2) {
       return { t, o: [[ok, true], [w1, false], [w2, false]] };
     }
@@ -3384,8 +3975,12 @@
       document.getElementById("e1").textContent = p1.emoji;
       document.getElementById("n1").textContent = p1.name;
       appendLog(`Замена — за команду 1 на поле выходит <strong>${p1.name}</strong>.`, "system");
+      battleState.raidArmorActive = (synergyP1.fx || []).some((f) => f.kind === "raid_armor_ignore");
+      battleState.yujiStrikes = 0;
+      battleState.summonP1 = initSummonSlots(p1);
       updateBattleBenchs();
       updateHpBars();
+      renderSummonHud();
       return true;
     }
 
@@ -3401,8 +3996,11 @@
       document.getElementById("e2").textContent = p2.emoji;
       document.getElementById("n2").textContent = p2.name;
       appendLog(`Замена — за команду 2 на поле выходит <strong>${p2.name}</strong>.`, "system");
+      battleState.raidArmorEnemyActive = (synergyP2.fx || []).some((f) => f.kind === "raid_armor_ignore");
+      battleState.summonP2 = initSummonSlots(p2);
       updateBattleBenchs();
       updateHpBars();
+      renderSummonHud();
       return true;
     }
 
@@ -3482,7 +4080,14 @@
     function runAutoBattleAction() {
       const autoEl = document.getElementById("autoBattle");
       if (!autoEl || !autoEl.checked || battleOver || !battleEl.classList.contains("active")) return;
-      const act = pickAutoBattleAction();
+      if (battleState.skipPlayerTurn) {
+        battleState.skipPlayerTurn = false;
+        appendLog(`<span class="system">Пропуск хода — сорванный темп.</span>`, "system");
+        enemyTurn();
+        return;
+      }
+      let act = pickAutoBattleAction();
+      if (battleState.forcePlayerStrikeNext) act = "strike";
       if (act === "domain") {
         const d = getDifficulty();
         const success = Math.random() < Math.min(0.92, d.domainSuccessChance + synergyP1.domainCh);
@@ -3506,6 +4111,7 @@
         b1.type = "button";
         b1.className = "char-btn" + (i1 >= 0 ? " p1-pick" : "");
         b1.innerHTML = (i1 >= 0 ? `<span class="slot-mark">${marks[i1]}</span>` : "") + `${c.emoji} ${c.name}`;
+        setCharButtonRosterTitle(b1, c);
         b1.disabled = team2Pick.includes(c.id);
         b1.addEventListener("click", () => {
           const j = team1Pick.indexOf(c.id);
@@ -3521,6 +4127,7 @@
         b2.type = "button";
         b2.className = "char-btn" + (i2 >= 0 ? " p2-pick" : "");
         b2.innerHTML = (i2 >= 0 ? `<span class="slot-mark">${marks[i2]}</span>` : "") + `${c.emoji} ${c.name}`;
+        setCharButtonRosterTitle(b2, c);
         b2.disabled = team1Pick.includes(c.id);
         b2.addEventListener("click", () => {
           const j = team2Pick.indexOf(c.id);
@@ -3559,6 +4166,7 @@
         b1.type = "button";
         b1.className = "char-btn" + (i1 >= 0 ? " p1-pick" : "");
         b1.innerHTML = (i1 >= 0 ? `<span class="slot-mark">${marks[i1]}</span>` : "") + `${c.emoji} ${c.name}`;
+        setCharButtonRosterTitle(b1, c);
         b1.disabled = team2Pick.includes(c.id);
         b1.addEventListener("click", () => {
           const j = team1Pick.indexOf(c.id);
@@ -3574,6 +4182,7 @@
         b2.type = "button";
         b2.className = "char-btn" + (i2 >= 0 ? " p2-pick" : "");
         b2.innerHTML = (i2 >= 0 ? `<span class="slot-mark">${marks[i2]}</span>` : "") + `${c.emoji} ${c.name}`;
+        setCharButtonRosterTitle(b2, c);
         b2.disabled = team1Pick.includes(c.id);
         b2.addEventListener("click", () => {
           const j = team2Pick.indexOf(c.id);
@@ -3608,30 +4217,167 @@
       return Math.max(1, b + Math.floor(Math.random() * (v * 2 + 1)) - v);
     }
 
+    /** Механики: не «×урон», а отдельные добои, отмены, хил, срывы (по id бойца). */
+    function mechDomainExtraFlat(p) {
+      if (!p) return 0;
+      if (p.id === "ryu") return rollInt(0, 5);
+      if (p.id === "hakari" && Math.random() < 0.35) return rollInt(3, 11);
+      if (p.id === "jogo" && Math.random() < 0.25) return rollInt(2, 8);
+      return 0;
+    }
+
+    function mechFlatChipVsTarget(attacker, target, phase) {
+      if (!attacker) return 0;
+      const id = attacker.id;
+      if (phase === "domain_miss" && id === "takaba" && Math.random() < 0.22) return rollInt(2, 9);
+      if (phase === "domain" && id === "geto" && Math.random() < 0.2) return rollInt(3, 10);
+      return 0;
+    }
+
+    function mechBonusDamageOnHit(attacker, act, dmgDealt) {
+      if (!attacker) return 0;
+      let add = 0;
+      const id = attacker.id;
+      if (id === "mahito" && act === "technique") add += rollInt(3, 9);
+      if (id === "nobara" && act === "strike" && Math.random() < 0.34) add += rollInt(2, 11);
+      if (id === "jogo" && act === "technique" && Math.random() < 0.36) add += rollInt(3, 13);
+      if (id === "kurourushi" && act === "technique") add += rollInt(2, 8);
+      if (id === "locust_guy" && act === "technique") add += rollInt(2, 9);
+      if (id === "mei_mei" && act === "strike" && Math.random() < 0.18) add += rollInt(4, 14);
+      if (id === "iori_hazenoki" && (act === "technique" || act === "strike")) add += rollInt(2, 10);
+      if (id === "reggie" && act === "technique" && Math.random() < 0.2) add += rollInt(3, 12);
+      if (id === "kashimo" && act === "technique" && Math.random() < 0.25) add += rollInt(3, 12);
+      if (id === "choso" && act === "technique") add += rollInt(1, 7);
+      if (id === "yuji" && act === "strike") {
+        if (attacker === p1) {
+          battleState.yujiStrikes = (battleState.yujiStrikes || 0) + 1;
+          if (battleState.yujiStrikes % 4 === 0) add += rollInt(8, 22);
+        } else {
+          battleState.yujiEnemyStrikes = (battleState.yujiEnemyStrikes || 0) + 1;
+          if (battleState.yujiEnemyStrikes % 4 === 0) add += rollInt(8, 22);
+        }
+      }
+      if (id === "megumi" && act === "technique" && Math.random() < 0.22) add += rollInt(3, 11);
+      if (id === "kenjaku" && act === "technique" && Math.random() < 0.18) add += rollInt(4, 14);
+      if (id === "yuki" && act === "strike" && Math.random() < 0.2) add += rollInt(4, 14);
+      if (id === "modulo_yuji" && act !== "defend") {
+        if (attacker === p1 && (battleState.playerMoves || 0) > 0 && battleState.playerMoves % 3 === 0) add += rollInt(5, 18);
+        if (attacker === p2 && (battleState.enemyMoves || 0) > 0 && battleState.enemyMoves % 3 === 0) add += rollInt(5, 18);
+      }
+      return scaleFlatBonus(add, attacker === p1 ? "p1" : "p2");
+    }
+
+    function mechHealOnDefend(defender) {
+      if (!defender) return 0;
+      const id = defender.id;
+      if (id === "yuta") return rollInt(6, 16);
+      if (id === "sukuna" && Math.random() < 0.45) return rollInt(5, 15);
+      if (id === "panda" && Math.random() < 0.4) return rollInt(4, 12);
+      if (id === "miwa" && Math.random() < 0.35) return rollInt(3, 10);
+      return 0;
+    }
+
+    function mechMaybeNegateOrShaveIncoming(defender, dmg) {
+      if (!defender || dmg <= 0) return dmg;
+      const b = getBattleBalance();
+      const s = defender === p1 ? b.mechDefP1 : b.mechDefP2;
+      const id = defender.id;
+      if (id === "gojo" && Math.random() < Math.min(0.45, 0.22 * s)) {
+        appendLog(`<span class="mech-proc">∞ Бесконечность — удар не достигает тела.</span>`, "mech-proc");
+        return 0;
+      }
+      if (id === "megumi" && Math.random() < Math.min(0.32, 0.14 * s)) {
+        appendLog(`<span class="mech-proc">Тень подхватила удар вместо тебя.</span>`, "mech-proc");
+        return 0;
+      }
+      if (id === "uro" && Math.random() < Math.min(0.34, 0.16 * s)) {
+        appendLog(`<span class="mech-proc">Небо искривлено — траектория срывается.</span>`, "mech-proc");
+        return 0;
+      }
+      if (id === "momo" && Math.random() < Math.min(0.28, 0.12 * s)) {
+        appendLog(`<span class="mech-proc">Уход на метле — удар в пустоту.</span>`, "mech-proc");
+        return 0;
+      }
+      if (id === "toji" && Math.random() < Math.min(0.3, 0.16 * s)) {
+        const cut = rollInt(4, 14);
+        return Math.max(1, dmg - cut);
+      }
+      if (id === "mechamaru" && Math.random() < Math.min(0.38, 0.2 * s)) {
+        return Math.max(1, dmg - rollInt(5, 16));
+      }
+      if (id === "hanami" && Math.random() < Math.min(0.34, 0.18 * s)) {
+        return Math.max(1, dmg - rollInt(3, 12));
+      }
+      if (id === "miwa" && Math.random() < Math.min(0.26, 0.12 * s)) {
+        return Math.max(1, Math.floor(dmg * 0.55));
+      }
+      if (id === "dhruv" && Math.random() < Math.min(0.3, 0.14 * s)) {
+        return Math.max(1, Math.floor(dmg * 0.62));
+      }
+      return dmg;
+    }
+
     function applyPlayerDomainHit(success) {
       if (battleOver || !p1 || !p2) return;
+      let ok = !!success;
+      if (!ok) {
+        const fxR = (synergyP1.fx || []).find((f) => f.kind === "domain_risk_reroll");
+        if (fxR && !battleState.domainRerollUsed && fxR.once && synergyRollSuccess(fxR.chance, "p1")) {
+          battleState.domainRerollUsed = true;
+          ok = true;
+          appendLog(`✦ <strong>Синергия (отбор):</strong> пересдача — домен цепляется!`, "synergy");
+        }
+      }
       const d = getDifficulty();
       let raw;
       let dmg;
       let msg;
       let logVariant;
-      if (success) {
+      const domFlat = mechDomainExtraFlat(p1);
+      if (ok) {
         raw = roll(Math.floor(22 * ((p1.tech + p1.atk) / 20)), null, d.rollVarPlayer);
-        raw = Math.max(1, Math.floor(raw * d.playerDamageMult * synergyP1.domainDmg));
+        raw = Math.max(1, Math.floor(raw * d.playerDamageMult) + domFlat);
         dmg = applyTargetArmor(raw, p2);
-        msg = `<span class="turn">Твой ход:</span> ${p1.domainHit} Урон: ${dmg}${synergyActNote("domain", synergyP1)}.`;
+        dmg = Math.max(1, dmg + mechFlatChipVsTarget(p1, p2, "domain"));
+        msg = `<span class="turn">Твой ход:</span> ${p1.domainHit} Урон: ${dmg}.`;
         logVariant = "domain";
-        triggerFxOverlay("is-domain", 600);
+        triggerFxOverlay("is-domain", 680);
         triggerScreenShake();
       } else {
         raw = roll(4, null, d.rollVarPlayer);
-        raw = Math.max(1, Math.floor(raw * d.playerDamageMult * synergyP1.domainDmg));
+        raw = Math.max(1, Math.floor(raw * d.playerDamageMult));
         dmg = applyTargetArmor(raw, p2);
-        msg = `<span class="turn">Твой ход:</span> ${p1.domainMiss} Слабый зацеп: ${dmg}${synergyActNote("domain", synergyP1)}.`;
+        dmg = Math.max(1, dmg + mechFlatChipVsTarget(p1, p2, "domain_miss"));
+        msg = `<span class="turn">Твой ход:</span> ${p1.domainMiss} Слабый зацеп: ${dmg}.`;
         logVariant = "domain-miss";
       }
+      if (battleState.nextPlayerOutgoingFactor < 0.999) {
+        dmg = Math.max(0, Math.floor(dmg * battleState.nextPlayerOutgoingFactor));
+        battleState.nextPlayerOutgoingFactor = 1;
+      }
+      dmg = mechMaybeNegateOrShaveIncoming(p2, dmg);
+      if (ok) {
+        msg = `<span class="turn">Твой ход:</span> ${p1.domainHit} Урон: ${dmg}.`;
+      } else {
+        msg = `<span class="turn">Твой ход:</span> ${p1.domainMiss} Слабый зацеп: ${dmg}.`;
+      }
       hp2 = Math.max(0, hp2 - dmg);
+      if (ok) {
+        const ritual = (synergyP1.fx || []).find((f) => f.kind === "ritual_domain_extra");
+        if (ritual && ritual.once && !battleState.ritualDomainUsed) {
+          battleState.ritualDomainUsed = true;
+          const ex = rollInt(ritual.min, ritual.max);
+          hp2 = Math.max(0, hp2 - ex);
+          appendLog(`✦ <strong>Синергия (школа):</strong> ритуальный резонанс — ещё <strong>${ex}</strong>.`, "synergy");
+        }
+        const curse = (synergyP1.fx || []).find((f) => f.kind === "curse_mark_after_domain");
+        if (curse) {
+          battleState.nextEnemyOutgoingFactor = Math.min(battleState.nextEnemyOutgoingFactor, curse.factor);
+          appendLog(`✦ <strong>Синергия (мозг/Гето):</strong> проклятая метка — следующий удар врага слабее.`, "synergy");
+        }
+      }
       appendLog(msg, logVariant);
+      battleState.playerMoves = (battleState.playerMoves || 0) + 1;
       updateHpBars();
       checkEnd();
       if (!battleOver) enemyTurn();
@@ -3639,8 +4385,21 @@
 
     function enemyTurn() {
       if (battleOver || !p1 || !p2) return;
+      if (battleState.skipEnemyTurn) {
+        battleState.skipEnemyTurn = false;
+        appendLog(`<span class="enemy">Противник не успевает ответить — сбитый темп.</span>`, "system");
+        if (!battleOver) scheduleAutoBattleStep();
+        return;
+      }
+      battleState.enemyMoves = (battleState.enemyMoves || 0) + 1;
       const d = getDifficulty();
-      const act = pickEnemyAct();
+      let act;
+      if (battleState.forceEnemyStrikeNext) {
+        battleState.forceEnemyStrikeNext = false;
+        act = "strike";
+      } else {
+        act = pickEnemyAct();
+      }
       const mult = act === "technique" ? p2.tech / 10 : act === "strike" ? p2.atk / 10 : 0;
       let dmg = 0;
       let line = "";
@@ -3648,39 +4407,92 @@
       if (act === "defend") {
         line = `<span class="enemy">Ход противника:</span> ${p2.defendLine}`;
         appendLog(line, "enemy");
+        const hDef = mechHealOnDefend(p2);
+        if (hDef > 0) {
+          hp2 = Math.min(max2, hp2 + hDef);
+          appendLog(`<span class="enemy">Враг восстанавливает</span> +<strong>${hDef}</strong> HP.`, "enemy");
+        }
+        runSynergyHooksEnemyAfterDefend();
+        tryTokyoCoverHealEnemy();
+        updateHpBars();
         if (!battleOver) scheduleAutoBattleStep();
         return;
       }
 
       let critLine = "";
+      const m2c = mechCritAdd(p2);
+      const pickLine = act === "strike" ? pick(p2.strikePool) : pick(p2.techPool);
       if (act === "strike") {
         dmg = roll(Math.floor(8 * mult), null, d.rollVarEnemy);
-        const crit = Math.random() < Math.min(0.85, d.enemyCritChance + synergyP2.crit);
+        const crit = Math.random() < Math.min(0.85, d.enemyCritChance + synergyP2.crit + m2c);
         if (crit) {
           dmg = Math.floor(dmg * 1.45);
           critLine = `<span class="crit">Крит!</span> `;
           triggerScreenShake();
-          triggerFxOverlay("is-crit", 480);
+          triggerFxOverlay("is-crit", 540);
+        }
+        const raidFx2 = (synergyP2.fx || []).find((f) => f.kind === "raid_armor_ignore");
+        if (raidFx2 && battleState.raidArmorEnemyActive) {
+          battleState.raidArmorEnemyActive = false;
+          dmg = Math.floor(dmg * (1 + raidFx2.frac));
+          appendLog(`✦ <strong>Синергия (враг, рейд):</strong> первый удар бойца пробивает защиту.`, "synergy");
         }
         dmg = Math.max(1, Math.floor(dmg * synergyP2.strike));
+        if (battleState.tagEnemyStrikeBonus > 0) {
+          dmg += battleState.tagEnemyStrikeBonus;
+          appendLog(
+            `✦ <strong>Синергия (враг):</strong> бонус после защиты +<strong>${battleState.tagEnemyStrikeBonus}</strong>.`,
+            "synergy",
+          );
+          battleState.tagEnemyStrikeBonus = 0;
+        }
+        dmg += mechBonusDamageOnHit(p2, "strike", dmg);
       } else {
         dmg = roll(Math.floor(7 * mult), null, d.rollVarEnemy);
         if (Math.random() < d.enemyTechBonusChance) dmg = Math.floor(dmg * 1.35);
         dmg = Math.max(1, Math.floor(dmg * synergyP2.tech * synergyP2.domainDmg));
+        dmg += mechBonusDamageOnHit(p2, "technique", dmg);
       }
 
       dmg = Math.max(1, Math.floor(dmg * d.enemyDamageMult));
       dmg = applyIncomingDefense(dmg, p1);
+      dmg = mechMaybeNegateOrShaveIncoming(p1, dmg);
+      if (dmg <= 0) {
+        appendLog(
+          `${critLine}<span class="enemy">Ход противника:</span> ${pickLine} — не проходит (<strong>0</strong> урона).`,
+          "enemy",
+        );
+        tryTokyoCoverHeal();
+        tryTokyoCoverHealEnemy();
+        updateHpBars();
+        checkEnd();
+        if (!battleOver) scheduleAutoBattleStep();
+        return;
+      }
+      let sumSummonE = 0;
+      const sbe = tryConsumeSummonBonus(p2, false);
+      sumSummonE = sbe.bonus;
+      if (sumSummonE > 0) dmg += sumSummonE;
+      if (battleState.nextEnemyOutgoingFactor < 0.999) {
+        dmg = Math.max(1, Math.floor(dmg * battleState.nextEnemyOutgoingFactor));
+        battleState.nextEnemyOutgoingFactor = 1;
+      }
       const mit = Math.min(0.78, d.defendMitigation + synergyP1.defEx);
       const reduced = defendStreak > 0 ? Math.max(1, Math.floor(dmg * (1 - mit))) : dmg;
-      const pickLine = act === "strike" ? pick(p2.strikePool) : pick(p2.techPool);
+      const summonNoteE = sumSummonE ? ` (призыв +${sumSummonE})` : "";
       line =
         critLine +
-        `<span class="enemy">Ход противника:</span> ${pickLine} Урон: ${dmg}${synergyActNote(act, synergyP2)}.`;
-      if (defendStreak > 0) line += ` (защита снижает до ${reduced})`;
+        `<span class="enemy">Ход противника:</span> ${pickLine} Урон: <strong>${reduced}</strong>${summonNoteE}`;
+      if (defendStreak > 0) line += ` (защита снижает с ${dmg} до ${reduced})`;
       hp1 = Math.max(0, hp1 - reduced);
       defendStreak = 0;
-      appendLog(line, act === "strike" && line.includes("Крит") ? "crit" : "enemy");
+      let enemyLogVar = "enemy";
+      if (act === "strike" && line.includes("Крит")) enemyLogVar = "crit";
+      appendLog(line, enemyLogVar);
+      tryTokyoCoverHeal();
+      tryTokyoCoverHealEnemy();
+      runSynergyHooksEnemyAfterDamage(act, reduced);
+      if (act === "technique") tryKyotoPulseEnemy("technique");
       updateHpBars();
       checkEnd();
       if (!battleOver) scheduleAutoBattleStep();
@@ -3704,7 +4516,7 @@
         f1.classList.remove("is-pulse");
         void f1.offsetWidth;
         f1.classList.add("is-pulse");
-        triggerFxOverlay("is-hit-p1", 400);
+        triggerFxOverlay("is-hit-p1", 420);
       }
       if (hp2 < prevHp2) {
         el2.classList.remove("hp-hit");
@@ -3713,7 +4525,7 @@
         f2.classList.remove("is-pulse");
         void f2.offsetWidth;
         f2.classList.add("is-pulse");
-        triggerFxOverlay("is-hit-p2", 400);
+        triggerFxOverlay("is-hit-p2", 420);
       }
       prevHp1 = hp1;
       prevHp2 = hp2;
@@ -3957,6 +4769,7 @@
       prevHp2 = hp2;
       battleOver = false;
       defendStreak = 0;
+      resetBattleState();
       setupEl.style.display = "none";
       battleEl.classList.add("active");
       document.getElementById("e1").textContent = p1.emoji;
@@ -3978,7 +4791,14 @@
         );
         synergyP1 = mergeSynergies(findSynergyMatches(team1Pick));
         synergyP2 = mergeSynergies(findSynergyMatches(team2Pick));
+        battleState.raidArmorActive = (synergyP1.fx || []).some((f) => f.kind === "raid_armor_ignore");
+        battleState.raidArmorEnemyActive = (synergyP2.fx || []).some((f) => f.kind === "raid_armor_ignore");
         renderSynergyHud();
+        battleState.summonP1 = initSummonSlots(p1);
+        battleState.summonP2 = initSummonSlots(p2);
+        renderSummonHud();
+        runSynergyHooksBattleStart();
+        runSynergyHooksBattleStartEnemy();
         synergyP1.active.forEach((m) => {
           appendLog(`✦ <strong>Связка (ты):</strong> «${m.name}» — ${m.blurb}`, "synergy");
         });
@@ -4059,6 +4879,7 @@
       synergyP1 = neutralSynergy();
       synergyP2 = neutralSynergy();
       renderSynergyHud();
+      renderSummonHud();
       renderRosters();
       updateLabels();
     });
@@ -4075,23 +4896,95 @@
       let logVariant = "turn";
       let raw = 0;
 
+      if (battleState.skipPlayerTurn) {
+        battleState.skipPlayerTurn = false;
+        appendLog(`<span class="system">Тебя выбивают из темпа — пропуск хода.</span>`, "system");
+        if (!battleOver) enemyTurn();
+        return;
+      }
+      if (battleState.forcePlayerStrikeNext && act !== "strike") {
+        appendLog(`<span class="system">Сценарий сужен — доступен только удар.</span>`, "system");
+        return;
+      }
+      if (act === "strike" && battleState.forcePlayerStrikeNext) battleState.forcePlayerStrikeNext = false;
+
       if (act === "strike") {
+        battleState.playerMoves = (battleState.playerMoves || 0) + 1;
         raw = roll(Math.floor(9 * (p1.atk / 10)), null, d.rollVarPlayer);
-        if (Math.random() < Math.min(0.88, d.playerCritChance + synergyP1.crit)) {
+        const raidFx = (synergyP1.fx || []).find((f) => f.kind === "raid_armor_ignore");
+        if (raidFx && battleState.raidArmorActive) {
+          battleState.raidArmorActive = false;
+          raw = Math.floor(raw * (1 + raidFx.frac));
+          appendLog(`✦ <strong>Синергия (рейд Зенин):</strong> первый удар после выхода пробивает защиту.`, "synergy");
+        }
+        if (Math.random() < Math.min(0.88, d.playerCritChance + synergyP1.crit + mechCritAdd(p1))) {
           raw = Math.floor(raw * 1.5);
           msg = `<span class="crit">Критический удар!</span> `;
           logVariant = "crit";
           triggerScreenShake();
-          triggerFxOverlay("is-crit", 480);
+          triggerFxOverlay("is-crit", 540);
         }
         raw = Math.max(1, Math.floor(raw * d.playerDamageMult * synergyP1.strike));
         dmg = applyTargetArmor(raw, p2);
-        msg += `<span class="turn">Твой ход:</span> ${pick(p1.strikePool)} Урон противнику: ${dmg}${synergyActNote("strike", synergyP1)}.`;
+        if (battleState.tagStrikeBonus > 0) {
+          dmg += battleState.tagStrikeBonus;
+          appendLog(`✦ <strong>Синергия:</strong> бонус после защиты +<strong>${battleState.tagStrikeBonus}</strong> к удару.`, "synergy");
+          battleState.tagStrikeBonus = 0;
+        }
+        const add = mechBonusDamageOnHit(p1, "strike", dmg);
+        dmg = Math.max(1, dmg + add);
+        if (battleState.nextPlayerOutgoingFactor < 0.999) {
+          dmg = Math.max(1, Math.floor(dmg * battleState.nextPlayerOutgoingFactor));
+          battleState.nextPlayerOutgoingFactor = 1;
+        }
+        dmg = mechMaybeNegateOrShaveIncoming(p2, dmg);
+        if (dmg <= 0) {
+          appendLog(
+            `${msg}<span class="turn">Твой ход:</span> ${pick(p1.strikePool)} — защита цели, <strong>0</strong> урона.`,
+            logVariant,
+          );
+          updateHpBars();
+          checkEnd();
+          if (!battleOver) enemyTurn();
+          return;
+        }
+        let sumSummon = 0;
+        const sb = tryConsumeSummonBonus(p1, true);
+        sumSummon = sb.bonus;
+        if (sumSummon > 0) dmg += sumSummon;
+        const addNote = add ? ` (+${add} доп.)` : "";
+        const sumNote = sumSummon ? ` (призыв +${sumSummon})` : "";
+        msg += `<span class="turn">Твой ход:</span> ${pick(p1.strikePool)} Урон противнику: <strong>${dmg}</strong>${addNote}${sumNote}`;
       } else if (act === "technique") {
+        battleState.playerMoves = (battleState.playerMoves || 0) + 1;
         raw = roll(Math.floor(8 * (p1.tech / 10)), null, d.rollVarPlayer);
         raw = Math.max(1, Math.floor(raw * d.playerDamageMult * synergyP1.tech));
         dmg = applyTargetArmor(raw, p2);
-        msg = `<span class="turn">Твой ход:</span> ${pick(p1.techPool)} Урон: ${dmg}${synergyActNote("technique", synergyP1)}.`;
+        const add = mechBonusDamageOnHit(p1, "technique", dmg);
+        dmg = Math.max(1, dmg + add);
+        if (battleState.nextPlayerOutgoingFactor < 0.999) {
+          dmg = Math.max(1, Math.floor(dmg * battleState.nextPlayerOutgoingFactor));
+          battleState.nextPlayerOutgoingFactor = 1;
+        }
+        dmg = mechMaybeNegateOrShaveIncoming(p2, dmg);
+        if (dmg <= 0) {
+          appendLog(
+            `<span class="turn">Твой ход:</span> ${pick(p1.techPool)} — защита цели, <strong>0</strong> урона.`,
+            "turn",
+          );
+          updateHpBars();
+          checkEnd();
+          if (!battleOver) enemyTurn();
+          return;
+        }
+        let sumSummonT = 0;
+        const sbt = tryConsumeSummonBonus(p1, true);
+        sumSummonT = sbt.bonus;
+        if (sumSummonT > 0) dmg += sumSummonT;
+        const addNoteT = add ? ` (+${add} доп.)` : "";
+        const sumNoteT = sumSummonT ? ` (призыв +${sumSummonT})` : "";
+        msg = `<span class="turn">Твой ход:</span> ${pick(p1.techPool)} Урон: <strong>${dmg}</strong>${addNoteT}${sumNoteT}`;
+        tryKyotoPulse("technique");
       } else if (act === "domain") {
         setActionsDisabled(true);
         runDomainStepMiniGame(p1, (success) => {
@@ -4100,15 +4993,26 @@
         });
         return;
       } else if (act === "defend") {
+        battleState.playerMoves = (battleState.playerMoves || 0) + 1;
         defendStreak = 1;
-        msg = `<span class="turn">Твой ход:</span> ${p1.defendLine} Следующий удар врага ослаблен${synergyActNote("defend", synergyP1)}.`;
+        const h = mechHealOnDefend(p1);
+        if (h > 0) {
+          hp1 = Math.min(max1, hp1 + h);
+          appendLog(`<span class="turn">Восстановление</span> +<strong>${h}</strong> HP.`, "turn");
+        }
+        runSynergyHooksPlayerAfterDefend();
+        msg = `<span class="turn">Твой ход:</span> ${p1.defendLine} Следующий удар врага ослаблен.`;
         appendLog(msg, "turn");
+        updateHpBars();
         if (!battleOver) enemyTurn();
         return;
       }
 
       hp2 = Math.max(0, hp2 - dmg);
       appendLog(msg, logVariant);
+      if (act === "strike" || act === "technique") {
+        runSynergyHooksPlayerAfterDamage(act, dmg);
+      }
       updateHpBars();
       checkEnd();
       if (!battleOver) {
