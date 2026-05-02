@@ -520,22 +520,22 @@
       box-shadow: 0 0 28px rgba(56, 189, 248, 0.32);
       transform: translateY(-1px);
     }
-    .char-btn.char-btn--boss {
+    .char-btn.char-btn--elite {
       border-color: rgba(244, 63, 94, 0.42);
       background: linear-gradient(155deg, rgba(52, 18, 32, 0.75), rgba(14, 8, 18, 0.97));
       box-shadow: 0 2px 14px rgba(0, 0, 0, 0.4), 0 0 20px rgba(244, 63, 94, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
-    .char-btn.char-btn--boss:hover:not(:disabled) {
+    .char-btn.char-btn--elite:hover:not(:disabled) {
       border-color: rgba(251, 113, 133, 0.55);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 26px rgba(244, 63, 94, 0.2);
     }
-    .char-btn.char-btn--boss.p1-pick {
+    .char-btn.char-btn--elite.p1-pick {
       border-color: rgba(34, 211, 238, 0.55);
       box-shadow:
         0 0 0 1px rgba(34, 211, 238, 0.35),
         0 0 24px rgba(34, 211, 238, 0.22);
     }
-    .char-btn.char-btn--boss.p2-pick {
+    .char-btn.char-btn--elite.p2-pick {
       border-color: rgba(244, 63, 94, 0.6);
       box-shadow:
         0 0 0 1px rgba(244, 63, 94, 0.38),
@@ -873,19 +873,25 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
       gap: 0.55rem;
+      align-items: stretch;
     }
     .char-btn {
-      display: inline-flex;
-      flex-wrap: wrap;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
       align-items: center;
       justify-content: center;
-      gap: 0.35rem 0.3rem;
+      gap: 0.35rem;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 7.5rem;
+      height: 100%;
       font-family: inherit;
       cursor: pointer;
       border: 1px solid var(--border);
       background: linear-gradient(155deg, rgba(34, 34, 48, 0.95), rgba(16, 16, 26, 0.98));
       color: var(--text);
-      padding: 0.72rem 0.55rem;
+      padding: 0.65rem 0.5rem;
       border-radius: 12px;
       font-size: 0.82rem;
       font-weight: 600;
@@ -939,6 +945,13 @@
       font-size: 0.78rem;
       letter-spacing: 0.04em;
       max-width: 100%;
+      width: 100%;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      word-break: break-word;
+      line-height: 1.25;
     }
     .fighter .char-title {
       font-size: clamp(0.92rem, 2.8vw, 1.12rem);
@@ -1134,6 +1147,22 @@
     .char-title--naoya_cs {
       background-image: linear-gradient(125deg, #a5f3fc 0%, #0e7490 50%, #0c4a6e 100%);
       filter: drop-shadow(0 0 12px rgba(14, 116, 144, 0.5));
+    }
+    .char-title--dagon {
+      background-image: linear-gradient(122deg, #bae6fd 0%, #0369a1 48%, #164e63 100%);
+      filter: drop-shadow(0 0 11px rgba(3, 105, 161, 0.45));
+    }
+    .char-title--dagon_true {
+      background-image: linear-gradient(125deg, #cffafe 0%, #0ea5e9 42%, #1e3a8a 100%);
+      filter: drop-shadow(0 0 14px rgba(14, 165, 233, 0.5));
+    }
+    .char-title--mahito_true {
+      background-image: linear-gradient(120deg, #e9d5ff 0%, #7c3aed 45%, #1e1b4b 100%);
+      filter: drop-shadow(0 0 13px rgba(124, 58, 237, 0.55));
+    }
+    .char-title--naoya_cs_true {
+      background-image: linear-gradient(128deg, #e0f2fe 0%, #38bdf8 38%, #4c1d95 100%);
+      filter: drop-shadow(0 0 13px rgba(56, 189, 248, 0.45));
     }
     .char-title--modulo_yuji {
       background-image: linear-gradient(130deg, #fae8ff 0%, #a855f7 35%, #f43f5e 70%, #38bdf8 100%);
@@ -1849,7 +1878,7 @@
   <div class="wrap">
     <header class="title-block">
       <h1>Текстовый бой — Jujutsu Kaisen</h1>
-      <p class="sub">До 3 бойцов на сторону, синергия в бою, домен — мини-игра. Элитных бойцов ищи в фильтре «Боссы».</p>
+      <p class="sub">До 3 бойцов на сторону, синергия в бою, домен — мини-игра. Усиленных бойцов ищи в фильтре «Усиленные».</p>
       <p class="app-version" id="appVersion" aria-label="Версия приложения"></p>
     </header>
 
@@ -1944,7 +1973,7 @@
 
   <script>
     /** Увеличивай при каждом значимом изменении (одна точка правды для UI). */
-    const APP_VERSION = "1.9.1";
+    const APP_VERSION = "1.10.0";
 
     function pick(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
@@ -2630,8 +2659,8 @@
       },
       {
         id: "heian_sukuna",
-        boss: true,
-        name: "(БОСС) Heian Sukuna",
+        elite: true,
+        name: "Heian Sukuna",
         emoji: "⛩",
         hp: 148,
         atk: 20,
@@ -2842,8 +2871,8 @@
       },
       {
         id: "mahoraga",
-        boss: true,
-        name: "(БОСС) Mahoraga",
+        elite: true,
+        name: "Mahoraga",
         emoji: "☸",
         hp: 148,
         atk: 20,
@@ -2992,6 +3021,49 @@
         defendLine: "Плотная кора базальта и CE — удар гасится жаром навстречу.",
       },
       {
+        id: "dagon",
+        name: "Dagon",
+        emoji: "💦",
+        hp: 118,
+        atk: 15,
+        tech: 17,
+        def: 11,
+        strikePool: [
+          "Удар штормовой волной — масса воды и CE давит в точке контакта.",
+          "Хват щупалец и ближний таран «глубинного» тела.",
+        ],
+        techPool: [
+          "«Горизонт пленительного скандха» (Horizon of the Captivating Skandha) — вода и давление смыкаются в объёме.",
+          "Шквал наводнения: поток CE сносит стойку и тянет вниз.",
+          "Водяной столб из-под ног — пробой снизу вверх.",
+        ],
+        domainHit: "Расширение домена Дагона — вода заполняет замкнутое пространство; «Горизонт» накрывает цель законом глубины.",
+        domainMiss: "Контур не смыкается — остаётся тяжёлый поток без полного объёма DE.",
+        defendLine: "Плотный слой воды и CE — удар гасится, как о стену шторма.",
+      },
+      {
+        id: "dagon_true",
+        elite: true,
+        name: "Dagon True Form",
+        emoji: "🌊",
+        hp: 142,
+        atk: 18,
+        tech: 20,
+        def: 14,
+        strikePool: [
+          "Истинная форма: масса тела специального класса — удар волной, ломающей барьер.",
+          "Щупальца и челюсть — хват без зазора, CE плотнее базовой формы.",
+        ],
+        techPool: [
+          "«Горизонт пленительного скандха» в полной мере — вода становится законом поля в сжатом виде.",
+          "Шторм в замкнутом объёме: каждый метр арены под давлением глубины.",
+          "Погружение цели в слой без опоры — CE выдавливает защиту.",
+        ],
+        domainHit: "Истинная форма: расширение домена — океан внутри барьера; «Горизонт» без ослаблений, давление как у полноценного DE.",
+        domainMiss: "Водная оболочка рвётся — остаётся один мощный гидроудар без полного контура.",
+        defendLine: "Слой воды и CE перенаправляет силу — ты уходишь в течение, удар срывается.",
+      },
+      {
         id: "mahito",
         name: "Mahito",
         emoji: "🖐️",
@@ -3011,6 +3083,28 @@
         domainHit: "Расширение домена: «Воплощение совершенства» (Self-Embodiment of Perfection) — касание становится законом поля.",
         domainMiss: "Душа «скользит» — Self-EP не фиксируется, остаётся слабый хват.",
         defendLine: "Трансфигурация своей руки в щит — форма гасит удар.",
+      },
+      {
+        id: "mahito_true",
+        elite: true,
+        name: "Mahito True Form",
+        emoji: "🌑",
+        hp: 132,
+        atk: 14,
+        tech: 22,
+        def: 12,
+        strikePool: [
+          "Истинная форма: тело искажённого убийства — выпад быстрее считывания CE.",
+          "Серия Instant Spirit Body — траектория ломается между фазами души.",
+        ],
+        techPool: [
+          "«Мгновенный дух искажённого убийства» в полной мере — каждое касание несёт трансфигурацию поля.",
+          "«Воплощение совершенства» в сжатом виде: касание почти как закон арены.",
+          "Сшивание души на площадь — цель не успевает удержать форму.",
+        ],
+        domainHit: "Истинная форма: «Воплощение совершенства» — касание и душа становятся законом замкнутого пространства без щадящих пауз.",
+        domainMiss: "Душа «скользит» на грани формы — Self-EP не фиксируется полностью, остаётся тяжёлый хват.",
+        defendLine: "Трансфигурация собственного контура — входящий удар рассеивается по «чужой» форме.",
       },
       {
         id: "geto",
@@ -3413,7 +3507,7 @@
       },
       {
         id: "naoya_cs",
-        name: "Naoya Zenin (Cursed Spirit)",
+        name: "Naoya Zenin — Cursed Spirit",
         emoji: "🎞️",
         hp: 118,
         atk: 18,
@@ -3433,9 +3527,31 @@
         defendLine: "Сдвиг фазы — удар проходит по пустому кадру, ты уже в другой плоскости.",
       },
       {
+        id: "naoya_cs_true",
+        elite: true,
+        name: "Naoya Cursed Spirit True Form",
+        emoji: "👻",
+        hp: 128,
+        atk: 19,
+        tech: 19,
+        def: 13,
+        strikePool: [
+          "Истинная форма духа: червеобразный рывок — кадры плёнки не укладываются в привычный темп.",
+          "Тело-лезвие на пределе Projection Sorcery — таран сквозь «пустые» кадры.",
+        ],
+        techPool: [
+          "«Временная клетка лунного дворца» в полной мере — нити CE и кадры смыкаются без щелей.",
+          "Ускорение за пределы кадра: противник получает удар до того, как фиксирует фазу.",
+          "Финальный кадр накопленного импульса — давление как у домена в одной точке.",
+        ],
+        domainHit: "Истинная форма: «Временная клетка лунного дворца» — плёнка и червеобразная фаза заполняют объём; движение жертвы ломается законом кадра.",
+        domainMiss: "Переход между фазами рвёт плёнку — остаётся один мощный кадр без полного DE.",
+        defendLine: "Сдвиг в плоскость между кадрами — удар проходит по пустоте, ты уже в следующей фазе.",
+      },
+      {
         id: "modulo_yuji",
-        boss: true,
-        name: "(БОСС) Modulo Yuji",
+        elite: true,
+        name: "Modulo Yuji",
         emoji: "👁",
         hp: 152,
         atk: 19,
@@ -3458,7 +3574,7 @@
 
     /** Категории для фильтра ростера (id → подпись). Персонаж может иметь несколько тегов. */
     const ROSTER_TAG_DEFS = [
-      { id: "boss", label: "Боссы" },
+      { id: "elite", label: "Усиленные" },
       { id: "migration", label: "Смертельная миграция" },
       { id: "curse", label: "Проклятия" },
       { id: "sorcerer", label: "Маги" },
@@ -3471,7 +3587,7 @@
       choso: ["curse", "sorcerer", "migration"],
       ryu: ["sorcerer", "migration"],
       sukuna: ["curse", "sorcerer"],
-      heian_sukuna: ["curse", "boss"],
+      heian_sukuna: ["curse", "elite"],
       gojo: ["sorcerer"],
       megumi: ["sorcerer", "migration"],
       mechamaru: ["sorcerer"],
@@ -3481,14 +3597,17 @@
       hakari: ["sorcerer", "migration"],
       higuruma: ["sorcerer", "migration"],
       nobara: ["sorcerer"],
-      mahoraga: ["curse", "boss"],
+      mahoraga: ["curse", "elite"],
       toji: ["sorcerer", "zenin"],
       nanami: ["sorcerer"],
       toge: ["sorcerer"],
       maki: ["sorcerer", "zenin"],
       panda: ["sorcerer"],
       jogo: ["curse"],
+      dagon: ["curse"],
+      dagon_true: ["curse", "elite"],
       mahito: ["curse"],
+      mahito_true: ["curse", "elite"],
       geto: ["sorcerer"],
       yuki: ["sorcerer"],
       kenjaku: ["sorcerer"],
@@ -3509,7 +3628,8 @@
       reggie: ["sorcerer", "migration"],
       iori_hazenoki: ["sorcerer", "migration"],
       naoya_cs: ["curse", "zenin"],
-      modulo_yuji: ["sorcerer", "boss"],
+      naoya_cs_true: ["curse", "zenin", "elite"],
+      modulo_yuji: ["sorcerer", "elite"],
     };
 
     let rosterActiveTagIds = new Set();
@@ -3702,11 +3822,29 @@
         "Льдом и снегом",
         "Только ветром без жара",
       ),
+      dagon: dmStep(
+        "«Горизонт пленительного скандха» смыкается, когда:",
+        "Вода и CE держат замкнутый объём без «дыр» в глубине",
+        "Только брызги без якоря",
+        "Ты стоишь на суше без контакта с полем",
+      ),
+      dagon_true: dmStep(
+        "В истинной форме океан внутри DE держится, если:",
+        "Масса воды и закон глубины якорят барьер целиком",
+        "Только один шторм без связи с центром",
+        "CE отключена у цели, не у тебя",
+      ),
       mahito: dmStep(
         "«Воплощение совершенности» — закон поля:",
         "Касание души/тела становится правилом трансфигурации",
         "Только визуальный эффект",
         "Только звук шагов",
+      ),
+      mahito_true: dmStep(
+        "В истинной форме «Воплощение совершенности» держится, если:",
+        "Каждое касание якорит душу и тело без разрыва закона",
+        "Только внешний свет без CE",
+        "Ты отключаешь трансфигурацию полностью",
       ),
       geto: dmStep(
         "Воронка духов Гето даёт давление как у DE, когда:",
@@ -3797,6 +3935,12 @@
         "Кадры и червеобразная фаза закрывают объём без разрывов",
         "Ты движешься только прямо",
         "CE отключена полностью",
+      ),
+      naoya_cs_true: dmStep(
+        "В истинной форме духа «Временная клетка» без щелей, если:",
+        "Кадры, нити CE и червеобразная фаза закрывают объём полностью",
+        "Один кадр в минуту",
+        "Плёнка без носителя",
       ),
       dhruv: dmStep(
         "«Модель Лапласа» как давление поля держится на:",
@@ -4078,7 +4222,7 @@
         const b1 = document.createElement("button");
         b1.type = "button";
         b1.className =
-          "char-btn" + (c.boss ? " char-btn--boss" : "") + (i1 >= 0 ? " p1-pick" : "");
+          "char-btn" + (c.elite ? " char-btn--elite" : "") + (i1 >= 0 ? " p1-pick" : "");
         b1.innerHTML =
           (i1 >= 0 ? `<span class="slot-mark">${marks[i1]}</span>` : "") +
           `<span class="char-btn__emoji" aria-hidden="true">${c.emoji}</span><span class="char-title char-title--${c.id}">${c.name}</span>`;
@@ -4097,7 +4241,7 @@
         const b2 = document.createElement("button");
         b2.type = "button";
         b2.className =
-          "char-btn" + (c.boss ? " char-btn--boss" : "") + (i2 >= 0 ? " p2-pick" : "");
+          "char-btn" + (c.elite ? " char-btn--elite" : "") + (i2 >= 0 ? " p2-pick" : "");
         b2.innerHTML =
           (i2 >= 0 ? `<span class="slot-mark">${marks[i2]}</span>` : "") +
           `<span class="char-btn__emoji" aria-hidden="true">${c.emoji}</span><span class="char-title char-title--${c.id}">${c.name}</span>`;
@@ -4196,7 +4340,7 @@
       if (!attacker) return 0;
       let add = 0;
       const id = attacker.id;
-      if (id === "mahito" && act === "technique") add += rollInt(3, 9);
+      if ((id === "mahito" || id === "mahito_true") && act === "technique") add += rollInt(3, 9);
       if (id === "nobara" && act === "strike" && Math.random() < 0.34) add += rollInt(2, 11);
       if (id === "jogo" && act === "technique" && Math.random() < 0.36) add += rollInt(3, 13);
       if (id === "kurourushi" && act === "technique") add += rollInt(2, 8);
