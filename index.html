@@ -552,12 +552,15 @@
       align-items: center;
       justify-content: center;
       padding: 1rem;
-      background: radial-gradient(ellipse 100% 90% at 50% 45%, rgba(40, 8, 20, 0.35), rgba(2, 2, 8, 0.94));
-      backdrop-filter: blur(12px) saturate(1.15);
-      -webkit-backdrop-filter: blur(12px) saturate(1.15);
+      background:
+        radial-gradient(ellipse 85% 70% at 20% 20%, rgba(88, 28, 135, 0.22), transparent 55%),
+        radial-gradient(ellipse 80% 65% at 85% 75%, rgba(190, 18, 60, 0.18), transparent 50%),
+        rgba(2, 2, 10, 0.92);
+      backdrop-filter: blur(14px) saturate(1.2);
+      -webkit-backdrop-filter: blur(14px) saturate(1.2);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease;
+      transition: opacity 0.28s ease;
     }
     .boss-menu.is-open {
       opacity: 1;
@@ -565,86 +568,267 @@
     }
     .boss-menu__panel {
       width: 100%;
-      max-width: 44rem;
-      max-height: min(90vh, 38rem);
+      max-width: min(46rem, 100%);
+      max-height: min(92vh, 42rem);
+      overflow-x: hidden;
       overflow-y: auto;
-      padding: 1.3rem 1.3rem 1.4rem;
-      border-radius: 16px;
-      border: 1px solid rgba(244, 63, 94, 0.42);
-      background: linear-gradient(165deg, rgba(52, 14, 26, 0.97), rgba(10, 8, 16, 0.99));
-      box-shadow: 0 0 48px rgba(244, 63, 94, 0.22), 0 28px 72px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      padding: 1.35rem 1.35rem 1.25rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: linear-gradient(165deg, rgba(28, 14, 32, 0.98) 0%, rgba(8, 6, 18, 0.99) 55%, rgba(12, 8, 22, 0.99) 100%);
+      box-shadow:
+        0 0 0 1px rgba(244, 63, 94, 0.12) inset,
+        0 0 64px rgba(168, 85, 247, 0.15),
+        0 32px 80px rgba(0, 0, 0, 0.65);
+      transform: translateY(14px) scale(0.97);
+      opacity: 0;
+      transition: transform 0.32s var(--ease-out), opacity 0.28s ease, box-shadow 0.3s ease;
+    }
+    .boss-menu.is-open .boss-menu__panel {
+      transform: translateY(0) scale(1);
+      opacity: 1;
     }
     .boss-menu__head {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 0.75rem;
-      margin-bottom: 0.5rem;
+      gap: 1rem;
+      margin-bottom: 1.1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .boss-menu__title-block {
+      min-width: 0;
+    }
+    .boss-menu__eyebrow {
+      margin: 0 0 0.35rem;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(251, 191, 36, 0.88);
     }
     .boss-menu__head h2 {
       font-family: "Syne", "Outfit", sans-serif;
-      font-size: 1.1rem;
+      font-size: clamp(1.2rem, 3.5vw, 1.45rem);
       font-weight: 800;
+      margin: 0 0 0.45rem;
+      letter-spacing: 0.02em;
+      background: linear-gradient(105deg, #fff 0%, #fda4af 45%, #e9d5ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .boss-menu__lede {
       margin: 0;
-      color: #fecdd3;
-      letter-spacing: 0.03em;
+      font-size: 0.84rem;
+      line-height: 1.5;
+      color: rgba(200, 198, 215, 0.95);
+      max-width: 36rem;
     }
     .boss-menu__close {
       flex-shrink: 0;
-      width: 2.1rem;
-      height: 2.1rem;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(0, 0, 0, 0.35);
-      color: var(--text);
-      font-size: 1.35rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(0, 0, 0, 0.4);
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 1.5rem;
       line-height: 1;
       cursor: pointer;
       padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
     }
     .boss-menu__close:hover {
-      border-color: rgba(251, 113, 133, 0.6);
+      border-color: rgba(251, 113, 133, 0.55);
+      background: rgba(244, 63, 94, 0.15);
       color: #fff;
+      transform: scale(1.05);
     }
-    .boss-menu__hint {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin: 0 0 1rem;
-      line-height: 1.45;
-    }
-    .boss-menu__columns {
+    .boss-menu__howto {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.15rem 1.35rem;
+      gap: 0.65rem 1rem;
+      margin-bottom: 1rem;
     }
-    @media (max-width: 560px) {
-      .boss-menu__columns {
+    @media (max-width: 620px) {
+      .boss-menu__howto {
         grid-template-columns: 1fr;
       }
     }
-    .boss-menu__sub {
-      font-size: 0.72rem;
+    .boss-menu__step {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      padding: 0.7rem 0.75rem;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .boss-menu__step-num {
+      flex-shrink: 0;
+      width: 1.65rem;
+      height: 1.65rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: #0f172a;
+      background: linear-gradient(145deg, #fbbf24, #f59e0b);
+      box-shadow: 0 0 16px rgba(251, 191, 36, 0.25);
+    }
+    .boss-menu__step-title {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: #f1f5f9;
+      margin-bottom: 0.2rem;
+    }
+    .boss-menu__step-text {
+      margin: 0;
+      font-size: 0.76rem;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+    .boss-menu__only-list {
+      list-style: none;
+      margin: 0 0 1.1rem;
+      padding: 0.65rem 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem 0.65rem;
+      align-items: center;
+      border-radius: 12px;
+      background: rgba(168, 85, 247, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.22);
+    }
+    .boss-menu__only-list::before {
+      content: "Только здесь";
+      flex: 1 0 100%;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
+      color: rgba(216, 180, 254, 0.9);
+      margin-bottom: 0.1rem;
+    }
+    .boss-menu__only-list li {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #f8fafc;
+      padding: 0.35rem 0.55rem 0.35rem 0.4rem;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .boss-menu__chip {
+      font-size: 1rem;
+      line-height: 1;
+      opacity: 0.95;
+    }
+    .boss-menu__columns {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0 0.85rem;
+      align-items: stretch;
+    }
+    @media (max-width: 640px) {
+      .boss-menu__columns {
+        grid-template-columns: 1fr;
+        gap: 1rem 0;
+      }
+      .boss-menu__divider {
+        display: none;
+      }
+    }
+    .boss-menu__divider {
+      width: 1px;
+      min-height: 5rem;
+      align-self: stretch;
+      background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.12) 25%, rgba(255, 255, 255, 0.12) 75%, transparent 100%);
+      justify-self: center;
+    }
+    .boss-menu__column {
+      min-width: 0;
+      padding: 0.85rem 0.75rem 0.75rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.22);
+    }
+    .boss-menu__column--p1 {
+      border-color: rgba(34, 211, 238, 0.22);
+      box-shadow: 0 0 32px -12px rgba(34, 211, 238, 0.12), inset 0 1px 0 rgba(34, 211, 238, 0.06);
+    }
+    .boss-menu__column--p2 {
+      border-color: rgba(244, 63, 94, 0.22);
+      box-shadow: 0 0 32px -12px rgba(244, 63, 94, 0.12), inset 0 1px 0 rgba(244, 63, 94, 0.06);
+    }
+    .boss-menu__col-head {
+      margin: 0 0 0.65rem;
+      padding-bottom: 0.55rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .boss-menu__col-tag {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-weight: 800;
       letter-spacing: 0.12em;
-      color: rgba(251, 191, 36, 0.9);
-      margin: 0 0 0.45rem;
-      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      margin-bottom: 0.35rem;
+      color: #0c1220;
+      background: linear-gradient(135deg, #67e8f9, #22d3ee);
+    }
+    .boss-menu__col-tag--enemy {
+      background: linear-gradient(135deg, #fda4af, #f43f5e);
+    }
+    .boss-menu__col-title {
+      margin: 0;
+      font-family: "Syne", "Outfit", sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #f8fafc;
+      letter-spacing: 0.02em;
+    }
+    .boss-menu__col-meta {
+      margin: 0.2rem 0 0;
+      font-size: 0.68rem;
+      color: var(--muted);
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+    }
+    .boss-menu__footer-tip {
+      margin: 1rem 0 0;
+      padding-top: 0.85rem;
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+      font-size: 0.74rem;
+      line-height: 1.45;
+      color: rgba(180, 176, 195, 0.95);
+      text-align: center;
     }
     .roster.roster--boss {
       margin-top: 0;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
       gap: 0.55rem;
     }
-    .boss-menu__columns .setup-team,
-    .boss-menu__columns > div {
-      padding: 0.65rem 0.5rem 0;
-      border-radius: 10px;
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+    .boss-menu .char-btn.char-btn--boss {
+      min-height: 2.85rem;
+      font-size: 0.8rem;
+      border-radius: 11px;
     }
-    .boss-menu__columns .boss-menu__sub {
-      margin: 0 0 0.5rem;
-      padding: 0 0.35rem;
+    .boss-menu .char-btn.char-btn--boss:disabled {
+      opacity: 0.42;
+      filter: grayscale(0.35);
     }
     body.is-shake {
       animation: screenShake 0.48s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
@@ -1726,6 +1910,10 @@
       .modulo-cutscene__eye { animation: none; }
       .fighters__vs span { animation: none; }
       .vs-badge { animation: none; }
+      .boss-menu__panel {
+        transform: none !important;
+        opacity: 1 !important;
+      }
     }
   </style>
 </head>
@@ -1748,20 +1936,60 @@
   <div class="boss-menu" id="bossMenu" aria-hidden="true">
     <div class="boss-menu__panel" role="dialog" aria-modal="true" aria-labelledby="bossMenuTitle">
       <div class="boss-menu__head">
-        <h2 id="bossMenuTitle">Меню боссов</h2>
-        <button type="button" class="boss-menu__close" id="bossMenuClose" aria-label="Закрыть">×</button>
+        <div class="boss-menu__title-block">
+          <p class="boss-menu__eyebrow">Отдельный пул</p>
+          <h2 id="bossMenuTitle">Боссы</h2>
+          <p class="boss-menu__lede">Три элитных бойца есть только в этом окне — в общем ростере на арене их не найти.</p>
+        </div>
+        <button type="button" class="boss-menu__close" id="bossMenuClose" aria-label="Закрыть меню">
+          <span aria-hidden="true">×</span>
+        </button>
       </div>
-      <p class="boss-menu__hint">В общем ростере их нет: <strong>(БОСС) Mahoraga</strong>, <strong>(БОСС) Heian Sukuna</strong> и <strong>(БОСС) Modulo Yuji</strong> — только здесь. Клик по карточке: до 3 в команде, повторный клик снимает.</p>
+
+      <div class="boss-menu__howto" role="region" aria-label="Как выбрать боссов">
+        <div class="boss-menu__step">
+          <span class="boss-menu__step-num" aria-hidden="true">1</span>
+          <div>
+            <strong class="boss-menu__step-title">Карточки</strong>
+            <p class="boss-menu__step-text">Нажми до трёх боссов у себя и до трёх у противника. Повторный клик по той же карточке снимает её из состава.</p>
+          </div>
+        </div>
+        <div class="boss-menu__step">
+          <span class="boss-menu__step-num" aria-hidden="true">2</span>
+          <div>
+            <strong class="boss-menu__step-title">Дальше</strong>
+            <p class="boss-menu__step-text">Закрой окно — выбор сохранится на главном экране. Затем нажми «Начать бой», как обычно.</p>
+          </div>
+        </div>
+      </div>
+
+      <ul class="boss-menu__only-list" aria-label="Эксклюзивные боссы">
+        <li><span class="boss-menu__chip" aria-hidden="true">☸</span> Mahoraga</li>
+        <li><span class="boss-menu__chip" aria-hidden="true">⛩</span> Heian Sukuna</li>
+        <li><span class="boss-menu__chip" aria-hidden="true">👁</span> Modulo Yuji</li>
+      </ul>
+
       <div class="boss-menu__columns">
-        <div>
-          <h3 class="boss-menu__sub">Команда 1 (ты)</h3>
+        <div class="boss-menu__column boss-menu__column--p1">
+          <header class="boss-menu__col-head">
+            <span class="boss-menu__col-tag">Ты</span>
+            <h3 class="boss-menu__col-title">Команда 1</h3>
+            <p class="boss-menu__col-meta">слоты ① ② ③</p>
+          </header>
           <div class="roster roster--boss" id="bossRoster1"></div>
         </div>
-        <div>
-          <h3 class="boss-menu__sub">Команда 2 (противник)</h3>
+        <div class="boss-menu__divider" aria-hidden="true"></div>
+        <div class="boss-menu__column boss-menu__column--p2">
+          <header class="boss-menu__col-head">
+            <span class="boss-menu__col-tag boss-menu__col-tag--enemy">Враг</span>
+            <h3 class="boss-menu__col-title">Команда 2</h3>
+            <p class="boss-menu__col-meta">слоты ① ② ③</p>
+          </header>
           <div class="roster roster--boss" id="bossRoster2"></div>
         </div>
       </div>
+
+      <p class="boss-menu__footer-tip">Недоступная карточка (серым) — босс уже в другой команде.</p>
     </div>
   </div>
   <div class="maho-cutscene" id="mahoCutscene" aria-hidden="true">
@@ -1882,7 +2110,7 @@
 
   <script>
     /** Увеличивай при каждом значимом изменении (одна точка правды для UI). */
-    const APP_VERSION = "1.6.0";
+    const APP_VERSION = "1.6.1";
 
     function pick(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
@@ -4109,7 +4337,7 @@
 
         const b1 = document.createElement("button");
         b1.type = "button";
-        b1.className = "char-btn" + (i1 >= 0 ? " p1-pick" : "");
+        b1.className = "char-btn char-btn--boss" + (i1 >= 0 ? " p1-pick" : "");
         b1.innerHTML = (i1 >= 0 ? `<span class="slot-mark">${marks[i1]}</span>` : "") + `${c.emoji} ${c.name}`;
         setCharButtonRosterTitle(b1, c);
         b1.disabled = team2Pick.includes(c.id);
@@ -4125,7 +4353,7 @@
 
         const b2 = document.createElement("button");
         b2.type = "button";
-        b2.className = "char-btn" + (i2 >= 0 ? " p2-pick" : "");
+        b2.className = "char-btn char-btn--boss" + (i2 >= 0 ? " p2-pick" : "");
         b2.innerHTML = (i2 >= 0 ? `<span class="slot-mark">${marks[i2]}</span>` : "") + `${c.emoji} ${c.name}`;
         setCharButtonRosterTitle(b2, c);
         b2.disabled = team1Pick.includes(c.id);
