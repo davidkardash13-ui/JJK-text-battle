@@ -378,6 +378,76 @@
       box-shadow: 0 0 28px rgba(225, 29, 72, 0.32);
       transform: translateY(-1px);
     }
+    .modulo-cutscene {
+      position: fixed;
+      inset: 0;
+      z-index: 165;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      background: radial-gradient(ellipse 88% 72% at 50% 42%, rgba(12, 18, 40, 0.98), rgba(2, 4, 14, 0.98));
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .modulo-cutscene.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modulo-cutscene__inner {
+      max-width: 28rem;
+      width: 100%;
+      text-align: center;
+    }
+    .modulo-cutscene__eye {
+      font-size: clamp(2.8rem, 10vw, 4.2rem);
+      line-height: 1;
+      margin: 0 auto 1.35rem;
+      display: block;
+      width: fit-content;
+      animation: moduloEyePulse 2.4s ease-in-out infinite;
+      filter: drop-shadow(0 0 22px rgba(56, 189, 248, 0.45)) drop-shadow(0 0 36px rgba(168, 85, 247, 0.4));
+      user-select: none;
+    }
+    @keyframes moduloEyePulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.07); opacity: 0.9; }
+    }
+    .modulo-cutscene__text {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      color: rgba(236, 242, 255, 0.94);
+      text-align: left;
+      min-height: 6rem;
+      margin-bottom: 1.25rem;
+    }
+    .modulo-cutscene__line {
+      margin: 0 0 0.65rem;
+      padding: 0.35rem 0;
+      border-left: 2px solid rgba(56, 189, 248, 0.5);
+      padding-left: 0.75rem;
+      animation: mahoLineIn 0.45s var(--ease-out) both;
+    }
+    .modulo-cutscene__btn {
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      padding: 0.65rem 1.4rem;
+      border-radius: 10px;
+      border: 1px solid rgba(56, 189, 248, 0.55);
+      background: linear-gradient(165deg, rgba(25, 45, 85, 0.55), rgba(10, 12, 28, 0.96));
+      color: #e0f2fe;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.18);
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.2s;
+    }
+    .modulo-cutscene__btn:hover {
+      border-color: rgba(125, 211, 252, 0.9);
+      box-shadow: 0 0 28px rgba(56, 189, 248, 0.32);
+      transform: translateY(-1px);
+    }
     .boss-menu-btn {
       display: block;
       width: 100%;
@@ -1313,6 +1383,7 @@
       h1 { animation: none; background-position: center; }
       .maho-cutscene__wheel { animation: none; }
       .heian-cutscene__torii { animation: none; }
+      .modulo-cutscene__eye { animation: none; }
     }
   </style>
 </head>
@@ -1335,7 +1406,7 @@
         <h2 id="bossMenuTitle">Меню боссов</h2>
         <button type="button" class="boss-menu__close" id="bossMenuClose" aria-label="Закрыть">×</button>
       </div>
-      <p class="boss-menu__hint">В общем ростере их нет: <strong>(БОСС) Mahoraga</strong> и <strong>(БОСС) Heian Sukuna</strong> — только здесь. Клик по карточке: до 3 в команде, повторный клик снимает.</p>
+      <p class="boss-menu__hint">В общем ростере их нет: <strong>(БОСС) Mahoraga</strong>, <strong>(БОСС) Heian Sukuna</strong> и <strong>(БОСС) Modulo Yuji</strong> — только здесь. Клик по карточке: до 3 в команде, повторный клик снимает.</p>
       <div class="boss-menu__columns">
         <div>
           <h3 class="boss-menu__sub">Команда 1 (ты)</h3>
@@ -1360,6 +1431,13 @@
       <div class="heian-cutscene__torii" aria-hidden="true">⛩</div>
       <div class="heian-cutscene__text" id="heianCutsceneText"></div>
       <button type="button" class="heian-cutscene__btn" id="heianCutsceneBtn" hidden>Продолжить бой</button>
+    </div>
+  </div>
+  <div class="modulo-cutscene" id="moduloCutscene" aria-hidden="true">
+    <div class="modulo-cutscene__inner">
+      <div class="modulo-cutscene__eye" aria-hidden="true">👁</div>
+      <div class="modulo-cutscene__text" id="moduloCutsceneText"></div>
+      <button type="button" class="modulo-cutscene__btn" id="moduloCutsceneBtn" hidden>Продолжить бой</button>
     </div>
   </div>
 
@@ -1448,7 +1526,7 @@
 
   <script>
     /** Увеличивай при каждом значимом изменении (одна точка правды для UI). */
-    const APP_VERSION = "1.1.0";
+    const APP_VERSION = "1.2.1";
 
     function pick(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
@@ -2496,6 +2574,112 @@
         domainMiss: "Порыв рвётся — остаётся слабый порыв ветра и касание метлы.",
         defendLine: "Резкий подъём на метле — удар проходит под тобой, ветер сбивает линию.",
       },
+      {
+        id: "hanami",
+        name: "Hanami",
+        emoji: "🌳",
+        hp: 116,
+        atk: 15,
+        tech: 17,
+        def: 12,
+        strikePool: [
+          "Удар корнями и стволом — тяжёлый импакт «лесного» тела.",
+          "Ближний захват лианами — сдавливание и бросок.",
+        ],
+        techPool: [
+          "«Катастрофические растения» (Disaster Plants) — шипы и побеги пробивают защиту.",
+          "Диск из цветов и листвы — режущий залп CE.",
+          "Волна корней из-под земли — ломает опору и тянет вниз.",
+        ],
+        domainHit: "Расширение домена Ханами — лес заполняет замкнутый объём; корни и катастрофа флоры становятся законом поля.",
+        domainMiss: "Семя не прорастает в ритме — противник выходит из периметра корней.",
+        defendLine: "Кора и слой листвы с CE — удар гасится живой бронёй.",
+      },
+      {
+        id: "naoya",
+        name: "Naoya Zenin",
+        emoji: "🎞️",
+        hp: 108,
+        atk: 17,
+        tech: 16,
+        def: 11,
+        strikePool: [
+          "«Проекционная магия» (Projection Sorcery) — кадры плёнки режут траекторию удара.",
+          "Сверхскоростной выпад в «24 кадра» — противник не успевает прочитать фазу.",
+        ],
+        techPool: [
+          "Покадровая смена позиции — ты оказываешься «в кадре» уже с ударом.",
+          "Сжатие дистанции: плёнка CE фиксирует цель между кадрами.",
+          "Финальный кадр — накопленный импульс в одной точке контакта.",
+        ],
+        domainHit: "Расширение домена: «Временная клетка лунного дворца» (Time Cell Moon Palace) — замкнутое пространство из кадров и нитей; движение цели ломается законом плёнки.",
+        domainMiss: "Плёнка рвётся по шву — остаётся один резкий кадр без полного объёма DE.",
+        defendLine: "Сдвиг на кадр назад — удар проходит по пустому кадру.",
+      },
+      {
+        id: "shigemo",
+        name: "Haruta Shigemo",
+        emoji: "⚔️",
+        hp: 100,
+        atk: 14,
+        tech: 15,
+        def: 10,
+        strikePool: [
+          "Рубящий выпад проклятым клинком — короткая, жёсткая линия.",
+          "Контрудар после уклонения — меч ведёт CE в точку.",
+        ],
+        techPool: [
+          "«Чудо» (Miracle) — маловероятное становится неизбежным, когда шанс накоплен.",
+          "Серия ударов мечом с «удачным» углом — CE цепляет слабое место.",
+          "Финальный выпад по уже «сложенному» чуду — пробой защиты.",
+        ],
+        domainHit: "Цепь чудес смыкается в периметр — каждый удар меча закреплён законом удачи, как давление домена.",
+        domainMiss: "Чудо не складывается — остаётся обычный рез и слабый CE.",
+        defendLine: "Отступ на шаг — чудо не срабатывает без линии; ты уводишь клинок.",
+      },
+      {
+        id: "dabura",
+        name: "Dabura",
+        emoji: "👣",
+        hp: 102,
+        atk: 12,
+        tech: 16,
+        def: 10,
+        strikePool: [
+          "Удар после следа — шикигами вырывается из отпечатка ноги.",
+          "Ближний толчок: цепочка шагов загоняет противника в угол.",
+        ],
+        techPool: [
+          "Следы на земле порождают стадо шикигами — таран снизу и с фланга.",
+          "«Слоны» из цепочки шагов — масса CE обрушивается по траектории следов.",
+          "Перемещение по собственным следам — дезориентация и удар в спину.",
+        ],
+        domainHit: "Расширение домена: поле покрывается следами — каждый шаг порождает шикигами; территория становится лабиринтом ударов.",
+        domainMiss: "Цепь следов рвётся — остаётся один слон и слабый отпечаток.",
+        defendLine: "Прыжок с линии следов — удар шикигами не находит якоря.",
+      },
+      {
+        id: "modulo_yuji",
+        boss: true,
+        name: "(БОСС) Modulo Yuji",
+        emoji: "👁",
+        hp: 152,
+        atk: 19,
+        tech: 21,
+        def: 14,
+        strikePool: [
+          "«Разнонаправленный кулак» в ритме остатка — удар приходит на «долю фазы» позже ожидаемого.",
+          "Чёрная вспышка по модулю CE — пик удара смещён, чтение противника ломается.",
+        ],
+        techPool: [
+          "Глаз «остатка» видит слабый такт — следующий удар бьёт в разрыв ритма.",
+          "Цепь ударов с периодом N: каждый N-й удар усилен, как джекпот CE.",
+          "Синхрон с «модулем» поля — техника накладывается на фазу противника.",
+        ],
+        domainHit: "Расширение домена Modulo: «Остаток судьбы» — закон поля цикличен; удары и CE повторяются с остатком, который нельзя угадать без глаза.",
+        domainMiss: "Цикл не сходится — остаётся один удар вне фазы и слабый импульс.",
+        defendLine: "Сдвиг фазы на единицу — входящий удар попадает в «пустой» остаток.",
+      },
     ];
 
     function dmStep(t, ok, w1, w2) {
@@ -2740,6 +2924,36 @@
         "Метла сломана и без CE",
         "Ты стоишь на земле без движения",
       ),
+      hanami: dmStep(
+        "Лес Ханами в DE держится, когда:",
+        "Корни и семена якорят барьер без разрыва роста",
+        "Только один лист без CE",
+        "Поле залито солнцем без тени",
+      ),
+      naoya: dmStep(
+        "«Временная клетка лунного дворца» держится, если:",
+        "Кадры плёнки и CE закрывают объём без пропусков",
+        "Один кадр в секунду",
+        "Плёнка без проявителя",
+      ),
+      shigemo: dmStep(
+        "Цепь чудес Сигэмо как домен работает, когда:",
+        "Накопленные маловероятности сходятся в один контур удара",
+        "Без меча и без CE",
+        "Случай без связи с предыдущими ходами",
+      ),
+      dabura: dmStep(
+        "Поле следов Дабуры замыкается, когда:",
+        "Цепочка отпечатков и шикигами держит периметр",
+        "Один след без продолжения",
+        "Только прыжок без касания земли",
+      ),
+      modulo_yuji: dmStep(
+        "В «Остатке судьбы» цель ловит удар, если:",
+        "Не угадывает фазу цикла — закон поля цикличен",
+        "Может отменить цикл словами",
+        "Иммунна без контакта глаз",
+      ),
       heian_sukuna: dmStep(
         "В полной версии «Святилища» эпохи Хэйан цель:",
         "Ловит slash/cleave без отсрочки — закон поля жёстче",
@@ -2828,6 +3042,7 @@
     let autoBattleTimer = null;
     let mahoCutsceneTimers = [];
     let heianCutsceneTimers = [];
+    let moduloCutsceneTimers = [];
 
     function formatTeamPickLabel(ids) {
       if (!ids.length) return "—";
@@ -3259,6 +3474,23 @@
       }
     }
 
+    function closeModuloCutscene() {
+      moduloCutsceneTimers.forEach((tid) => clearTimeout(tid));
+      moduloCutsceneTimers = [];
+      const el = document.getElementById("moduloCutscene");
+      const textEl = document.getElementById("moduloCutsceneText");
+      const btn = document.getElementById("moduloCutsceneBtn");
+      if (el) {
+        el.classList.remove("is-open");
+        el.setAttribute("aria-hidden", "true");
+      }
+      if (textEl) textEl.innerHTML = "";
+      if (btn) {
+        btn.hidden = true;
+        btn.onclick = null;
+      }
+    }
+
     function showHeianCutscene(onDone, skipReenableActions) {
       const el = document.getElementById("heianCutscene");
       const textEl = document.getElementById("heianCutsceneText");
@@ -3357,6 +3589,55 @@
       };
     }
 
+    function showModuloCutscene(onDone, skipReenableActions) {
+      const el = document.getElementById("moduloCutscene");
+      const textEl = document.getElementById("moduloCutsceneText");
+      const btn = document.getElementById("moduloCutsceneBtn");
+      if (!el || !textEl || !btn) {
+        onDone();
+        return;
+      }
+      closeModuloCutscene();
+      const lines = [
+        "Ты слышишь не шаги — отсчёт. Как будто бой уже идёт в другой системе координат, а ты всё ещё переводишь удары в привычные секунды.",
+        "«Modulo Yuji»: тот же силуэт, но фаза CE не совпадает с твоей. Чёрная вспышка здесь не случайность — она приходит на остаток такта, который ты не видишь.",
+        "Глаз 👁 в поле — не украшение. Он вычитает лишнее: твой ритм, твой следующий выдох, твою «очевидную» защиту.",
+        "Расширение домена не спрашивает, целое ли у тебя число ударов. Оно берёт остаток — и превращает его в закон. Следующий такт — уже не твой отсчёт.",
+      ];
+      textEl.innerHTML = "";
+      btn.hidden = true;
+      el.classList.add("is-open");
+      el.setAttribute("aria-hidden", "false");
+      setActionsDisabled(true);
+      let i = 0;
+      function tick() {
+        if (i >= lines.length) {
+          btn.hidden = false;
+          return;
+        }
+        const p = document.createElement("p");
+        p.className = "modulo-cutscene__line";
+        p.textContent = lines[i];
+        textEl.appendChild(p);
+        i += 1;
+        if (i < lines.length) {
+          moduloCutsceneTimers.push(setTimeout(tick, 560));
+        } else {
+          moduloCutsceneTimers.push(
+            setTimeout(() => {
+              btn.hidden = false;
+            }, 280),
+          );
+        }
+      }
+      tick();
+      btn.onclick = () => {
+        closeModuloCutscene();
+        if (!skipReenableActions) setActionsDisabled(false);
+        onDone();
+      };
+    }
+
     function startBattle() {
       if (team1Pick.length < 1 || team2Pick.length < 1) return;
       team1 = team1Pick.map((id) => CHARS.find((x) => x.id === id)).filter(Boolean);
@@ -3386,6 +3667,8 @@
       const hasMahoraga = team1Pick.includes("mahoraga") || team2Pick.includes("mahoraga");
       const hasHeianSukuna =
         team1Pick.includes("heian_sukuna") || team2Pick.includes("heian_sukuna");
+      const hasModuloYuji =
+        team1Pick.includes("modulo_yuji") || team2Pick.includes("modulo_yuji");
 
       function beginBattleLogsAndUi() {
         appendLog(
@@ -3409,13 +3692,28 @@
         if (autoEl && autoEl.checked) scheduleAutoBattleStep();
       }
 
-      if (hasMahoraga && hasHeianSukuna) {
+      if (hasMahoraga && hasHeianSukuna && hasModuloYuji) {
+        setActionsDisabled(true);
+        showMahoragaCutscene(
+          () =>
+            showHeianCutscene(() => showModuloCutscene(beginBattleLogsAndUi, true), true),
+          true,
+        );
+      } else if (hasMahoraga && hasHeianSukuna) {
         setActionsDisabled(true);
         showMahoragaCutscene(() => showHeianCutscene(beginBattleLogsAndUi), true);
+      } else if (hasMahoraga && hasModuloYuji) {
+        setActionsDisabled(true);
+        showMahoragaCutscene(() => showModuloCutscene(beginBattleLogsAndUi, true), true);
+      } else if (hasHeianSukuna && hasModuloYuji) {
+        setActionsDisabled(true);
+        showHeianCutscene(() => showModuloCutscene(beginBattleLogsAndUi, true), true);
       } else if (hasMahoraga) {
         showMahoragaCutscene(beginBattleLogsAndUi);
       } else if (hasHeianSukuna) {
         showHeianCutscene(beginBattleLogsAndUi);
+      } else if (hasModuloYuji) {
+        showModuloCutscene(beginBattleLogsAndUi);
       } else {
         beginBattleLogsAndUi();
       }
@@ -3443,6 +3741,7 @@
       clearAutoBattleTimer();
       closeMahoragaCutscene();
       closeHeianCutscene();
+      closeModuloCutscene();
       closeBossMenu();
       setActionsDisabled(false);
       closeDomainModal();
