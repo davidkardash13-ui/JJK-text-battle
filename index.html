@@ -6,7 +6,7 @@
   <title>JJK — текстовый бой</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600;800&family=Syne:wght@700;800&family=Unbounded:wght@600;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --bg: #030308;
@@ -875,6 +875,11 @@
       gap: 0.55rem;
     }
     .char-btn {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem 0.3rem;
       font-family: inherit;
       cursor: pointer;
       border: 1px solid var(--border);
@@ -915,6 +920,267 @@
         0 0 0 1px rgba(225, 29, 72, 0.35),
         0 0 24px rgba(225, 29, 72, 0.18);
     }
+
+    /* Персонажи: уникальная типографика имён (ростер, арена, лог) */
+    .char-title {
+      font-family: "Unbounded", "Syne", "Outfit", system-ui, sans-serif;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      line-height: 1.2;
+      display: inline;
+    }
+    .char-btn__emoji {
+      font-size: 1.28rem;
+      line-height: 1;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
+      flex-shrink: 0;
+    }
+    .char-btn .char-title {
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      max-width: 100%;
+    }
+    .fighter .char-title {
+      font-size: clamp(0.92rem, 2.8vw, 1.12rem);
+      letter-spacing: 0.035em;
+    }
+    .vs-row .char-title {
+      font-size: 0.88rem;
+    }
+    .bench .char-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+    .log .char-title {
+      font-size: 0.92em;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .char-title[class*="char-title--"] {
+      background-size: 160% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .char-title--yuta {
+      background-image: linear-gradient(120deg, #e0e7ff 0%, #a5b4fc 40%, #6366f1 100%);
+      filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.45));
+    }
+    .char-title--yuji {
+      background-image: linear-gradient(125deg, #fecdd3 0%, #fb7185 45%, #f43f5e 100%);
+      filter: drop-shadow(0 0 10px rgba(244, 63, 94, 0.4));
+    }
+    .char-title--choso {
+      background-image: linear-gradient(120deg, #fecaca 0%, #dc2626 50%, #7f1d1d 100%);
+      filter: drop-shadow(0 0 10px rgba(220, 38, 38, 0.45));
+    }
+    .char-title--ryu {
+      background-image: linear-gradient(118deg, #bae6fd 0%, #0284c7 55%, #0c4a6e 100%);
+      filter: drop-shadow(0 0 10px rgba(2, 132, 199, 0.4));
+    }
+    .char-title--sukuna {
+      background-image: linear-gradient(125deg, #fecaca 0%, #b91c1c 42%, #1c1917 100%);
+      filter: drop-shadow(0 0 12px rgba(185, 28, 28, 0.55));
+    }
+    .char-title--heian_sukuna {
+      background-image: linear-gradient(128deg, #fde68a 0%, #ea580c 38%, #7f1d1d 100%);
+      filter: drop-shadow(0 0 14px rgba(234, 88, 12, 0.5));
+    }
+    .char-title--gojo {
+      background-image: linear-gradient(130deg, #f0f9ff 0%, #38bdf8 45%, #818cf8 95%);
+      filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.5));
+    }
+    .char-title--megumi {
+      background-image: linear-gradient(122deg, #c7d2fe 0%, #4338ca 50%, #0f172a 100%);
+      filter: drop-shadow(0 0 10px rgba(67, 56, 202, 0.45));
+    }
+    .char-title--mechamaru {
+      background-image: linear-gradient(120deg, #d4d4d8 0%, #f97316 48%, #52525b 100%);
+      filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.4));
+    }
+    .char-title--takaba {
+      background-image: linear-gradient(125deg, #fef9c3 0%, #facc15 45%, #f59e0b 100%);
+      filter: drop-shadow(0 0 12px rgba(250, 204, 21, 0.45));
+    }
+    .char-title--todo {
+      background-image: linear-gradient(120deg, #fbcfe8 0%, #db2777 50%, #831843 100%);
+      filter: drop-shadow(0 0 10px rgba(219, 39, 119, 0.45));
+    }
+    .char-title--kashimo {
+      background-image: linear-gradient(118deg, #fef3c7 0%, #f59e0b 42%, #b45309 100%);
+      filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.55));
+    }
+    .char-title--hakari {
+      background-image: linear-gradient(125deg, #d9f99d 0%, #22c55e 48%, #15803d 100%);
+      filter: drop-shadow(0 0 12px rgba(34, 197, 94, 0.45));
+    }
+    .char-title--higuruma {
+      background-image: linear-gradient(120deg, #e7e5e4 0%, #a8a29e 45%, #44403c 100%);
+      filter: drop-shadow(0 0 8px rgba(168, 162, 158, 0.35));
+    }
+    .char-title--nobara {
+      background-image: linear-gradient(122deg, #fecdd3 0%, #f97316 50%, #c2410c 100%);
+      filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.4));
+    }
+    .char-title--mahoraga {
+      background-image: linear-gradient(125deg, #e9d5ff 0%, #9333ea 48%, #3b0764 100%);
+      filter: drop-shadow(0 0 12px rgba(147, 51, 234, 0.5));
+    }
+    .char-title--toji {
+      background-image: linear-gradient(120deg, #d6d3d1 0%, #57534e 50%, #0c0a09 100%);
+      filter: drop-shadow(0 0 10px rgba(87, 83, 78, 0.45));
+    }
+    .char-title--nanami {
+      background-image: linear-gradient(122deg, #fef3c7 0%, #ca8a04 48%, #422006 100%);
+      filter: drop-shadow(0 0 10px rgba(202, 138, 4, 0.4));
+    }
+    .char-title--toge {
+      background-image: linear-gradient(120deg, #ddd6fe 0%, #7c3aed 55%, #1e1b4b 100%);
+      filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.45));
+    }
+    .char-title--maki {
+      background-image: linear-gradient(118deg, #f1f5f9 0%, #64748b 50%, #0f172a 100%);
+      filter: drop-shadow(0 0 10px rgba(100, 116, 139, 0.4));
+    }
+    .char-title--panda {
+      background-image: linear-gradient(125deg, #f5f5f4 0%, #78716c 45%, #1c1917 100%);
+      filter: drop-shadow(0 0 8px rgba(120, 113, 108, 0.35));
+    }
+    .char-title--jogo {
+      background-image: linear-gradient(122deg, #ffedd5 0%, #ea580c 48%, #7c2d12 100%);
+      filter: drop-shadow(0 0 12px rgba(234, 88, 12, 0.5));
+    }
+    .char-title--mahito {
+      background-image: linear-gradient(120deg, #e9d5ff 0%, #a855f7 50%, #581c87 100%);
+      filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.5));
+    }
+    .char-title--geto {
+      background-image: linear-gradient(125deg, #f3e8ff 0%, #7e22ce 48%, #1e1b4b 100%);
+      filter: drop-shadow(0 0 12px rgba(126, 34, 206, 0.5));
+    }
+    .char-title--yuki {
+      background-image: linear-gradient(118deg, #fce7f3 0%, #ec4899 45%, #4c1d95 100%);
+      filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.45));
+    }
+    .char-title--kenjaku {
+      background-image: linear-gradient(122deg, #cffafe 0%, #0891b2 48%, #164e63 100%);
+      filter: drop-shadow(0 0 11px rgba(8, 145, 178, 0.45));
+    }
+    .char-title--uro {
+      background-image: linear-gradient(120deg, #e0f2fe 0%, #0ea5e9 50%, #0c4a6e 100%);
+      filter: drop-shadow(0 0 11px rgba(14, 165, 233, 0.45));
+    }
+    .char-title--uraume {
+      background-image: linear-gradient(125deg, #f0fdfa 0%, #99f6e4 40%, #0d9488 100%);
+      filter: drop-shadow(0 0 10px rgba(13, 148, 136, 0.4));
+    }
+    .char-title--kurourushi {
+      background-image: linear-gradient(120deg, #ecfccb 0%, #65a30d 50%, #365314 100%);
+      filter: drop-shadow(0 0 10px rgba(101, 163, 13, 0.4));
+    }
+    .char-title--locust_guy {
+      background-image: linear-gradient(122deg, #d9f99d 0%, #84cc16 48%, #3f6212 100%);
+      filter: drop-shadow(0 0 10px rgba(132, 204, 22, 0.4));
+    }
+    .char-title--mei_mei {
+      background-image: linear-gradient(120deg, #fde047 0%, #ca8a04 50%, #422006 100%);
+      filter: drop-shadow(0 0 10px rgba(202, 138, 4, 0.45));
+    }
+    .char-title--mai_zenin {
+      background-image: linear-gradient(125deg, #e0f2fe 0%, #38bdf8 50%, #1e3a8a 100%);
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+    }
+    .char-title--miwa {
+      background-image: linear-gradient(118deg, #dbeafe 0%, #3b82f6 50%, #1e3a8a 100%);
+      filter: drop-shadow(0 0 9px rgba(59, 130, 246, 0.4));
+    }
+    .char-title--kamo {
+      background-image: linear-gradient(122deg, #fecaca 0%, #b91c1c 48%, #450a0a 100%);
+      filter: drop-shadow(0 0 10px rgba(185, 28, 28, 0.45));
+    }
+    .char-title--momo {
+      background-image: linear-gradient(120deg, #fce7f3 0%, #ec4899 50%, #831843 100%);
+      filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.4));
+    }
+    .char-title--hanami {
+      background-image: linear-gradient(125deg, #bbf7d0 0%, #16a34a 48%, #14532d 100%);
+      filter: drop-shadow(0 0 11px rgba(22, 163, 74, 0.45));
+    }
+    .char-title--naoya {
+      background-image: linear-gradient(118deg, #cffafe 0%, #06b6d4 50%, #164e63 100%);
+      filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.45));
+    }
+    .char-title--shigemo {
+      background-image: linear-gradient(122deg, #fef08a 0%, #84cc16 45%, #3f6212 100%);
+      filter: drop-shadow(0 0 10px rgba(132, 204, 22, 0.4));
+    }
+    .char-title--dabura {
+      background-image: linear-gradient(120deg, #fecdd3 0%, #e11d48 50%, #881337 100%);
+      filter: drop-shadow(0 0 11px rgba(225, 29, 72, 0.45));
+    }
+    .char-title--dhruv {
+      background-image: linear-gradient(125deg, #e0e7ff 0%, #6366f1 48%, #312e81 100%);
+      filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.45));
+    }
+    .char-title--reggie {
+      background-image: linear-gradient(118deg, #fed7aa 0%, #d97706 50%, #78350f 100%);
+      filter: drop-shadow(0 0 10px rgba(217, 119, 6, 0.4));
+    }
+    .char-title--iori_hazenoki {
+      background-image: linear-gradient(122deg, #fef08a 0%, #f97316 48%, #9a3412 100%);
+      filter: drop-shadow(0 0 11px rgba(249, 115, 22, 0.45));
+    }
+    .char-title--naoya_cs {
+      background-image: linear-gradient(125deg, #a5f3fc 0%, #0e7490 50%, #0c4a6e 100%);
+      filter: drop-shadow(0 0 12px rgba(14, 116, 144, 0.5));
+    }
+    .char-title--modulo_yuji {
+      background-image: linear-gradient(130deg, #fae8ff 0%, #a855f7 35%, #f43f5e 70%, #38bdf8 100%);
+      filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.45));
+    }
+
+    .team-pick-sep {
+      color: rgba(154, 151, 168, 0.85);
+      font-weight: 600;
+      margin: 0 0.15rem;
+    }
+    .turn-meta {
+      color: #7dd3fc;
+      font-family: "Outfit", system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 0.82em;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+    }
+    .enemy-meta {
+      color: #fda4af;
+      font-family: "Outfit", system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 0.82em;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 12px rgba(225, 29, 72, 0.25);
+    }
+    .enemy-heal-meta {
+      color: #fda4af;
+      font-weight: 600;
+    }
+    .log .turn-meta,
+    .log .enemy-meta {
+      font-size: 0.78rem;
+    }
+
+    .fighter[data-active-char] {
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .fighter--p1[data-active-char="gojo"] {
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: 0 12px 40px -22px rgba(0, 0, 0, 0.65), 0 0 32px -8px rgba(56, 189, 248, 0.18);
+    }
+    .fighter--p2[data-active-char] {
+      border-color: rgba(251, 113, 133, 0.22);
+    }
+
     .vs-row {
       display: flex;
       align-items: center;
@@ -1356,8 +1622,6 @@
       from { box-shadow: 0 0 20px rgba(74, 222, 128, 0.15); }
       to { box-shadow: 0 0 28px rgba(74, 222, 128, 0.28); }
     }
-    .log .turn { color: #7dd3fc; text-shadow: 0 0 12px rgba(56, 189, 248, 0.35); }
-    .log .enemy { color: #fda4af; text-shadow: 0 0 12px rgba(225, 29, 72, 0.25); }
     .log .crit { color: var(--gold); font-weight: 700; text-shadow: 0 0 14px rgba(251, 191, 36, 0.45); }
     .log .end { color: #86efac; font-weight: 700; }
     .actions {
@@ -1680,7 +1944,7 @@
 
   <script>
     /** Увеличивай при каждом значимом изменении (одна точка правды для UI). */
-    const APP_VERSION = "1.9.0";
+    const APP_VERSION = "1.9.1";
 
     function pick(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
@@ -3660,20 +3924,6 @@
     let heianCutsceneTimers = [];
     let moduloCutsceneTimers = [];
 
-    function formatTeamPickLabel(ids) {
-      if (!ids.length) return "—";
-      return ids
-        .map((id) => {
-          const ch = CHARS.find((x) => x.id === id);
-          return ch ? `${ch.emoji} ${ch.name}` : id;
-        })
-        .join(" · ");
-    }
-
-    function formatTeamList(teamArr) {
-      return teamArr.map((c) => `${c.emoji} ${c.name}`).join(", ");
-    }
-
     function updateBattleBenchs() {
       const el1 = document.getElementById("bench1");
       const el2 = document.getElementById("bench2");
@@ -3681,10 +3931,10 @@
       const rest1 = team1.slice(idx1 + 1);
       const rest2 = team2.slice(idx2 + 1);
       el1.innerHTML = rest1.length
-        ? `<strong>Запас:</strong> ${rest1.map((c) => `${c.emoji} ${c.name}`).join(" · ")}`
+        ? `<strong>Запас:</strong> ${rest1.map((c) => `${c.emoji} ${charTitleHtml(c)}`).join(" · ")}`
         : "";
       el2.innerHTML = rest2.length
-        ? `<strong>Запас:</strong> ${rest2.map((c) => `${c.emoji} ${c.name}`).join(" · ")}`
+        ? `<strong>Запас:</strong> ${rest2.map((c) => `${c.emoji} ${charTitleHtml(c)}`).join(" · ")}`
         : "";
     }
 
@@ -3697,8 +3947,9 @@
       defendStreak = 0;
       prevHp1 = hp1;
       document.getElementById("e1").textContent = p1.emoji;
-      document.getElementById("n1").textContent = p1.name;
-      appendLog(`Замена — за команду 1 на поле выходит <strong>${p1.name}</strong>.`, "system");
+      applyCharTitleEl(document.getElementById("n1"), p1);
+      setFighterCharAttrs();
+      appendLog(`Замена — за команду 1 на поле выходит ${charTitleHtml(p1)}.`, "system");
       battleState.raidArmorActive = (synergyP1.fx || []).some((f) => f.kind === "raid_armor_ignore");
       battleState.yujiStrikes = 0;
       updateBattleBenchs();
@@ -3716,8 +3967,9 @@
       defendStreak = 0;
       prevHp2 = hp2;
       document.getElementById("e2").textContent = p2.emoji;
-      document.getElementById("n2").textContent = p2.name;
-      appendLog(`Замена — за команду 2 на поле выходит <strong>${p2.name}</strong>.`, "system");
+      applyCharTitleEl(document.getElementById("n2"), p2);
+      setFighterCharAttrs();
+      appendLog(`Замена — за команду 2 на поле выходит ${charTitleHtml(p2)}.`, "system");
       battleState.raidArmorEnemyActive = (synergyP2.fx || []).some((f) => f.kind === "raid_armor_ignore");
       updateBattleBenchs();
       updateHpBars();
@@ -3827,7 +4079,9 @@
         b1.type = "button";
         b1.className =
           "char-btn" + (c.boss ? " char-btn--boss" : "") + (i1 >= 0 ? " p1-pick" : "");
-        b1.innerHTML = (i1 >= 0 ? `<span class="slot-mark">${marks[i1]}</span>` : "") + `${c.emoji} ${c.name}`;
+        b1.innerHTML =
+          (i1 >= 0 ? `<span class="slot-mark">${marks[i1]}</span>` : "") +
+          `<span class="char-btn__emoji" aria-hidden="true">${c.emoji}</span><span class="char-title char-title--${c.id}">${c.name}</span>`;
         setCharButtonRosterTitle(b1, c);
         b1.disabled = team2Pick.includes(c.id);
         b1.addEventListener("click", () => {
@@ -3844,7 +4098,9 @@
         b2.type = "button";
         b2.className =
           "char-btn" + (c.boss ? " char-btn--boss" : "") + (i2 >= 0 ? " p2-pick" : "");
-        b2.innerHTML = (i2 >= 0 ? `<span class="slot-mark">${marks[i2]}</span>` : "") + `${c.emoji} ${c.name}`;
+        b2.innerHTML =
+          (i2 >= 0 ? `<span class="slot-mark">${marks[i2]}</span>` : "") +
+          `<span class="char-btn__emoji" aria-hidden="true">${c.emoji}</span><span class="char-title char-title--${c.id}">${c.name}</span>`;
         setCharButtonRosterTitle(b2, c);
         b2.disabled = team1Pick.includes(c.id);
         b2.addEventListener("click", () => {
@@ -3860,8 +4116,8 @@
     }
 
     function updateLabels() {
-      label1.textContent = formatTeamPickLabel(team1Pick);
-      label2.textContent = formatTeamPickLabel(team2Pick);
+      label1.innerHTML = formatTeamPickLabelHtml(team1Pick);
+      label2.innerHTML = formatTeamPickLabelHtml(team2Pick);
       startBtn.disabled = !(team1Pick.length >= 1 && team2Pick.length >= 1);
     }
 
@@ -3871,6 +4127,46 @@
       line.innerHTML = html;
       logEl.appendChild(line);
       logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function charTitleHtml(c) {
+      if (!c || !c.id) return "";
+      return `<span class="char-title char-title--${c.id}">${c.name}</span>`;
+    }
+
+    function htmlPlayerTurnHead() {
+      return `<span class="turn">${charTitleHtml(p1)}<span class="turn-meta"> · твой ход</span></span>`;
+    }
+
+    function htmlEnemyTurnHead() {
+      return `<span class="enemy">${charTitleHtml(p2)}<span class="enemy-meta"> · ход</span></span>`;
+    }
+
+    function applyCharTitleEl(el, c) {
+      if (!el || !c) return;
+      el.textContent = c.name;
+      el.className = "char-title char-title--" + c.id;
+    }
+
+    function setFighterCharAttrs() {
+      const el1 = document.getElementById("fighter1");
+      const el2 = document.getElementById("fighter2");
+      if (el1 && p1) el1.setAttribute("data-active-char", p1.id);
+      if (el2 && p2) el2.setAttribute("data-active-char", p2.id);
+    }
+
+    function formatTeamPickLabelHtml(ids) {
+      if (!ids.length) return "—";
+      return ids
+        .map((id) => {
+          const ch = CHARS.find((x) => x.id === id);
+          return ch ? charTitleHtml(ch) : id;
+        })
+        .join(`<span class="team-pick-sep"> · </span>`);
+    }
+
+    function formatTeamListHtml(teamArr) {
+      return teamArr.map((c) => `${c.emoji} ${charTitleHtml(c)}`).join(", ");
     }
 
     function roll(base, variance, varianceOverride) {
@@ -4001,7 +4297,7 @@
         raw = Math.max(1, Math.floor(raw * d.playerDamageMult) + domFlat);
         dmg = applyTargetArmor(raw, p2);
         dmg = Math.max(1, dmg + mechFlatChipVsTarget(p1, p2, "domain"));
-        msg = `<span class="turn">Твой ход:</span> ${p1.domainHit} Урон: ${dmg}.`;
+        msg = `${htmlPlayerTurnHead()} ${p1.domainHit} Урон: ${dmg}.`;
         logVariant = "domain";
         triggerFxOverlay("is-domain", 680);
         triggerScreenShake();
@@ -4010,7 +4306,7 @@
         raw = Math.max(1, Math.floor(raw * d.playerDamageMult));
         dmg = applyTargetArmor(raw, p2);
         dmg = Math.max(1, dmg + mechFlatChipVsTarget(p1, p2, "domain_miss"));
-        msg = `<span class="turn">Твой ход:</span> ${p1.domainMiss} Слабый зацеп: ${dmg}.`;
+        msg = `${htmlPlayerTurnHead()} ${p1.domainMiss} Слабый зацеп: ${dmg}.`;
         logVariant = "domain-miss";
       }
       if (battleState.nextPlayerOutgoingFactor < 0.999) {
@@ -4019,9 +4315,9 @@
       }
       dmg = mechMaybeNegateOrShaveIncoming(p2, dmg);
       if (ok) {
-        msg = `<span class="turn">Твой ход:</span> ${p1.domainHit} Урон: ${dmg}.`;
+        msg = `${htmlPlayerTurnHead()} ${p1.domainHit} Урон: ${dmg}.`;
       } else {
-        msg = `<span class="turn">Твой ход:</span> ${p1.domainMiss} Слабый зацеп: ${dmg}.`;
+        msg = `${htmlPlayerTurnHead()} ${p1.domainMiss} Слабый зацеп: ${dmg}.`;
       }
       hp2 = Math.max(0, hp2 - dmg);
       if (ok) {
@@ -4067,12 +4363,12 @@
       let line = "";
 
       if (act === "defend") {
-        line = `<span class="enemy">Ход противника:</span> ${p2.defendLine}`;
+        line = `${htmlEnemyTurnHead()} ${p2.defendLine}`;
         appendLog(line, "enemy");
         const hDef = mechHealOnDefend(p2);
         if (hDef > 0) {
           hp2 = Math.min(max2, hp2 + hDef);
-          appendLog(`<span class="enemy">Враг восстанавливает</span> +<strong>${hDef}</strong> HP.`, "enemy");
+          appendLog(`${charTitleHtml(p2)}<span class="enemy-heal-meta"> · восстановление</span> +<strong>${hDef}</strong> HP.`, "enemy");
         }
         runSynergyHooksEnemyAfterDefend();
         tryTokyoCoverHealEnemy();
@@ -4121,7 +4417,7 @@
       dmg = mechMaybeNegateOrShaveIncoming(p1, dmg);
       if (dmg <= 0) {
         appendLog(
-          `${critLine}<span class="enemy">Ход противника:</span> ${pickLine} — не проходит (<strong>0</strong> урона).`,
+          `${critLine}${htmlEnemyTurnHead()} ${pickLine} — не проходит (<strong>0</strong> урона).`,
           "enemy",
         );
         tryTokyoCoverHeal();
@@ -4139,7 +4435,7 @@
       const reduced = defendStreak > 0 ? Math.max(1, Math.floor(dmg * (1 - mit))) : dmg;
       line =
         critLine +
-        `<span class="enemy">Ход противника:</span> ${pickLine} Урон: <strong>${reduced}</strong>`;
+        `${htmlEnemyTurnHead()} ${pickLine} Урон: <strong>${reduced}</strong>`;
       if (defendStreak > 0) line += ` (защита снижает с ${dmg} до ${reduced})`;
       hp1 = Math.max(0, hp1 - reduced);
       defendStreak = 0;
@@ -4193,7 +4489,7 @@
         if (trySwapTeam1()) return;
         battleOver = true;
         clearAutoBattleTimer();
-        appendLog(`<span class="end">Победа команды 2 (${formatTeamList(team2)})! Ты проиграл.</span>`, "end");
+        appendLog(`<span class="end">Победа команды 2 (${formatTeamListHtml(team2)})! Ты проиграл.</span>`, "end");
         setActionsDisabled(true);
         return;
       }
@@ -4201,7 +4497,7 @@
         if (trySwapTeam2()) return;
         battleOver = true;
         clearAutoBattleTimer();
-        appendLog(`<span class="end">Победа команды 1 (${formatTeamList(team1)})! Команда противника повержена.</span>`, "end");
+        appendLog(`<span class="end">Победа команды 1 (${formatTeamListHtml(team1)})! Команда противника повержена.</span>`, "end");
         setActionsDisabled(true);
       }
     }
@@ -4431,8 +4727,9 @@
       battleEl.classList.add("active");
       document.getElementById("e1").textContent = p1.emoji;
       document.getElementById("e2").textContent = p2.emoji;
-      document.getElementById("n1").textContent = p1.name;
-      document.getElementById("n2").textContent = p2.name;
+      applyCharTitleEl(document.getElementById("n1"), p1);
+      applyCharTitleEl(document.getElementById("n2"), p2);
+      setFighterCharAttrs();
       logEl.innerHTML = "";
 
       const hasMahoraga = team1Pick.includes("mahoraga") || team2Pick.includes("mahoraga");
@@ -4443,7 +4740,7 @@
 
       function beginBattleLogsAndUi() {
         appendLog(
-          `Командный бой: <strong>${formatTeamList(team1)}</strong> против <strong class="red">${formatTeamList(team2)}</strong>. Сложность: <strong>${d.label}</strong> (HP активного врага ${max2}).`,
+          `Командный бой: <strong>${formatTeamListHtml(team1)}</strong> против <strong class="red">${formatTeamListHtml(team2)}</strong>. Сложность: <strong>${d.label}</strong> (HP активного врага ${max2}).`,
           "system",
         );
         synergyP1 = mergeSynergies(findSynergyMatches(team1Pick));
@@ -4584,7 +4881,7 @@
         dmg = mechMaybeNegateOrShaveIncoming(p2, dmg);
         if (dmg <= 0) {
           appendLog(
-            `${msg}<span class="turn">Твой ход:</span> ${pick(p1.strikePool)} — защита цели, <strong>0</strong> урона.`,
+            `${msg}${htmlPlayerTurnHead()} ${pick(p1.strikePool)} — защита цели, <strong>0</strong> урона.`,
             logVariant,
           );
           updateHpBars();
@@ -4593,7 +4890,7 @@
           return;
         }
         const addNote = add ? ` (+${add} доп.)` : "";
-        msg += `<span class="turn">Твой ход:</span> ${pick(p1.strikePool)} Урон противнику: <strong>${dmg}</strong>${addNote}`;
+        msg += `${htmlPlayerTurnHead()} ${pick(p1.strikePool)} Урон противнику: <strong>${dmg}</strong>${addNote}`;
       } else if (act === "technique") {
         battleState.playerMoves = (battleState.playerMoves || 0) + 1;
         raw = roll(Math.floor(8 * (p1.tech / 10)), null, d.rollVarPlayer);
@@ -4608,7 +4905,7 @@
         dmg = mechMaybeNegateOrShaveIncoming(p2, dmg);
         if (dmg <= 0) {
           appendLog(
-            `<span class="turn">Твой ход:</span> ${pick(p1.techPool)} — защита цели, <strong>0</strong> урона.`,
+            `${htmlPlayerTurnHead()} ${pick(p1.techPool)} — защита цели, <strong>0</strong> урона.`,
             "turn",
           );
           updateHpBars();
@@ -4617,7 +4914,7 @@
           return;
         }
         const addNoteT = add ? ` (+${add} доп.)` : "";
-        msg = `<span class="turn">Твой ход:</span> ${pick(p1.techPool)} Урон: <strong>${dmg}</strong>${addNoteT}`;
+        msg = `${htmlPlayerTurnHead()} ${pick(p1.techPool)} Урон: <strong>${dmg}</strong>${addNoteT}`;
         tryKyotoPulse("technique");
       } else if (act === "domain") {
         setActionsDisabled(true);
@@ -4632,10 +4929,13 @@
         const h = mechHealOnDefend(p1);
         if (h > 0) {
           hp1 = Math.min(max1, hp1 + h);
-          appendLog(`<span class="turn">Восстановление</span> +<strong>${h}</strong> HP.`, "turn");
+          appendLog(
+            `<span class="turn">${charTitleHtml(p1)}<span class="turn-meta"> · восстановление</span></span> +<strong>${h}</strong> HP.`,
+            "turn",
+          );
         }
         runSynergyHooksPlayerAfterDefend();
-        msg = `<span class="turn">Твой ход:</span> ${p1.defendLine} Следующий удар врага ослаблен.`;
+        msg = `${htmlPlayerTurnHead()} ${p1.defendLine} Следующий удар врага ослаблен.`;
         appendLog(msg, "turn");
         updateHpBars();
         if (!battleOver) enemyTurn();
