@@ -396,6 +396,113 @@
       margin: 0 auto;
       text-wrap: balance;
     }
+    .main-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.45rem;
+      margin: 0 auto 1.2rem;
+      max-width: min(420px, 100%);
+      padding: 0.35rem;
+      border-radius: 14px;
+      border: 1px solid rgba(130, 130, 175, 0.2);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.32), rgba(10, 10, 20, 0.45));
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    }
+    .main-tabs__btn {
+      flex: 1;
+      font-family: inherit;
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.55rem 0.65rem;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      transition: color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .main-tabs__btn:hover {
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .main-tabs__btn.is-on {
+      color: #fff;
+      border-color: rgba(34, 211, 238, 0.45);
+      background: linear-gradient(165deg, rgba(30, 45, 58, 0.85), rgba(14, 16, 26, 0.95));
+      box-shadow: 0 0 18px rgba(34, 211, 238, 0.12);
+    }
+    .main-tabs__btn.is-on[data-main-tab="updates"] {
+      border-color: rgba(168, 85, 247, 0.5);
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.15);
+    }
+    #updatesPanel {
+      display: none;
+      margin-bottom: 1.1rem;
+    }
+    body.main-tab-updates #setup,
+    body.main-tab-updates #battle {
+      display: none !important;
+    }
+    body.main-tab-updates #updatesPanel {
+      display: block;
+    }
+    .updates-intro {
+      margin: -0.25rem 0 1.1rem;
+      text-align: center;
+      max-width: 36rem;
+    }
+    .updates-log {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .updates-release {
+      padding: 0.95rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .updates-release:last-child {
+      border-bottom: none;
+      padding-bottom: 0.15rem;
+    }
+    .updates-release__ver {
+      margin: 0 0 0.5rem;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent2);
+    }
+    .updates-release__list {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: rgba(244, 242, 248, 0.92);
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+    .updates-release__list li {
+      margin-bottom: 0.35rem;
+    }
+    .updates-release__list li:last-child {
+      margin-bottom: 0;
+    }
+    .updates-release__poster {
+      margin: 0 0 0.85rem;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .updates-release__poster img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(70vh, 520px);
+      object-fit: contain;
+    }
     .panel {
       position: relative;
       background: linear-gradient(165deg, rgba(22, 22, 34, 0.82) 0%, rgba(12, 12, 20, 0.72) 100%);
@@ -601,14 +708,6 @@
       flex-direction: column;
       gap: 1.1rem;
     }
-    .setup-diff__head {
-      font-size: 0.68rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--muted);
-      margin: 0 0 0.65rem;
-      font-weight: 800;
-    }
     .setup-cta {
       display: block;
     }
@@ -619,13 +718,6 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-    }
-    .setup-diff-block {
-      margin: 0;
-      padding: 0.85rem 0.75rem 1rem;
-      border-radius: 12px;
-      border: 1px solid rgba(120, 120, 160, 0.12);
-      background: rgba(0, 0, 0, 0.18);
     }
     .setup-footer .vs-row {
       margin: 0;
@@ -951,6 +1043,14 @@
     .char-title--modulo_yuji {
       background-image: linear-gradient(130deg, #fae8ff 0%, #a855f7 35%, #f43f5e 70%, #38bdf8 100%);
       filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.45));
+    }
+    .char-title--megumi_sukuna {
+      background-image: linear-gradient(122deg, #c7d2fe 0%, #4338ca 35%, #b91c1c 70%, #1c1917 100%);
+      filter: drop-shadow(0 0 12px rgba(67, 56, 202, 0.5));
+    }
+    .char-title--lawyer_mahoraga {
+      background-image: linear-gradient(125deg, #e7e5e4 0%, #78716c 35%, #9333ea 70%, #3b0764 100%);
+      filter: drop-shadow(0 0 12px rgba(147, 51, 234, 0.5));
     }
 
     .team-pick-sep {
@@ -1350,74 +1450,12 @@
     .log-line--crit { border-left-color: var(--gold); background: rgba(251, 191, 36, 0.08); }
     .log-line--domain { border-left-color: var(--curse); background: rgba(168, 85, 247, 0.1); box-shadow: 0 0 24px rgba(168, 85, 247, 0.08); }
     .log-line--domain-miss { border-left-color: rgba(168, 85, 247, 0.45); background: rgba(100, 100, 120, 0.06); }
-    .log-line--synergy {
-      border-left-color: #f472b6;
-      background: linear-gradient(90deg, rgba(251, 191, 36, 0.12), rgba(244, 114, 182, 0.08));
-      box-shadow: 0 0 22px rgba(251, 191, 36, 0.1);
-    }
-    .synergy-hud {
-      margin: 0 0 1rem;
-      padding: 0.85rem 0.95rem;
-      border-radius: 14px;
-      border: 1px solid rgba(251, 191, 36, 0.42);
-      background: linear-gradient(135deg, rgba(48, 28, 62, 0.88), rgba(16, 14, 32, 0.94));
-      box-shadow: 0 0 40px rgba(244, 114, 182, 0.14), 0 0 50px -20px rgba(251, 191, 36, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.07);
-    }
-    .synergy-hud__title {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #fbbf24;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-    .synergy-hud__inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.65rem;
-    }
-    @media (max-width: 520px) {
-      .synergy-hud__inner { grid-template-columns: 1fr; }
-    }
-    .synergy-hud__col {
-      padding: 0.5rem 0.55rem;
-      border-radius: 8px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .synergy-hud__col--empty {
-      opacity: 0.85;
-      border-style: dashed;
-    }
-    .synergy-hud__col strong {
-      display: block;
-      font-size: 0.72rem;
-      color: #e2e8f0;
-      margin-bottom: 0.25rem;
-    }
-    .synergy-hud__names {
-      display: block;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #fda4af;
-      line-height: 1.3;
-      margin-bottom: 0.25rem;
-    }
-    .synergy-hud__col:first-child .synergy-hud__names {
-      color: #7dd3fc;
-    }
     .mech-proc {
       display: inline;
       color: rgba(251, 191, 36, 0.95);
       font-weight: 600;
     }
     .log-line--mech-proc .mech-proc { color: #fde68a; }
-    .synergy-hud__stats {
-      font-family: "JetBrains Mono", monospace;
-      font-size: 0.68rem;
-      color: #fde68a;
-      line-height: 1.35;
-    }
     .syn-note {
       color: #fbbf24;
       font-style: normal;
@@ -1546,61 +1584,6 @@
       accent-color: var(--accent2);
       cursor: pointer;
     }
-    .diff-hint {
-      font-size: 0.75rem;
-      color: var(--muted);
-      line-height: 1.4;
-      margin: -0.35rem 0 0.65rem;
-    }
-    .diff-row {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.5rem;
-    }
-    @media (min-width: 520px) {
-      .diff-row { grid-template-columns: repeat(4, 1fr); }
-    }
-    .diff-btn {
-      font-family: inherit;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: rgba(20, 20, 32, 0.9);
-      color: var(--muted);
-      padding: 0.55rem 0.4rem;
-      border-radius: 10px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-align: center;
-      line-height: 1.25;
-      transition: color 0.2s, border-color 0.2s, box-shadow 0.25s, transform 0.15s;
-    }
-    .diff-btn small {
-      display: block;
-      font-weight: 500;
-      font-size: 0.62rem;
-      opacity: 0.85;
-      margin-top: 0.2rem;
-      letter-spacing: 0.02em;
-    }
-    .diff-btn:hover {
-      color: var(--text);
-      border-color: rgba(255, 255, 255, 0.18);
-    }
-    .diff-btn.is-on {
-      color: #fff;
-      border-color: rgba(168, 85, 247, 0.55);
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
-      background: linear-gradient(165deg, rgba(60, 40, 90, 0.5), rgba(18, 18, 28, 0.98));
-    }
-    .diff-btn[data-diff="easy"].is-on {
-      border-color: rgba(74, 222, 128, 0.5);
-      box-shadow: 0 0 18px rgba(74, 222, 128, 0.2);
-    }
-    .diff-btn[data-diff="extreme"].is-on {
-      border-color: rgba(225, 29, 72, 0.65);
-      box-shadow: 0 0 22px rgba(225, 29, 72, 0.35);
-    }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -1638,9 +1621,97 @@
   <div class="wrap">
     <header class="title-block">
       <h1>Текстовый бой — Jujutsu Kaisen</h1>
-      <p class="sub">До 3 бойцов на сторону, синергия в бою, домен — мини-игра. Усиленных бойцов ищи в фильтре «Усиленные».</p>
+      <p class="sub">До 3 бойцов на сторону, домен — мини-игра. Усиленных бойцов ищи в фильтре «Усиленные».</p>
       <p class="app-version" id="appVersion" aria-label="Версия приложения"></p>
     </header>
+
+    <nav class="main-tabs" role="tablist" aria-label="Разделы приложения">
+      <button type="button" class="main-tabs__btn is-on" role="tab" aria-selected="true" id="mainTabGame" data-main-tab="game">Игра</button>
+      <button type="button" class="main-tabs__btn" role="tab" aria-selected="false" id="mainTabUpdates" data-main-tab="updates">Обновления</button>
+    </nav>
+
+    <section id="updatesPanel" class="panel updates-panel" aria-labelledby="updatesHeading">
+      <h2 id="updatesHeading">Обновления</h2>
+      <p class="sub updates-intro">Значимые изменения по версиям (текущая версия совпадает с подписью под заголовком).</p>
+      <div class="updates-log">
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.13.0</h3>
+          <figure class="updates-release__poster">
+            <img src="poster_images/update-poster.png" width="900" height="600" alt="Постер обновления 1.13" loading="lazy" decoding="async" />
+          </figure>
+          <ul class="updates-release__list">
+            <li>Убраны командные связки (синергии): бой строится только на составе и индивидуальных механиках бойцов.</li>
+            <li>Новые усиленные бойцы: Megumi-Sukuna 👤 и Lawyer Mahoraga 📝.</li>
+          </ul>
+        </article>
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.12.1</h3>
+          <ul class="updates-release__list">
+            <li>Выравнивание боёв команд 1 и 2: общие коэффициенты удара и техники (и крит как у игрока), ИИ может бить расширением домена теми же формулами, защита команды 2 ослабляет твой следующий урон к ней.</li>
+          </ul>
+        </article>
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.12.0</h3>
+          <ul class="updates-release__list">
+            <li>Убран выбор сложности: базовые правила боя симметричны для обеих команд (как раньше на «Нормальная» без бонуса HP/урона врагу). Разница в силе — только из состава и усиленных карточек в ростере.</li>
+          </ul>
+        </article>
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.11.0</h3>
+          <ul class="updates-release__list">
+            <li>Фильтр и поиск по ростеру: теги категорий (включая «Усиленные»), строка поиска по имени, сброс фильтра.</li>
+            <li>Вкладка «Обновления» с перечнем значимых изменений по версиям.</li>
+            <li>Подпись версии под заголовком страницы.</li>
+          </ul>
+        </article>
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.10.0</h3>
+          <ul class="updates-release__list">
+            <li>Режим авто-боя: ИИ выбирает действия за твою команду каждый ход.</li>
+            <li>Доработки лога боя и подсказок по связкам.</li>
+          </ul>
+        </article>
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.9.0</h3>
+          <ul class="updates-release__list">
+            <li>Сложность «Экстрим» — максимальный запас HP у активного врага.</li>
+            <li>Расширение набора командных синергий и уникальных боевых эффектов.</li>
+          </ul>
+        </article>
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.8.0</h3>
+          <ul class="updates-release__list">
+            <li>До трёх бойцов на команду, скамейка и автоматическая смена при нокауте.</li>
+            <li>Оформление арены «VS», пульсация при уроне, визуальные акценты HP.</li>
+          </ul>
+        </article>
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.7.0</h3>
+          <ul class="updates-release__list">
+            <li>Система связок: при подходящем составе команды открываются пассивные бонусы и особые сообщения в бою.</li>
+          </ul>
+        </article>
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.6.0</h3>
+          <ul class="updates-release__list">
+            <li>Расширение домена как рискованный ход с отдельным диалогом и мини-испытанием на успех.</li>
+            <li>Тряска экрана и оверлей при сильных ударах.</li>
+          </ul>
+        </article>
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.5.0</h3>
+          <ul class="updates-release__list">
+            <li>Выбор сложности боя: лёгкая, нормальная и сложная с разным множителем HP активного врага.</li>
+          </ul>
+        </article>
+        <article class="updates-release">
+          <h3 class="updates-release__ver">1.0.0</h3>
+          <ul class="updates-release__list">
+            <li>Первый выпуск: текстовый пошаговый бой, удар / техника / защита, ростер персонажей и базовый ИИ противника.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
 
     <section id="setup" class="panel panel--setup">
       <div class="roster-filter-bar" id="rosterFilterBar">
@@ -1664,15 +1735,6 @@
         </div>
       </div>
       <div class="setup-footer">
-        <div class="setup-diff-block">
-          <div class="setup-diff__head">Сложность</div>
-          <div class="diff-row" id="diffRow" role="radiogroup" aria-label="Сложность боя">
-            <button type="button" class="diff-btn" data-diff="easy">Лёгкая<small>обучение</small></button>
-            <button type="button" class="diff-btn is-on" data-diff="normal">Нормальная<small>базовый баланс</small></button>
-            <button type="button" class="diff-btn" data-diff="hard">Сложная<small>враг сильнее</small></button>
-            <button type="button" class="diff-btn" data-diff="extreme">Экстрим<small>кошмар</small></button>
-          </div>
-        </div>
         <div class="vs-row">
           <span>Команда 1:</span> <strong id="label1">—</strong>
           <span class="vs-badge">VS</span>
@@ -1686,7 +1748,6 @@
 
     <section id="battle" class="panel">
       <h2>Арена</h2>
-      <div class="synergy-hud" id="synergyHud" aria-live="polite"></div>
       <div class="fighters">
         <div class="fighter-wrap fighter-wrap--p1">
           <div class="fighter fighter--p1" id="fighter1">
@@ -1733,7 +1794,7 @@
 
   <script>
     /** Увеличивай при каждом значимом изменении (одна точка правды для UI). */
-    const APP_VERSION = "1.11.0";
+    const APP_VERSION = "1.13.0";
 
     function pick(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
@@ -1749,139 +1810,11 @@
       return weights[weights.length - 1].act;
     }
 
-    const TEAM_SYNERGIES = [
-      {
-        ids: ["todo", "yuji"],
-        name: "Идеальный брат × Юдзи",
-        blurb: "Тодо хлопает в такт — чёрная вспышка и Буги-вуги раскрывают комбо.",
-        combatHint: "После удара или техники шанс сорвать ход противника (Буги-вуги).",
-        fx: [{ kind: "skip_enemy_turn", chance: 0.14, acts: ["strike", "technique"] }],
-      },
-      {
-        ids: ["yuji", "nobara", "megumi"],
-        name: "Тройка первокурсников Токио",
-        blurb: "Мегуми, Нобара и Юдзи — прикрытие и синхрон на поле.",
-        combatHint: "Один раз за бой: при низком HP команда стабилизирует поле и лечит активного бойца.",
-        fx: [{ kind: "tokyo_cover", hpRatio: 0.34, healFrac: 0.14 }],
-      },
-      {
-        ids: ["gojo", "geto"],
-        name: "Сильнейший и лучший друг",
-        blurb: "Школьная связка — домен и техника читаются в унисон.",
-        combatHint: "Первое успешное расширение домена в бою наносит дополнительный «ритуальный» урон.",
-        fx: [{ kind: "ritual_domain_extra", min: 12, max: 24, once: true }],
-      },
-      {
-        ids: ["maki", "panda"],
-        name: "Второй курс в деле",
-        blurb: "Маки и Панда — привычка сражаться плечом к плечу.",
-        combatHint: "После защиты следующий твой удар получает фиксированный бонус к урону (настройка корпуса).",
-        fx: [{ kind: "tag_after_defend", min: 9, max: 21 }],
-      },
-      {
-        ids: ["choso", "yuji"],
-        name: "Связь крови",
-        blurb: "Чосо и Юдзи — общий ритм, ярость и точность.",
-        combatHint: "После техники кровь может «догрызть» врага дополнительным уроном.",
-        fx: [{ kind: "blood_bleed_after_tech", chance: 0.2, min: 3, max: 12 }],
-      },
-      {
-        ids: ["yuta", "maki"],
-        name: "Рейд в поместье Зенин",
-        blurb: "Юта и Маки — прорыв стеной особого класса.",
-        combatHint: "Первый удар после выхода на поле пробивает часть «брони» (усиление базы).",
-        fx: [{ kind: "raid_armor_ignore", frac: 0.26 }],
-      },
-      {
-        ids: ["toji", "maki"],
-        name: "Небесное ограничение Зенин",
-        blurb: "Тодзи и Маки — чистая физика и проклятое оружие.",
-        combatHint: "Удары иногда наносят дополнительный чистый урон клановым нажимом.",
-        fx: [{ kind: "zenin_extra_strike", chance: 0.2, min: 5, max: 17 }],
-      },
-      {
-        ids: ["kashimo", "hakari"],
-        name: "Игра смерти в Отборе",
-        blurb: "Касимо и Хакари — ставка на домен и CE до предела.",
-        combatHint: "Один раз за бой: провал мини-игры домена может перевернуться в успех (риск отбора).",
-        fx: [{ kind: "domain_risk_reroll", chance: 0.28, once: true }],
-      },
-      {
-        ids: ["sukuna", "megumi"],
-        name: "Сосуд и тени",
-        blurb: "Сукуна в теле и Десять теней — тёмное усиление.",
-        combatHint: "Один раз за бой первый удар получает теневой добой к урону.",
-        fx: [{ kind: "shadow_vessel", once: true, frac: 0.26 }],
-      },
-      {
-        ids: ["higuruma", "takaba"],
-        name: "Зал и сцена",
-        blurb: "Хигурума и Такаба — закон и смех ломают ожидания врага.",
-        combatHint: "После твоего удара зал иногда «ломает сценарий» — враг вынужден бить только в ближний бой.",
-        fx: [{ kind: "force_enemy_strike", chance: 0.13 }],
-      },
-      {
-        ids: ["kenjaku", "geto"],
-        name: "Мозг в чужом теле",
-        blurb: "Кэндзиаку и наследие Гето — архив техник в одном ритме.",
-        combatHint: "После успешного домена следующая атака врага ослаблена проклятой меткой.",
-        fx: [{ kind: "curse_mark_after_domain", factor: 0.62 }],
-      },
-      {
-        ids: ["maki", "panda", "toge"],
-        name: "Токийская второгодка",
-        blurb: "Маки, Панда и Тогэ — классический состав миссий.",
-        combatHint: "Каждые 5 ходов боя (счётчик) при использовании техники — дополнительный залп «курса».",
-        fx: [{ kind: "kyoto_pulse", everyNTurns: 5, min: 7, max: 16, needsAct: "technique" }],
-      },
-      {
-        ids: ["nanami", "mahito"],
-        name: "Ненависть по существу",
-        blurb: "Нанами против Махито — удар по «душевной геометрии».",
-        combatHint: "После удара можно пометить врага — его следующий удар по тебе слабее.",
-        fx: [{ kind: "mark_enemy_weak", chance: 0.24, nextFactor: 0.68 }],
-      },
-      {
-        ids: ["yuji", "todo", "megumi"],
-        name: "Смена и брат",
-        blurb: "Юдзи, Тодо и Мегуми — совместный прессинг на поле.",
-        combatHint: "После удара иногда следует второй, ослабленный удар в той же смене.",
-        fx: [{ kind: "double_tap_strike", chance: 0.11, frac: 0.42 }],
-      },
-    ];
-
-    /** Счётчики и флаги одного боя (синергии и механики без «голых» множителей). */
+    /** Счётчики одного боя (индивидуальные механики персонажей). */
     let battleState = {};
 
     function resetBattleState() {
       battleState = {
-        globalTurn: 0,
-        skipEnemyTurn: false,
-        forceEnemyStrikeNext: false,
-        enemyDamageFactor: 1,
-        ritualDomainUsed: false,
-        domainRerollUsed: false,
-        pierceDefendUsed: false,
-        curseMarkActive: false,
-        weakMarkFromSynergy: false,
-        tokyoCoverUsed: false,
-        strikeCountP1: 0,
-        techCountP1: 0,
-        raidArmorActive: false,
-        tagStrikeBonus: 0,
-        lastPlayerAct: null,
-        lastSynergyFx: [],
-        shadowVesselUsed: false,
-        shadowVesselEnemyUsed: false,
-        nextEnemyOutgoingFactor: 1,
-        nextPlayerOutgoingFactor: 1,
-        skipPlayerTurn: false,
-        forcePlayerStrikeNext: false,
-        tagEnemyStrikeBonus: 0,
-        tokyoCoverEnemyUsed: false,
-        ritualDomainEnemyUsed: false,
-        domainRerollEnemyUsed: false,
-        raidArmorEnemyActive: false,
         yujiStrikes: 0,
         yujiEnemyStrikes: 0,
         playerMoves: 0,
@@ -1889,277 +1822,8 @@
       };
     }
 
-    function neutralSynergy() {
-      return {
-        strike: 1,
-        tech: 1,
-        domainDmg: 1,
-        crit: 0,
-        domainCh: 0,
-        defEx: 0,
-        active: [],
-        fx: [],
-      };
-    }
-
-    function findSynergyMatches(teamIds) {
-      const set = new Set(teamIds);
-      return TEAM_SYNERGIES.filter((syn) => {
-        if (!syn.ids.every((id) => set.has(id))) return false;
-        if (syn.ids.length >= 3 && teamIds.length < 3) return false;
-        return true;
-      });
-    }
-
-    function mergeSynergies(matches) {
-      const o = neutralSynergy();
-      for (const m of matches) {
-        o.active.push(m);
-        if (m.fx && m.fx.length) o.fx.push(...m.fx);
-      }
-      return o;
-    }
-
     function rollInt(min, max) {
       return min + Math.floor(Math.random() * (max - min + 1));
-    }
-
-    function synergyFxListSummary(syn) {
-      if (!syn.active.length) return "—";
-      const hints = syn.active.map((m) => m.combatHint || m.blurb).filter(Boolean);
-      return hints.length ? hints.join(" · ") : syn.active.map((m) => m.name).join(" · ");
-    }
-
-    function formatSynergyStatBits(syn) {
-      if (!syn.active.length) return "нет связок";
-      return synergyFxListSummary(syn);
-    }
-
-    function synergyActNote() {
-      return "";
-    }
-
-    function runSynergyHooksPlayerAfterDamage(act, baseDmg) {
-      if (!synergyP1.fx || !synergyP1.fx.length) return;
-      for (const fx of synergyP1.fx) {
-        if (fx.kind === "skip_enemy_turn" && fx.acts && fx.acts.includes(act)) {
-          if (synergyRollSuccess(fx.chance, "p1")) {
-            battleState.skipEnemyTurn = true;
-            appendLog(
-              `✦ <strong>Синергия (Буги-вуги):</strong> хлопок сбивает темп — <strong>противник пропускает ход</strong>.`,
-              "synergy",
-            );
-          }
-        }
-        if (fx.kind === "blood_bleed_after_tech" && act === "technique") {
-          if (synergyRollSuccess(fx.chance, "p1")) {
-            const ex = rollInt(fx.min, fx.max);
-            hp2 = Math.max(0, hp2 - ex);
-            appendLog(`✦ <strong>Синергия (кровь):</strong> кровяной след добивает ещё на <strong>${ex}</strong>.`, "synergy");
-            updateHpBars();
-          }
-        }
-        if (fx.kind === "zenin_extra_strike" && act === "strike") {
-          if (synergyRollSuccess(fx.chance, "p1")) {
-            const ex = rollInt(fx.min, fx.max);
-            hp2 = Math.max(0, hp2 - ex);
-            appendLog(`✦ <strong>Синергия (Зенин):</strong> клановый нажим — дополнительно <strong>${ex}</strong>.`, "synergy");
-            updateHpBars();
-          }
-        }
-        if (fx.kind === "force_enemy_strike" && (act === "strike" || act === "technique")) {
-          if (synergyRollSuccess(fx.chance, "p1")) {
-            battleState.forceEnemyStrikeNext = true;
-            appendLog(`✦ <strong>Синергия (зал/сцена):</strong> враг вынужден ответить только <strong>ударом</strong> в следующий раз.`, "synergy");
-          }
-        }
-        if (fx.kind === "mark_enemy_weak" && act === "strike") {
-          if (synergyRollSuccess(fx.chance, "p1")) {
-            battleState.nextEnemyOutgoingFactor = Math.min(battleState.nextEnemyOutgoingFactor, fx.nextFactor);
-            appendLog(`✦ <strong>Синергия (метка):</strong> следующий удар врага по тебе ослаблен.`, "synergy");
-          }
-        }
-        if (fx.kind === "double_tap_strike" && act === "strike") {
-          if (synergyRollSuccess(fx.chance, "p1")) {
-            const ex = Math.max(1, Math.floor(baseDmg * fx.frac));
-            hp2 = Math.max(0, hp2 - ex);
-            appendLog(`✦ <strong>Синергия (смена):</strong> второй заход в связке — ещё <strong>${ex}</strong>.`, "synergy");
-            updateHpBars();
-          }
-        }
-        if (fx.kind === "shadow_vessel" && act === "strike" && fx.once && !battleState.shadowVesselUsed) {
-          battleState.shadowVesselUsed = true;
-          const ex = Math.max(1, Math.floor(baseDmg * fx.frac));
-          hp2 = Math.max(0, hp2 - ex);
-          appendLog(`✦ <strong>Синергия (сосуд/тени):</strong> тень добивает ещё <strong>${ex}</strong>.`, "synergy");
-          updateHpBars();
-        }
-      }
-    }
-
-    /** Зеркальные эффекты связок команды врага после урона по игроку. */
-    function runSynergyHooksEnemyAfterDamage(act, baseDmg) {
-      if (!synergyP2.fx || !synergyP2.fx.length) return;
-      for (const fx of synergyP2.fx) {
-        if (fx.kind === "skip_enemy_turn" && fx.acts && fx.acts.includes(act)) {
-          if (synergyRollSuccess(fx.chance, "p2")) {
-            battleState.skipPlayerTurn = true;
-            appendLog(
-              `✦ <strong>Синергия (враг, Буги-вуги):</strong> ритм ломается — <strong>ты пропускаешь ход</strong>.`,
-              "synergy",
-            );
-          }
-        }
-        if (fx.kind === "blood_bleed_after_tech" && act === "technique") {
-          if (synergyRollSuccess(fx.chance, "p2")) {
-            const ex = rollInt(fx.min, fx.max);
-            hp1 = Math.max(0, hp1 - ex);
-            appendLog(`✦ <strong>Синергия (враг, кровь):</strong> добой по следу — ещё <strong>${ex}</strong>.`, "synergy");
-            updateHpBars();
-          }
-        }
-        if (fx.kind === "zenin_extra_strike" && act === "strike") {
-          if (synergyRollSuccess(fx.chance, "p2")) {
-            const ex = rollInt(fx.min, fx.max);
-            hp1 = Math.max(0, hp1 - ex);
-            appendLog(`✦ <strong>Синергия (враг, Зенин):</strong> дополнительно <strong>${ex}</strong>.`, "synergy");
-            updateHpBars();
-          }
-        }
-        if (fx.kind === "force_enemy_strike" && (act === "strike" || act === "technique")) {
-          if (synergyRollSuccess(fx.chance, "p2")) {
-            battleState.forcePlayerStrikeNext = true;
-            appendLog(`✦ <strong>Синергия (враг, зал):</strong> сценарий сужается — твой следующий ход только <strong>удар</strong>.`, "synergy");
-          }
-        }
-        if (fx.kind === "mark_enemy_weak" && act === "strike") {
-          if (synergyRollSuccess(fx.chance, "p2")) {
-            battleState.nextPlayerOutgoingFactor = Math.min(battleState.nextPlayerOutgoingFactor, fx.nextFactor);
-            appendLog(`✦ <strong>Синергия (враг, метка):</strong> твой следующий удар по полю слабее.`, "synergy");
-          }
-        }
-        if (fx.kind === "double_tap_strike" && act === "strike") {
-          if (synergyRollSuccess(fx.chance, "p2")) {
-            const ex = Math.max(1, Math.floor(baseDmg * fx.frac));
-            hp1 = Math.max(0, hp1 - ex);
-            appendLog(`✦ <strong>Синергия (враг, смена):</strong> второй заход — ещё <strong>${ex}</strong>.`, "synergy");
-            updateHpBars();
-          }
-        }
-        if (fx.kind === "shadow_vessel" && act === "strike" && fx.once && !battleState.shadowVesselEnemyUsed) {
-          battleState.shadowVesselEnemyUsed = true;
-          const ex = Math.max(1, Math.floor(baseDmg * fx.frac));
-          hp1 = Math.max(0, hp1 - ex);
-          appendLog(`✦ <strong>Синергия (враг, сосуд):</strong> тень добивает ещё <strong>${ex}</strong>.`, "synergy");
-          updateHpBars();
-        }
-      }
-    }
-
-    function runSynergyHooksEnemyAfterDefend() {
-      if (!synergyP2.fx || !synergyP2.fx.length) return;
-      for (const fx of synergyP2.fx) {
-        if (fx.kind === "tag_after_defend") {
-          battleState.tagEnemyStrikeBonus = rollInt(fx.min, fx.max);
-          appendLog(
-            `✦ <strong>Синергия (враг, второй курс):</strong> следующий удар врага +<strong>${battleState.tagEnemyStrikeBonus}</strong>.`,
-            "synergy",
-          );
-        }
-      }
-    }
-
-    function runSynergyHooksBattleStartEnemy() {
-      if (!synergyP2.fx || !synergyP2.fx.length) return;
-      for (const fx of synergyP2.fx) {
-        if (fx.kind === "tokyo_cover") {
-          appendLog(`✦ <strong>Синергия (враг, Токио):</strong> при критическом HP сработает прикрытие (один раз).`, "synergy");
-        }
-        if (fx.kind === "ritual_domain_extra") {
-          appendLog(`✦ <strong>Синергия (враг, школа):</strong> первое успешное РД — доп. ритуальный урон (если враг откроет домен).`, "synergy");
-        }
-        if (fx.kind === "kyoto_pulse") {
-          appendLog(`✦ <strong>Синергия (враг, второгодка):</strong> каждые ${fx.everyNTurns} ходов врага техника может дать залп.`, "synergy");
-        }
-      }
-    }
-
-    function tryTokyoCoverHealEnemy() {
-      const fxList = synergyP2.fx || [];
-      const fx = fxList.find((f) => f.kind === "tokyo_cover");
-      if (!fx || battleState.tokyoCoverEnemyUsed) return;
-      const ratio = hp2 / Math.max(1, max2);
-      if (ratio < fx.hpRatio) {
-        battleState.tokyoCoverEnemyUsed = true;
-        const heal = Math.max(1, Math.floor(max2 * fx.healFrac));
-        hp2 = Math.min(max2, hp2 + heal);
-        appendLog(`✦ <strong>Синергия (враг, тройка Токио):</strong> прикрытие — <strong>+${heal} HP</strong> врагу.`, "synergy");
-        updateHpBars();
-      }
-    }
-
-    function tryKyotoPulseEnemy(act) {
-      const fx = (synergyP2.fx || []).find((f) => f.kind === "kyoto_pulse");
-      if (!fx || act !== fx.needsAct) return;
-      const m = battleState.enemyMoves || 0;
-      if (m < fx.everyNTurns || m % fx.everyNTurns !== 0) return;
-      const ex = rollInt(fx.min, fx.max);
-      hp1 = Math.max(0, hp1 - ex);
-      appendLog(`✦ <strong>Синергия (враг, второгодка):</strong> залп курса — <strong>${ex}</strong>.`, "synergy");
-      updateHpBars();
-    }
-
-    function runSynergyHooksPlayerAfterDefend() {
-      if (!synergyP1.fx || !synergyP1.fx.length) return;
-      for (const fx of synergyP1.fx) {
-        if (fx.kind === "tag_after_defend") {
-          battleState.tagStrikeBonus = rollInt(fx.min, fx.max);
-          appendLog(
-            `✦ <strong>Синергия (второй курс):</strong> следующий удар получает +<strong>${battleState.tagStrikeBonus}</strong> к урону.`,
-            "synergy",
-          );
-        }
-      }
-    }
-
-    function runSynergyHooksBattleStart() {
-      if (!synergyP1.fx || !synergyP1.fx.length) return;
-      for (const fx of synergyP1.fx) {
-        if (fx.kind === "tokyo_cover") {
-          appendLog(`✦ <strong>Синергия (тройка Токио):</strong> при критическом HP сработает прикрытие (один раз).`, "synergy");
-        }
-        if (fx.kind === "ritual_domain_extra") {
-          appendLog(`✦ <strong>Синергия (Годжо/Гето):</strong> первое успешное РД нанесёт дополнительный ритуальный урон.`, "synergy");
-        }
-        if (fx.kind === "kyoto_pulse") {
-          appendLog(`✦ <strong>Синергия (второгодка):</strong> каждые ${fx.everyNTurns} ходов техника может дать вспомогательный залп.`, "synergy");
-        }
-      }
-    }
-
-    function tryTokyoCoverHeal() {
-      const fxList = synergyP1.fx || [];
-      const fx = fxList.find((f) => f.kind === "tokyo_cover");
-      if (!fx || battleState.tokyoCoverUsed) return;
-      const ratio = hp1 / Math.max(1, max1);
-      if (ratio < fx.hpRatio) {
-        battleState.tokyoCoverUsed = true;
-        const heal = Math.max(1, Math.floor(max1 * fx.healFrac));
-        hp1 = Math.min(max1, hp1 + heal);
-        appendLog(`✦ <strong>Синергия (тройка Токио):</strong> прикрытие — <strong>+${heal} HP</strong>.`, "synergy");
-        updateHpBars();
-      }
-    }
-
-    function tryKyotoPulse(act) {
-      const fx = (synergyP1.fx || []).find((f) => f.kind === "kyoto_pulse");
-      if (!fx || act !== fx.needsAct) return;
-      const m = battleState.playerMoves || 0;
-      if (m < fx.everyNTurns || m % fx.everyNTurns !== 0) return;
-      const ex = rollInt(fx.min, fx.max);
-      hp2 = Math.max(0, hp2 - ex);
-      appendLog(`✦ <strong>Синергия (второгодка):</strong> синхрон курса — дополнительно <strong>${ex}</strong>.`, "synergy");
-      updateHpBars();
     }
 
     function mechCritAdd(p) {
@@ -2167,6 +1831,8 @@
       const t = {
         shigemo: 0.07,
         sukuna: 0.04,
+        megumi_sukuna: 0.05,
+        lawyer_mahoraga: 0.04,
         todo: 0.04,
         kashimo: 0.05,
         yuji: 0.04,
@@ -2175,127 +1841,38 @@
       return t[p.id] || 0;
     }
 
-    function renderSynergyHud() {
-      const root = document.getElementById("synergyHud");
-      if (!root) return;
-      const col = (syn, title) => {
-        const empty = !syn.active.length;
-        const names = empty ? "— нет связок" : syn.active.map((m) => m.name).join(" · ");
-        const stats = formatSynergyStatBits(syn);
-        return `<div class="synergy-hud__col${empty ? " synergy-hud__col--empty" : ""}">
-            <strong>${title}</strong>
-            <span class="synergy-hud__names">${names}</span>
-            <span class="synergy-hud__stats">${stats}</span>
-          </div>`;
-      };
-      root.innerHTML = `<div class="synergy-hud__title">Синергия</div>
-        <div class="synergy-hud__inner">${col(synergyP1, "Ты")}${col(synergyP2, "Враг")}</div>`;
-    }
-
-    const DIFFICULTY = {
-      easy: {
-        label: "Лёгкая",
-        enemyHpMult: 0.88,
-        enemyDamageMult: 0.84,
-        playerDamageMult: 1.1,
-        enemyCritChance: 0.07,
-        enemyStrikeWeight: 2,
-        enemyTechWeight: 2,
-        enemyDefendWeight: 3,
-        defendMitigation: 0.62,
-        domainSuccessChance: 0.44,
-        rollVarPlayer: 3,
-        rollVarEnemy: 3,
-        enemyTechBonusChance: 0.08,
-        playerCritChance: 0.18,
-      },
-      normal: {
-        label: "Нормальная",
-        enemyHpMult: 1,
-        enemyDamageMult: 1,
-        playerDamageMult: 1,
-        enemyCritChance: 0.12,
-        enemyStrikeWeight: 2,
-        enemyTechWeight: 2,
-        enemyDefendWeight: 2,
-        defendMitigation: 0.55,
-        domainSuccessChance: 0.34,
-        rollVarPlayer: 4,
-        rollVarEnemy: 4,
-        enemyTechBonusChance: 0.1,
-        playerCritChance: 0.15,
-      },
-      hard: {
-        label: "Сложная",
-        enemyHpMult: 1.12,
-        enemyDamageMult: 1.16,
-        playerDamageMult: 0.94,
-        enemyCritChance: 0.17,
-        enemyStrikeWeight: 3,
-        enemyTechWeight: 3,
-        enemyDefendWeight: 1,
-        defendMitigation: 0.48,
-        domainSuccessChance: 0.27,
-        rollVarPlayer: 4,
-        rollVarEnemy: 5,
-        enemyTechBonusChance: 0.14,
-        playerCritChance: 0.12,
-      },
-      extreme: {
-        label: "Экстрим",
-        enemyHpMult: 1.26,
-        enemyDamageMult: 1.3,
-        playerDamageMult: 0.87,
-        enemyCritChance: 0.22,
-        enemyStrikeWeight: 4,
-        enemyTechWeight: 4,
-        enemyDefendWeight: 1,
-        defendMitigation: 0.42,
-        domainSuccessChance: 0.2,
-        rollVarPlayer: 5,
-        rollVarEnemy: 6,
-        enemyTechBonusChance: 0.18,
-        playerCritChance: 0.09,
-      },
+    /** Симметричный баланс сторон (усиленные юниты сильнее за счёт своих статов в ростере). */
+    const BATTLE_TUNING = {
+      damageMult: 1,
+      critChance: 0.15,
+      defendMitigation: 0.55,
+      domainSuccessChance: 0.34,
+      rollVar: 4,
+      techBonusChance: 0.1,
+      actStrikeWeight: 2,
+      actTechWeight: 2,
+      actDefendWeight: 2,
+      /** Вес домена в пуле ходов ИИ (игрок тоже может доменить — стороны сопоставимы). */
+      actDomainWeight: 2,
     };
 
-    let difficultyId = "normal";
-
-    function getDifficulty() {
-      return DIFFICULTY[difficultyId] || DIFFICULTY.normal;
-    }
-
-    /** Баланс: шансы синергий и сила механик зависят от сложности (игрок слегка сильнее на лёгкой, враг — на экстриме). */
-    function getBattleBalance() {
-      const id = difficultyId || "normal";
-      if (id === "easy")
-        return { synP1: 1.12, synP2: 0.88, mechDefP1: 1.1, mechDefP2: 0.9, flatP1: 1.06, flatP2: 0.94 };
-      if (id === "hard")
-        return { synP1: 0.9, synP2: 1.08, mechDefP1: 0.92, mechDefP2: 1.08, flatP1: 0.94, flatP2: 1.08 };
-      if (id === "extreme")
-        return { synP1: 0.82, synP2: 1.15, mechDefP1: 0.85, mechDefP2: 1.12, flatP1: 0.88, flatP2: 1.14 };
-      return { synP1: 1, synP2: 1, mechDefP1: 1, mechDefP2: 1, flatP1: 1, flatP2: 1 };
-    }
-
-    function synergyRollSuccess(baseChance, side) {
-      const b = getBattleBalance();
-      const m = side === "p2" ? b.synP2 : b.synP1;
-      return Math.random() < Math.min(0.92, Math.max(0.03, baseChance * m));
-    }
-
-    function scaleFlatBonus(amount, side) {
-      const b = getBattleBalance();
-      const m = side === "p2" ? b.flatP2 : b.flatP1;
-      return Math.max(0, Math.floor(amount * m));
-    }
-
     function pickEnemyAct() {
-      const d = getDifficulty();
+      const t = BATTLE_TUNING;
       const pool = [];
-      for (let i = 0; i < d.enemyStrikeWeight; i++) pool.push("strike");
-      for (let i = 0; i < d.enemyTechWeight; i++) pool.push("technique");
-      for (let i = 0; i < d.enemyDefendWeight; i++) pool.push("defend");
+      for (let i = 0; i < t.actStrikeWeight; i++) pool.push("strike");
+      for (let i = 0; i < t.actTechWeight; i++) pool.push("technique");
+      for (let i = 0; i < t.actDefendWeight; i++) pool.push("defend");
+      for (let i = 0; i < t.actDomainWeight; i++) pool.push("domain");
       return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    /** Команда 2 в прошлый ход стояла в защите — ближайший твой урон по её бойцу снижается (как у врага после твоей защиты). */
+    function applyOutgoingMitigationVsP2(rawDmg) {
+      if (!defendBuffP2) return { dmg: rawDmg, suffix: "" };
+      const mit = Math.min(0.78, BATTLE_TUNING.defendMitigation);
+      const reduced = Math.max(1, Math.floor(rawDmg * (1 - mit)));
+      defendBuffP2 = 0;
+      return { dmg: reduced, suffix: ` <span class="turn-meta">(защита врага: ${rawDmg}→${reduced})</span>` };
     }
 
     /** Снижает входящий урон с учётом защиты персонажа (def). */
@@ -3330,6 +2907,50 @@
         domainMiss: "Цикл не сходится — остаётся один удар вне фазы и слабый импульс.",
         defendLine: "Сдвиг фазы на единицу — входящий удар попадает в «пустой» остаток.",
       },
+      {
+        id: "megumi_sukuna",
+        elite: true,
+        name: "Megumi-Sukuna",
+        emoji: "👤",
+        hp: 138,
+        atk: 16,
+        tech: 20,
+        def: 13,
+        strikePool: [
+          "Тело Мегуми под яростным контролем Сукуны — Dismantle вырывается из тени насильно, рвёт дистанцию.",
+          "Ного сжимается в шахматный мат: проклятие короля режет линию удара, пока Ten Shadows добивают с фланга.",
+        ],
+        techPool: [
+          "«Десять теней» искажены волей сосуда — Divine Dogs и Nue бьют в синхроне с Cleave без запроса к хозяину.",
+          "Макс-слон и тень сминают поле CE; в промежутках вспыхивают «Стрела пламени» особого класса.",
+          "Chimera Shadow Garden наваливается волной: тёмные шикигами давят законами «Святилища» изнутри тела.",
+        ],
+        domainHit: "Сплетение «Сада химерных теней» и давления Fukuma Mizushi — король режет территорию, пока генералы теней смыкают периметр.",
+        domainMiss: "Воля Фушигуро на миг душит вторжение — остаётся лишь осколок Cleave и рваная тень.",
+        defendLine: "Кроличий побег и реверсивный слой Сукуны — удар гасится между «двумя жильцами» одного сосуда.",
+      },
+      {
+        id: "lawyer_mahoraga",
+        elite: true,
+        name: "Lawyer Mahoraga",
+        emoji: "📝",
+        hp: 156,
+        atk: 19,
+        tech: 22,
+        def: 18,
+        strikePool: [
+          "Восьмиручный меч судит «по статье» — удар оформлен как приговор, траектория не оспаривается до адаптации.",
+          "Когти и хвост божественного генерала выносят заключение в ближний бой: контакт = фиксация вины.",
+        ],
+        techPool: [
+          "Колесо зафиксировало закон «Смертельного приговора» — Махорага адаптируется к судебному домену, а не ломается под ним.",
+          "Judgeman и молот сливаются с оборотом спины: вердикт CE бьёт повторно, пока колесо не замкнуло цикл.",
+          "Процедура Confiscation через адаптацию — у противника «изымается» часть ритма боя, как орудие у осуждённого.",
+        ],
+        domainHit: "Расширение: зал суда Хигурумы, переписанный колесом Махораги — каждый пункт обвинения становится физическим ударом закона поля.",
+        domainMiss: "Форма не выдерживает совмещения процедур — остаётся тяжёлый рез меча без полного контура DE.",
+        defendLine: "Панцирь и протокол: входящий удар регистрируется как «ходатайство» и гасится адаптацией до вынесения фазы.",
+      },
     ];
 
     /** Категории для фильтра ростера (id → подпись). Персонаж может иметь несколько тегов. */
@@ -3390,6 +3011,8 @@
       naoya_cs: ["curse", "zenin"],
       naoya_cs_true: ["curse", "zenin", "elite"],
       modulo_yuji: ["sorcerer", "elite"],
+      megumi_sukuna: ["curse", "sorcerer", "elite", "migration"],
+      lawyer_mahoraga: ["curse", "elite", "migration"],
     };
 
     let rosterActiveTagIds = new Set();
@@ -3807,9 +3430,6 @@
       paint();
     }
 
-    let synergyP1 = neutralSynergy();
-    let synergyP2 = neutralSynergy();
-
     let team1Pick = [];
     let team2Pick = [];
     let team1 = [];
@@ -3821,6 +3441,7 @@
     let hp1, hp2, max1, max2;
     let battleOver = false;
     let defendStreak = 0;
+    let defendBuffP2 = 0;
     let prevHp1 = 0;
     let prevHp2 = 0;
     let autoBattleTimer = null;
@@ -3851,7 +3472,6 @@
       applyCharTitleEl(document.getElementById("n1"), p1);
       setFighterCharAttrs();
       appendLog(`Замена — за команду 1 на поле выходит ${charTitleHtml(p1)}.`, "system");
-      battleState.raidArmorActive = (synergyP1.fx || []).some((f) => f.kind === "raid_armor_ignore");
       battleState.yujiStrikes = 0;
       updateBattleBenchs();
       updateHpBars();
@@ -3860,18 +3480,17 @@
 
     function trySwapTeam2() {
       if (!team2.length || idx2 >= team2.length - 1) return false;
-      const d = getDifficulty();
       idx2 += 1;
       p2 = team2[idx2];
-      max2 = Math.max(1, Math.round(p2.hp * d.enemyHpMult));
+      max2 = p2.hp;
       hp2 = max2;
       defendStreak = 0;
+      defendBuffP2 = 0;
       prevHp2 = hp2;
       document.getElementById("e2").textContent = p2.emoji;
       applyCharTitleEl(document.getElementById("n2"), p2);
       setFighterCharAttrs();
       appendLog(`Замена — за команду 2 на поле выходит ${charTitleHtml(p2)}.`, "system");
-      battleState.raidArmorEnemyActive = (synergyP2.fx || []).some((f) => f.kind === "raid_armor_ignore");
       updateBattleBenchs();
       updateHpBars();
       return true;
@@ -3950,17 +3569,10 @@
     function runAutoBattleAction() {
       const autoEl = document.getElementById("autoBattle");
       if (!autoEl || !autoEl.checked || battleOver || !battleEl.classList.contains("active")) return;
-      if (battleState.skipPlayerTurn) {
-        battleState.skipPlayerTurn = false;
-        appendLog(`<span class="system">Пропуск хода — сорванный темп.</span>`, "system");
-        enemyTurn();
-        return;
-      }
       let act = pickAutoBattleAction();
-      if (battleState.forcePlayerStrikeNext) act = "strike";
       if (act === "domain") {
-        const d = getDifficulty();
-        const success = Math.random() < Math.min(0.92, d.domainSuccessChance + synergyP1.domainCh);
+        const success =
+          Math.random() < Math.min(0.92, BATTLE_TUNING.domainSuccessChance);
         applyPlayerDomainHit(success);
         return;
       }
@@ -4117,13 +3729,16 @@
         }
       }
       if (id === "megumi" && act === "technique" && Math.random() < 0.22) add += rollInt(3, 11);
+      if (id === "megumi_sukuna" && act === "technique" && Math.random() < 0.26) add += rollInt(4, 14);
+      if (id === "lawyer_mahoraga" && act === "strike" && Math.random() < 0.24) add += rollInt(5, 16);
+      if (id === "lawyer_mahoraga" && act === "technique" && Math.random() < 0.26) add += rollInt(5, 18);
       if (id === "kenjaku" && act === "technique" && Math.random() < 0.18) add += rollInt(4, 14);
       if (id === "yuki" && act === "strike" && Math.random() < 0.2) add += rollInt(4, 14);
       if (id === "modulo_yuji" && act !== "defend") {
         if (attacker === p1 && (battleState.playerMoves || 0) > 0 && battleState.playerMoves % 3 === 0) add += rollInt(5, 18);
         if (attacker === p2 && (battleState.enemyMoves || 0) > 0 && battleState.enemyMoves % 3 === 0) add += rollInt(5, 18);
       }
-      return scaleFlatBonus(add, attacker === p1 ? "p1" : "p2");
+      return Math.max(0, Math.floor(add));
     }
 
     function mechHealOnDefend(defender) {
@@ -4138,8 +3753,7 @@
 
     function mechMaybeNegateOrShaveIncoming(defender, dmg) {
       if (!defender || dmg <= 0) return dmg;
-      const b = getBattleBalance();
-      const s = defender === p1 ? b.mechDefP1 : b.mechDefP2;
+      const s = 1;
       const id = defender.id;
       if (id === "gojo" && Math.random() < Math.min(0.45, 0.22 * s)) {
         appendLog(`<span class="mech-proc">∞ Бесконечность — удар не достигает тела.</span>`, "mech-proc");
@@ -4148,6 +3762,14 @@
       if (id === "megumi" && Math.random() < Math.min(0.32, 0.14 * s)) {
         appendLog(`<span class="mech-proc">Тень подхватила удар вместо тебя.</span>`, "mech-proc");
         return 0;
+      }
+      if (id === "megumi_sukuna" && Math.random() < Math.min(0.36, 0.16 * s)) {
+        appendLog(`<span class="mech-proc">Сукуна сдвигает удар — тень сосуда принимает удар.</span>`, "mech-proc");
+        return 0;
+      }
+      if (id === "lawyer_mahoraga" && Math.random() < Math.min(0.34, 0.17 * s)) {
+        appendLog(`<span class="mech-proc">Колесо: статья приговора поглощает часть импульса.</span>`, "mech-proc");
+        return Math.max(1, Math.floor(dmg * 0.42));
       }
       if (id === "uro" && Math.random() < Math.min(0.34, 0.16 * s)) {
         appendLog(`<span class="mech-proc">Небо искривлено — траектория срывается.</span>`, "mech-proc");
@@ -4178,24 +3800,17 @@
 
     function applyPlayerDomainHit(success) {
       if (battleOver || !p1 || !p2) return;
-      let ok = !!success;
-      if (!ok) {
-        const fxR = (synergyP1.fx || []).find((f) => f.kind === "domain_risk_reroll");
-        if (fxR && !battleState.domainRerollUsed && fxR.once && synergyRollSuccess(fxR.chance, "p1")) {
-          battleState.domainRerollUsed = true;
-          ok = true;
-          appendLog(`✦ <strong>Синергия (отбор):</strong> пересдача — домен цепляется!`, "synergy");
-        }
-      }
-      const d = getDifficulty();
+      const ok = !!success;
+      const tv = BATTLE_TUNING.rollVar;
+      const dm = BATTLE_TUNING.damageMult;
       let raw;
       let dmg;
       let msg;
       let logVariant;
       const domFlat = mechDomainExtraFlat(p1);
       if (ok) {
-        raw = roll(Math.floor(22 * ((p1.tech + p1.atk) / 20)), null, d.rollVarPlayer);
-        raw = Math.max(1, Math.floor(raw * d.playerDamageMult) + domFlat);
+        raw = roll(Math.floor(22 * ((p1.tech + p1.atk) / 20)), null, tv);
+        raw = Math.max(1, Math.floor(raw * dm) + domFlat);
         dmg = applyTargetArmor(raw, p2);
         dmg = Math.max(1, dmg + mechFlatChipVsTarget(p1, p2, "domain"));
         msg = `${htmlPlayerTurnHead()} ${p1.domainHit} Урон: ${dmg}.`;
@@ -4203,38 +3818,22 @@
         triggerFxOverlay("is-domain", 680);
         triggerScreenShake();
       } else {
-        raw = roll(4, null, d.rollVarPlayer);
-        raw = Math.max(1, Math.floor(raw * d.playerDamageMult));
+        raw = roll(4, null, tv);
+        raw = Math.max(1, Math.floor(raw * dm));
         dmg = applyTargetArmor(raw, p2);
         dmg = Math.max(1, dmg + mechFlatChipVsTarget(p1, p2, "domain_miss"));
         msg = `${htmlPlayerTurnHead()} ${p1.domainMiss} Слабый зацеп: ${dmg}.`;
         logVariant = "domain-miss";
       }
-      if (battleState.nextPlayerOutgoingFactor < 0.999) {
-        dmg = Math.max(0, Math.floor(dmg * battleState.nextPlayerOutgoingFactor));
-        battleState.nextPlayerOutgoingFactor = 1;
-      }
       dmg = mechMaybeNegateOrShaveIncoming(p2, dmg);
+      const domOm = applyOutgoingMitigationVsP2(dmg);
+      dmg = domOm.dmg;
       if (ok) {
-        msg = `${htmlPlayerTurnHead()} ${p1.domainHit} Урон: ${dmg}.`;
+        msg = `${htmlPlayerTurnHead()} ${p1.domainHit} Урон: ${dmg}.${domOm.suffix}`;
       } else {
-        msg = `${htmlPlayerTurnHead()} ${p1.domainMiss} Слабый зацеп: ${dmg}.`;
+        msg = `${htmlPlayerTurnHead()} ${p1.domainMiss} Слабый зацеп: ${dmg}.${domOm.suffix}`;
       }
       hp2 = Math.max(0, hp2 - dmg);
-      if (ok) {
-        const ritual = (synergyP1.fx || []).find((f) => f.kind === "ritual_domain_extra");
-        if (ritual && ritual.once && !battleState.ritualDomainUsed) {
-          battleState.ritualDomainUsed = true;
-          const ex = rollInt(ritual.min, ritual.max);
-          hp2 = Math.max(0, hp2 - ex);
-          appendLog(`✦ <strong>Синергия (школа):</strong> ритуальный резонанс — ещё <strong>${ex}</strong>.`, "synergy");
-        }
-        const curse = (synergyP1.fx || []).find((f) => f.kind === "curse_mark_after_domain");
-        if (curse) {
-          battleState.nextEnemyOutgoingFactor = Math.min(battleState.nextEnemyOutgoingFactor, curse.factor);
-          appendLog(`✦ <strong>Синергия (мозг/Гето):</strong> проклятая метка — следующий удар врага слабее.`, "synergy");
-        }
-      }
       appendLog(msg, logVariant);
       battleState.playerMoves = (battleState.playerMoves || 0) + 1;
       updateHpBars();
@@ -4244,21 +3843,9 @@
 
     function enemyTurn() {
       if (battleOver || !p1 || !p2) return;
-      if (battleState.skipEnemyTurn) {
-        battleState.skipEnemyTurn = false;
-        appendLog(`<span class="enemy">Противник не успевает ответить — сбитый темп.</span>`, "system");
-        if (!battleOver) scheduleAutoBattleStep();
-        return;
-      }
       battleState.enemyMoves = (battleState.enemyMoves || 0) + 1;
-      const d = getDifficulty();
-      let act;
-      if (battleState.forceEnemyStrikeNext) {
-        battleState.forceEnemyStrikeNext = false;
-        act = "strike";
-      } else {
-        act = pickEnemyAct();
-      }
+      const t = BATTLE_TUNING;
+      let act = pickEnemyAct();
       const mult = act === "technique" ? p2.tech / 10 : act === "strike" ? p2.atk / 10 : 0;
       let dmg = 0;
       let line = "";
@@ -4271,9 +3858,56 @@
           hp2 = Math.min(max2, hp2 + hDef);
           appendLog(`${charTitleHtml(p2)}<span class="enemy-heal-meta"> · восстановление</span> +<strong>${hDef}</strong> HP.`, "enemy");
         }
-        runSynergyHooksEnemyAfterDefend();
-        tryTokyoCoverHealEnemy();
+        defendBuffP2 = 1;
         updateHpBars();
+        if (!battleOver) scheduleAutoBattleStep();
+        return;
+      }
+
+      if (act === "domain") {
+        let ok = Math.random() < Math.min(0.92, t.domainSuccessChance);
+        const tv = t.rollVar;
+        const dm = t.damageMult;
+        const domFlat = mechDomainExtraFlat(p2);
+        let logVariant;
+        if (ok) {
+          let rawD = roll(Math.floor(22 * ((p2.tech + p2.atk) / 20)), null, tv);
+          rawD = Math.max(1, Math.floor(rawD * dm) + domFlat);
+          dmg = applyTargetArmor(rawD, p1);
+          dmg = Math.max(1, dmg + mechFlatChipVsTarget(p2, p1, "domain"));
+          logVariant = "domain";
+          triggerFxOverlay("is-domain", 680);
+          triggerScreenShake();
+        } else {
+          let rawD = roll(4, null, tv);
+          rawD = Math.max(1, Math.floor(rawD * dm));
+          dmg = applyTargetArmor(rawD, p1);
+          dmg = Math.max(1, dmg + mechFlatChipVsTarget(p2, p1, "domain_miss"));
+          logVariant = "domain-miss";
+        }
+        dmg = Math.max(1, Math.floor(dmg * t.damageMult));
+        dmg = applyIncomingDefense(dmg, p1);
+        dmg = mechMaybeNegateOrShaveIncoming(p1, dmg);
+        if (dmg <= 0) {
+          appendLog(`${htmlEnemyTurnHead()} ${ok ? p2.domainHit : p2.domainMiss} — не проходит (<strong>0</strong> урона).`, "enemy");
+          updateHpBars();
+          checkEnd();
+          if (!battleOver) scheduleAutoBattleStep();
+          return;
+        }
+        const preDefMit = dmg;
+        const mitD = Math.min(0.78, t.defendMitigation);
+        const hadDefStreak = defendStreak > 0;
+        const reduced = defendStreak > 0 ? Math.max(1, Math.floor(dmg * (1 - mitD))) : dmg;
+        defendStreak = 0;
+        let line;
+        if (ok) line = `${htmlEnemyTurnHead()} ${p2.domainHit} Урон: <strong>${reduced}</strong>`;
+        else line = `${htmlEnemyTurnHead()} ${p2.domainMiss} Слабый зацеп: <strong>${reduced}</strong>`;
+        if (hadDefStreak) line += ` <span class="enemy-meta">(защита снижает с ${preDefMit} до ${reduced})</span>`;
+        hp1 = Math.max(0, hp1 - reduced);
+        appendLog(line, logVariant);
+        updateHpBars();
+        checkEnd();
         if (!battleOver) scheduleAutoBattleStep();
         return;
       }
@@ -4282,38 +3916,24 @@
       const m2c = mechCritAdd(p2);
       const pickLine = act === "strike" ? pick(p2.strikePool) : pick(p2.techPool);
       if (act === "strike") {
-        dmg = roll(Math.floor(8 * mult), null, d.rollVarEnemy);
-        const crit = Math.random() < Math.min(0.85, d.enemyCritChance + synergyP2.crit + m2c);
+        dmg = roll(Math.floor(9 * mult), null, t.rollVar);
+        const crit = Math.random() < Math.min(0.85, t.critChance + m2c);
         if (crit) {
-          dmg = Math.floor(dmg * 1.45);
+          dmg = Math.floor(dmg * 1.5);
           critLine = `<span class="crit">Крит!</span> `;
           triggerScreenShake();
           triggerFxOverlay("is-crit", 540);
         }
-        const raidFx2 = (synergyP2.fx || []).find((f) => f.kind === "raid_armor_ignore");
-        if (raidFx2 && battleState.raidArmorEnemyActive) {
-          battleState.raidArmorEnemyActive = false;
-          dmg = Math.floor(dmg * (1 + raidFx2.frac));
-          appendLog(`✦ <strong>Синергия (враг, рейд):</strong> первый удар бойца пробивает защиту.`, "synergy");
-        }
-        dmg = Math.max(1, Math.floor(dmg * synergyP2.strike));
-        if (battleState.tagEnemyStrikeBonus > 0) {
-          dmg += battleState.tagEnemyStrikeBonus;
-          appendLog(
-            `✦ <strong>Синергия (враг):</strong> бонус после защиты +<strong>${battleState.tagEnemyStrikeBonus}</strong>.`,
-            "synergy",
-          );
-          battleState.tagEnemyStrikeBonus = 0;
-        }
+        dmg = Math.max(1, Math.floor(dmg));
         dmg += mechBonusDamageOnHit(p2, "strike", dmg);
       } else {
-        dmg = roll(Math.floor(7 * mult), null, d.rollVarEnemy);
-        if (Math.random() < d.enemyTechBonusChance) dmg = Math.floor(dmg * 1.35);
-        dmg = Math.max(1, Math.floor(dmg * synergyP2.tech * synergyP2.domainDmg));
+        dmg = roll(Math.floor(8 * mult), null, t.rollVar);
+        if (Math.random() < t.techBonusChance) dmg = Math.floor(dmg * 1.35);
+        dmg = Math.max(1, Math.floor(dmg));
         dmg += mechBonusDamageOnHit(p2, "technique", dmg);
       }
 
-      dmg = Math.max(1, Math.floor(dmg * d.enemyDamageMult));
+      dmg = Math.max(1, Math.floor(dmg * t.damageMult));
       dmg = applyIncomingDefense(dmg, p1);
       dmg = mechMaybeNegateOrShaveIncoming(p1, dmg);
       if (dmg <= 0) {
@@ -4321,18 +3941,12 @@
           `${critLine}${htmlEnemyTurnHead()} ${pickLine} — не проходит (<strong>0</strong> урона).`,
           "enemy",
         );
-        tryTokyoCoverHeal();
-        tryTokyoCoverHealEnemy();
         updateHpBars();
         checkEnd();
         if (!battleOver) scheduleAutoBattleStep();
         return;
       }
-      if (battleState.nextEnemyOutgoingFactor < 0.999) {
-        dmg = Math.max(1, Math.floor(dmg * battleState.nextEnemyOutgoingFactor));
-        battleState.nextEnemyOutgoingFactor = 1;
-      }
-      const mit = Math.min(0.78, d.defendMitigation + synergyP1.defEx);
+      const mit = Math.min(0.78, t.defendMitigation);
       const reduced = defendStreak > 0 ? Math.max(1, Math.floor(dmg * (1 - mit))) : dmg;
       line =
         critLine +
@@ -4343,10 +3957,6 @@
       let enemyLogVar = "enemy";
       if (act === "strike" && line.includes("Крит")) enemyLogVar = "crit";
       appendLog(line, enemyLogVar);
-      tryTokyoCoverHeal();
-      tryTokyoCoverHealEnemy();
-      runSynergyHooksEnemyAfterDamage(act, reduced);
-      if (act === "technique") tryKyotoPulseEnemy("technique");
       updateHpBars();
       checkEnd();
       if (!battleOver) scheduleAutoBattleStep();
@@ -4416,15 +4026,15 @@
       idx2 = 0;
       p1 = team1[0];
       p2 = team2[0];
-      const d = getDifficulty();
       max1 = p1.hp;
-      max2 = Math.max(1, Math.round(p2.hp * d.enemyHpMult));
+      max2 = p2.hp;
       hp1 = max1;
       hp2 = max2;
       prevHp1 = hp1;
       prevHp2 = hp2;
       battleOver = false;
       defendStreak = 0;
+      defendBuffP2 = 0;
       resetBattleState();
       setupEl.style.display = "none";
       battleEl.classList.add("active");
@@ -4437,22 +4047,9 @@
 
       function beginBattleLogsAndUi() {
         appendLog(
-          `Командный бой: <strong>${formatTeamListHtml(team1)}</strong> против <strong class="red">${formatTeamListHtml(team2)}</strong>. Сложность: <strong>${d.label}</strong> (HP активного врага ${max2}).`,
+          `Командный бой: <strong>${formatTeamListHtml(team1)}</strong> против <strong class="red">${formatTeamListHtml(team2)}</strong>.`,
           "system",
         );
-        synergyP1 = mergeSynergies(findSynergyMatches(team1Pick));
-        synergyP2 = mergeSynergies(findSynergyMatches(team2Pick));
-        battleState.raidArmorActive = (synergyP1.fx || []).some((f) => f.kind === "raid_armor_ignore");
-        battleState.raidArmorEnemyActive = (synergyP2.fx || []).some((f) => f.kind === "raid_armor_ignore");
-        renderSynergyHud();
-        runSynergyHooksBattleStart();
-        runSynergyHooksBattleStartEnemy();
-        synergyP1.active.forEach((m) => {
-          appendLog(`✦ <strong>Связка (ты):</strong> «${m.name}» — ${m.blurb}`, "synergy");
-        });
-        synergyP2.active.forEach((m) => {
-          appendLog(`✦ <strong>Связка (враг):</strong> «${m.name}» — ${m.blurb}`, "synergy");
-        });
         appendLog("Твой ход — выбери действие.", "system");
         updateBattleBenchs();
         updateHpBars();
@@ -4488,9 +4085,6 @@
       idx2 = 0;
       p1 = null;
       p2 = null;
-      synergyP1 = neutralSynergy();
-      synergyP2 = neutralSynergy();
-      renderSynergyHud();
       renderRosters();
       updateLabels();
     });
@@ -4500,54 +4094,27 @@
       if (!btn || battleOver) return;
       clearAutoBattleTimer();
       const act = btn.getAttribute("data-act");
-      const d = getDifficulty();
+      const t = BATTLE_TUNING;
       let dmg = 0;
       let msg = "";
 
       let logVariant = "turn";
       let raw = 0;
 
-      if (battleState.skipPlayerTurn) {
-        battleState.skipPlayerTurn = false;
-        appendLog(`<span class="system">Тебя выбивают из темпа — пропуск хода.</span>`, "system");
-        if (!battleOver) enemyTurn();
-        return;
-      }
-      if (battleState.forcePlayerStrikeNext && act !== "strike") {
-        appendLog(`<span class="system">Сценарий сужен — доступен только удар.</span>`, "system");
-        return;
-      }
-      if (act === "strike" && battleState.forcePlayerStrikeNext) battleState.forcePlayerStrikeNext = false;
-
       if (act === "strike") {
         battleState.playerMoves = (battleState.playerMoves || 0) + 1;
-        raw = roll(Math.floor(9 * (p1.atk / 10)), null, d.rollVarPlayer);
-        const raidFx = (synergyP1.fx || []).find((f) => f.kind === "raid_armor_ignore");
-        if (raidFx && battleState.raidArmorActive) {
-          battleState.raidArmorActive = false;
-          raw = Math.floor(raw * (1 + raidFx.frac));
-          appendLog(`✦ <strong>Синергия (рейд Зенин):</strong> первый удар после выхода пробивает защиту.`, "synergy");
-        }
-        if (Math.random() < Math.min(0.88, d.playerCritChance + synergyP1.crit + mechCritAdd(p1))) {
+        raw = roll(Math.floor(9 * (p1.atk / 10)), null, t.rollVar);
+        if (Math.random() < Math.min(0.88, t.critChance + mechCritAdd(p1))) {
           raw = Math.floor(raw * 1.5);
           msg = `<span class="crit">Критический удар!</span> `;
           logVariant = "crit";
           triggerScreenShake();
           triggerFxOverlay("is-crit", 540);
         }
-        raw = Math.max(1, Math.floor(raw * d.playerDamageMult * synergyP1.strike));
+        raw = Math.max(1, Math.floor(raw * t.damageMult));
         dmg = applyTargetArmor(raw, p2);
-        if (battleState.tagStrikeBonus > 0) {
-          dmg += battleState.tagStrikeBonus;
-          appendLog(`✦ <strong>Синергия:</strong> бонус после защиты +<strong>${battleState.tagStrikeBonus}</strong> к удару.`, "synergy");
-          battleState.tagStrikeBonus = 0;
-        }
         const add = mechBonusDamageOnHit(p1, "strike", dmg);
         dmg = Math.max(1, dmg + add);
-        if (battleState.nextPlayerOutgoingFactor < 0.999) {
-          dmg = Math.max(1, Math.floor(dmg * battleState.nextPlayerOutgoingFactor));
-          battleState.nextPlayerOutgoingFactor = 1;
-        }
         dmg = mechMaybeNegateOrShaveIncoming(p2, dmg);
         if (dmg <= 0) {
           appendLog(
@@ -4559,19 +4126,18 @@
           if (!battleOver) enemyTurn();
           return;
         }
+        const omStrike = applyOutgoingMitigationVsP2(dmg);
+        dmg = omStrike.dmg;
         const addNote = add ? ` (+${add} доп.)` : "";
-        msg += `${htmlPlayerTurnHead()} ${pick(p1.strikePool)} Урон противнику: <strong>${dmg}</strong>${addNote}`;
+        msg += `${htmlPlayerTurnHead()} ${pick(p1.strikePool)} Урон противнику: <strong>${dmg}</strong>${addNote}${omStrike.suffix}`;
       } else if (act === "technique") {
         battleState.playerMoves = (battleState.playerMoves || 0) + 1;
-        raw = roll(Math.floor(8 * (p1.tech / 10)), null, d.rollVarPlayer);
-        raw = Math.max(1, Math.floor(raw * d.playerDamageMult * synergyP1.tech));
+        raw = roll(Math.floor(8 * (p1.tech / 10)), null, t.rollVar);
+        if (Math.random() < t.techBonusChance) raw = Math.floor(raw * 1.35);
+        raw = Math.max(1, Math.floor(raw * t.damageMult));
         dmg = applyTargetArmor(raw, p2);
         const add = mechBonusDamageOnHit(p1, "technique", dmg);
         dmg = Math.max(1, dmg + add);
-        if (battleState.nextPlayerOutgoingFactor < 0.999) {
-          dmg = Math.max(1, Math.floor(dmg * battleState.nextPlayerOutgoingFactor));
-          battleState.nextPlayerOutgoingFactor = 1;
-        }
         dmg = mechMaybeNegateOrShaveIncoming(p2, dmg);
         if (dmg <= 0) {
           appendLog(
@@ -4583,9 +4149,10 @@
           if (!battleOver) enemyTurn();
           return;
         }
+        const omTech = applyOutgoingMitigationVsP2(dmg);
+        dmg = omTech.dmg;
         const addNoteT = add ? ` (+${add} доп.)` : "";
-        msg = `${htmlPlayerTurnHead()} ${pick(p1.techPool)} Урон: <strong>${dmg}</strong>${addNoteT}`;
-        tryKyotoPulse("technique");
+        msg = `${htmlPlayerTurnHead()} ${pick(p1.techPool)} Урон: <strong>${dmg}</strong>${addNoteT}${omTech.suffix}`;
       } else if (act === "domain") {
         setActionsDisabled(true);
         runDomainStepMiniGame(p1, (success) => {
@@ -4604,7 +4171,6 @@
             "turn",
           );
         }
-        runSynergyHooksPlayerAfterDefend();
         msg = `${htmlPlayerTurnHead()} ${p1.defendLine} Следующий удар врага ослаблен.`;
         appendLog(msg, "turn");
         updateHpBars();
@@ -4614,23 +4180,11 @@
 
       hp2 = Math.max(0, hp2 - dmg);
       appendLog(msg, logVariant);
-      if (act === "strike" || act === "technique") {
-        runSynergyHooksPlayerAfterDamage(act, dmg);
-      }
       updateHpBars();
       checkEnd();
       if (!battleOver) {
         enemyTurn();
       }
-    });
-
-    document.getElementById("diffRow").addEventListener("click", (e) => {
-      const btn = e.target.closest(".diff-btn");
-      if (!btn) return;
-      const id = btn.getAttribute("data-diff");
-      if (!id || !DIFFICULTY[id]) return;
-      difficultyId = id;
-      document.querySelectorAll(".diff-btn").forEach((b) => b.classList.toggle("is-on", b === btn));
     });
 
     (function initRosterFilterUi() {
@@ -4683,9 +4237,23 @@
       }
     })();
 
+    (function initMainTabs() {
+      const tabGame = document.getElementById("mainTabGame");
+      const tabUpdates = document.getElementById("mainTabUpdates");
+      if (!tabGame || !tabUpdates) return;
+      function setMainTab(updates) {
+        document.body.classList.toggle("main-tab-updates", updates);
+        tabGame.classList.toggle("is-on", !updates);
+        tabUpdates.classList.toggle("is-on", updates);
+        tabGame.setAttribute("aria-selected", updates ? "false" : "true");
+        tabUpdates.setAttribute("aria-selected", updates ? "true" : "false");
+      }
+      tabGame.addEventListener("click", () => setMainTab(false));
+      tabUpdates.addEventListener("click", () => setMainTab(true));
+    })();
+
     renderRosters();
     updateLabels();
-    renderSynergyHud();
 
     const verEl = document.getElementById("appVersion");
     if (verEl) verEl.textContent = `Версия ${APP_VERSION}`;
