@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600;800&family=Syne:wght@700;800&family=Unbounded:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
   <style>
     :root {
       --bg: #030308;
@@ -27,6 +28,10 @@
       --gold: #fbbf24;
       --glass-top: rgba(255, 255, 255, 0.09);
       --glass-edge: rgba(255, 255, 255, 0.04);
+      --focus: rgba(56, 189, 248, 0.75);
+      --focus-soft: rgba(56, 189, 248, 0.18);
+      --focus-curse: rgba(192, 132, 252, 0.8);
+      --focus-curse-soft: rgba(192, 132, 252, 0.22);
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
       --radius-panel: 18px;
       --shadow-elev: 0 24px 64px -20px rgba(0, 0, 0, 0.75);
@@ -419,13 +424,27 @@
       padding: 0.55rem 0.65rem;
       border-radius: 10px;
       border: 1px solid transparent;
-      background: transparent;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
       color: var(--muted);
-      transition: color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(0);
+      transition: transform 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, filter 0.2s ease;
     }
     .main-tabs__btn:hover {
       color: var(--text);
       border-color: rgba(255, 255, 255, 0.1);
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.08), rgba(255, 255, 255, 0.02));
+      transform: translateY(-1px);
+    }
+    .main-tabs__btn:active {
+      transform: translateY(0);
+      filter: brightness(0.98);
+    }
+    .main-tabs__btn:focus-visible {
+      outline: none;
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.35) inset, 0 0 0 4px var(--focus-soft), 0 0 22px rgba(56, 189, 248, 0.12);
     }
     .main-tabs__btn.is-on {
       color: #fff;
@@ -437,7 +456,16 @@
       border-color: rgba(168, 85, 247, 0.5);
       box-shadow: 0 0 18px rgba(168, 85, 247, 0.15);
     }
+    .main-tabs__btn.is-on[data-main-tab="promos"] {
+      border-color: rgba(251, 191, 36, 0.5);
+      box-shadow: 0 0 18px rgba(251, 191, 36, 0.14);
+      background: linear-gradient(165deg, rgba(70, 55, 20, 0.55), rgba(14, 16, 26, 0.95));
+    }
     #updatesPanel {
+      display: none;
+      margin-bottom: 1.1rem;
+    }
+    #promosPanel {
       display: none;
       margin-bottom: 1.1rem;
     }
@@ -447,6 +475,90 @@
     }
     body.main-tab-updates #updatesPanel {
       display: block;
+    }
+    body.main-tab-promos #setup,
+    body.main-tab-promos #battle,
+    body.main-tab-promos #updatesPanel {
+      display: none !important;
+    }
+    body.main-tab-promos #promosPanel {
+      display: block;
+    }
+    .promos-intro {
+      margin: -0.25rem auto 1.1rem;
+      text-align: center;
+      max-width: 36rem;
+    }
+    .promo-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.65rem;
+      margin-top: 0.85rem;
+      align-items: center;
+    }
+    @media (max-width: 560px) {
+      .promo-form { grid-template-columns: 1fr; }
+    }
+    .promo-input {
+      width: 100%;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.92rem;
+      padding: 0.6rem 0.75rem;
+      border-radius: 10px;
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      background: rgba(10, 10, 18, 0.9);
+      color: var(--text);
+      letter-spacing: 0.04em;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .promo-input::placeholder { color: rgba(240, 238, 245, 0.62); letter-spacing: 0; }
+    .promo-input:focus {
+      outline: none;
+      border-color: rgba(251, 191, 36, 0.55);
+      background: rgba(8, 10, 18, 0.95);
+      box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.14) inset, 0 0 0 4px rgba(251, 191, 36, 0.14), 0 18px 55px -30px rgba(251, 191, 36, 0.22);
+    }
+    .promo-btn {
+      min-height: 2.6rem;
+      padding: 0.6rem 0.9rem;
+      border-radius: 12px;
+      border: 1px solid rgba(251, 191, 36, 0.22);
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.95), rgba(244, 63, 94, 0.72));
+      color: #1a1208;
+      font-family: inherit;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 12px 40px -24px rgba(251, 191, 36, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+      transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    }
+    .promo-btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 18px 60px -32px rgba(251, 191, 36, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.12) inset; }
+    .promo-btn:active { transform: translateY(0) scale(0.99); filter: brightness(0.98); }
+    .promo-btn:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.18), 0 18px 60px -32px rgba(251, 191, 36, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.12) inset; }
+    .promo-note {
+      margin: 0.75rem 0 0;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: rgba(244, 242, 248, 0.82);
+    }
+    .promo-note strong { color: #fff; }
+    .promo-redeemed {
+      margin-top: 1.05rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .promo-pill {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.74rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      background: linear-gradient(165deg, rgba(60, 45, 12, 0.55), rgba(18, 18, 28, 0.95));
+      color: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
     }
     .updates-intro {
       margin: -0.25rem 0 1.1rem;
@@ -562,11 +674,31 @@
       border: 1px solid rgba(56, 189, 248, 0.35);
       background: linear-gradient(165deg, rgba(30, 40, 55, 0.9), rgba(12, 14, 22, 0.95));
       color: var(--text);
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(0);
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+    .filter-toggle-btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      background: radial-gradient(ellipse 120% 80% at 40% 0%, rgba(56, 189, 248, 0.22), transparent 55%);
+      transition: opacity 0.2s ease;
+      pointer-events: none;
     }
     .filter-toggle-btn:hover {
       border-color: rgba(56, 189, 248, 0.55);
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.12);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.14) inset, 0 0 16px rgba(56, 189, 248, 0.12);
+      transform: translateY(-1px);
+    }
+    .filter-toggle-btn:hover::after { opacity: 1; }
+    .filter-toggle-btn:active { transform: translateY(0); filter: brightness(0.98); }
+    .filter-toggle-btn:focus-visible {
+      outline: none;
+      border-color: rgba(56, 189, 248, 0.55);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.16) inset, 0 0 0 4px var(--focus-soft), 0 0 24px rgba(56, 189, 248, 0.12);
     }
     .filter-toggle-btn.is-open {
       border-color: rgba(168, 85, 247, 0.55);
@@ -597,6 +729,13 @@
       border: 1px solid var(--border);
       background: rgba(10, 10, 18, 0.9);
       color: var(--text);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+    .roster-filter-panel__search:focus {
+      outline: none;
+      border-color: rgba(56, 189, 248, 0.5);
+      background: rgba(8, 10, 18, 0.95);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.14) inset, 0 0 0 4px var(--focus-soft), 0 18px 55px -30px rgba(56, 189, 248, 0.25);
     }
     .roster-filter-panel__search::placeholder {
       color: var(--muted);
@@ -634,13 +773,22 @@
       padding: 0.35rem 0.55rem;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      background: transparent;
-      color: var(--muted);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+      color: rgba(240, 238, 245, 0.82);
       align-self: flex-start;
+      transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
     .filter-clear-btn:hover {
-      color: var(--text);
       border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset, 0 10px 30px -20px rgba(0, 0, 0, 0.6);
+      transform: translateY(-1px);
+      color: #fff;
+    }
+    .filter-clear-btn:active { transform: translateY(0); filter: brightness(0.98); }
+    .filter-clear-btn:focus-visible {
+      outline: none;
+      border-color: rgba(56, 189, 248, 0.45);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.16) inset, 0 0 0 4px var(--focus-soft);
     }
     .setup-teams {
       display: grid;
@@ -1051,6 +1199,10 @@
     .char-title--lawyer_mahoraga {
       background-image: linear-gradient(125deg, #e7e5e4 0%, #78716c 35%, #9333ea 70%, #3b0764 100%);
       filter: drop-shadow(0 0 12px rgba(147, 51, 234, 0.5));
+    }
+    .char-title--thukuna {
+      background-image: linear-gradient(130deg, #fde68a 0%, #f59e0b 28%, #f43f5e 58%, #a855f7 85%, #38bdf8 110%);
+      filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.35)) drop-shadow(0 0 10px rgba(168, 85, 247, 0.28));
     }
 
     .team-pick-sep {
@@ -1489,11 +1641,13 @@
       background: linear-gradient(160deg, rgba(32, 32, 48, 0.9), rgba(16, 16, 26, 0.95));
       color: var(--text);
       font-weight: 700;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
+      letter-spacing: 0.02em;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      transition: transform 0.15s, border-color 0.2s, box-shadow 0.25s;
+      transform: translateZ(0);
+      transition: transform 0.15s, border-color 0.2s, box-shadow 0.25s, filter 0.2s, background 0.2s;
     }
     .act-btn::after {
       content: "";
@@ -1507,12 +1661,14 @@
     .act-btn:hover:not(:disabled) {
       transform: translateY(-2px);
       border-color: rgba(255, 255, 255, 0.2);
+      background: linear-gradient(160deg, rgba(40, 40, 62, 0.92), rgba(14, 14, 24, 0.98));
     }
-    .act-btn:active:not(:disabled) { transform: translateY(0); }
+    .act-btn:active:not(:disabled) { transform: translateY(0) scale(0.99); filter: brightness(0.98); }
     .act-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
     .act-btn:focus-visible {
-      outline: 2px solid rgba(192, 132, 252, 0.75);
-      outline-offset: 2px;
+      outline: none;
+      border-color: rgba(56, 189, 248, 0.45);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.14) inset, 0 0 0 4px var(--focus-soft);
       z-index: 1;
     }
     .act-btn[data-act="strike"]::after {
@@ -1542,7 +1698,7 @@
     }
     .back {
       margin-top: 1.1rem;
-      background: rgba(255, 255, 255, 0.03);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
       border: 1px solid var(--border);
       color: var(--muted);
       padding: 0.6rem 1rem;
@@ -1551,12 +1707,20 @@
       font-family: inherit;
       font-weight: 600;
       width: 100%;
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      transition: transform 0.15s ease, color 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
     }
     .back:hover {
       color: var(--text);
       border-color: rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.06);
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.08), rgba(255, 255, 255, 0.018));
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.1) inset, 0 16px 55px -40px rgba(56, 189, 248, 0.3);
+      transform: translateY(-1px);
+    }
+    .back:active { transform: translateY(0); filter: brightness(0.98); }
+    .back:focus-visible {
+      outline: none;
+      border-color: rgba(56, 189, 248, 0.45);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.14) inset, 0 0 0 4px var(--focus-soft);
     }
     .auto-wrap {
       display: flex;
@@ -1620,19 +1784,20 @@
 
   <div class="wrap">
     <header class="title-block">
-      <h1>Текстовый бой — Jujutsu Kaisen</h1>
-      <p class="sub">До 3 бойцов на сторону, домен — мини-игра. Усиленных бойцов ищи в фильтре «Усиленные».</p>
+      <h1>Jujutsu Kaisen — текстовый бой</h1>
+      <p class="sub">Собери до 3 бойцов в команду. Домен — мини‑испытание на успех. Усиленных ищи в фильтре «Усиленные».</p>
       <p class="app-version" id="appVersion" aria-label="Версия приложения"></p>
     </header>
 
     <nav class="main-tabs" role="tablist" aria-label="Разделы приложения">
       <button type="button" class="main-tabs__btn is-on" role="tab" aria-selected="true" id="mainTabGame" data-main-tab="game">Игра</button>
       <button type="button" class="main-tabs__btn" role="tab" aria-selected="false" id="mainTabUpdates" data-main-tab="updates">Обновления</button>
+      <button type="button" class="main-tabs__btn" role="tab" aria-selected="false" id="mainTabPromos" data-main-tab="promos">Промокоды</button>
     </nav>
 
     <section id="updatesPanel" class="panel updates-panel" aria-labelledby="updatesHeading">
       <h2 id="updatesHeading">Обновления</h2>
-      <p class="sub updates-intro">Значимые изменения по версиям (текущая версия совпадает с подписью под заголовком).</p>
+      <p class="sub updates-intro">Значимые изменения по версиям. Текущая — в подписи под заголовком.</p>
       <div class="updates-log">
         <article class="updates-release">
           <h3 class="updates-release__ver">1.13.0</h3>
@@ -1710,24 +1875,35 @@
       </div>
     </section>
 
+    <section id="promosPanel" class="panel promos-panel" aria-labelledby="promosHeading">
+      <h2 id="promosHeading">Промокоды</h2>
+      <p class="sub promos-intro">Активируй промокод, чтобы открыть промо‑персонажей в ростере (сохраняется на этом устройстве).</p>
+      <div class="promo-form" role="form" aria-label="Активация промокода">
+        <input class="promo-input" id="promoCodeInput" type="text" inputmode="text" autocomplete="off" placeholder="Введи промокод…" aria-label="Промокод" />
+        <button type="button" class="promo-btn" id="promoApplyBtn">Активировать</button>
+      </div>
+      <p class="promo-note" id="promoMsg" aria-live="polite"></p>
+      <div class="promo-redeemed" id="promoRedeemed" aria-label="Активированные промокоды"></div>
+    </section>
+
     <section id="setup" class="panel panel--setup">
       <div class="roster-filter-bar" id="rosterFilterBar">
         <div class="roster-filter-bar__row">
-          <button type="button" class="filter-toggle-btn" id="rosterFilterToggle" aria-expanded="false" aria-controls="rosterFilterPanel">Фильтр и поиск</button>
+          <button type="button" class="filter-toggle-btn" id="rosterFilterToggle" aria-expanded="false" aria-controls="rosterFilterPanel">Поиск и фильтры</button>
         </div>
         <div class="roster-filter-panel" id="rosterFilterPanel" role="region" aria-label="Фильтр ростера">
-          <input type="search" class="roster-filter-panel__search" id="rosterSearchInput" placeholder="Поиск по имени…" autocomplete="off" />
+          <input type="search" class="roster-filter-panel__search" id="rosterSearchInput" placeholder="Найти персонажа…" autocomplete="off" />
           <div class="filter-tag-row" id="rosterFilterTags" role="group" aria-label="Категории"></div>
-          <button type="button" class="filter-clear-btn" id="rosterFilterClear">Сбросить фильтр</button>
+          <button type="button" class="filter-clear-btn" id="rosterFilterClear">Сбросить</button>
         </div>
       </div>
       <div class="setup-teams">
         <div class="setup-team setup-team--p1">
-          <div class="setup-team__head">Команда 1<span>ты · до 3</span></div>
+          <div class="setup-team__head">Команда 1<span>ты • до 3</span></div>
           <div class="roster" id="roster1"></div>
         </div>
         <div class="setup-team setup-team--p2">
-          <div class="setup-team__head">Команда 2<span>противник · до 3</span></div>
+          <div class="setup-team__head">Команда 2<span>противник • до 3</span></div>
           <div class="roster" id="roster2"></div>
         </div>
       </div>
@@ -1744,7 +1920,7 @@
     </section>
 
     <section id="battle" class="panel">
-      <h2>Арена</h2>
+      <h2>Арена боя</h2>
       <div class="fighters">
         <div class="fighter-wrap fighter-wrap--p1">
           <div class="fighter fighter--p1" id="fighter1">
@@ -1777,15 +1953,15 @@
       <div class="log" id="log" aria-live="polite"></div>
       <label class="auto-wrap" for="autoBattle">
         <input type="checkbox" id="autoBattle" />
-        <span>Авто-бой — ИИ выбирает твои действия каждый ход</span>
+        <span>Авто‑бой — ИИ выбирает действие за твою команду каждый ход</span>
       </label>
       <div class="actions" id="actions">
         <button type="button" class="act-btn" data-act="strike">Удар</button>
         <button type="button" class="act-btn" data-act="technique">Техника</button>
-        <button type="button" class="act-btn" data-act="domain">Расширение домена / риск</button>
+        <button type="button" class="act-btn" data-act="domain">Домен (риск)</button>
         <button type="button" class="act-btn" data-act="defend">Защита</button>
       </div>
-      <button type="button" class="back" id="reset">Новый выбор персонажей</button>
+      <button type="button" class="back" id="reset">Вернуться к выбору бойцов</button>
     </section>
   </div>
 
@@ -2929,6 +3105,7 @@
       {
         id: "lawyer_mahoraga",
         elite: true,
+        promo: true,
         name: "Lawyer Mahoraga",
         emoji: "📝",
         hp: 156,
@@ -2948,11 +3125,35 @@
         domainMiss: "Форма не выдерживает совмещения процедур — остаётся тяжёлый рез меча без полного контура DE.",
         defendLine: "Панцирь и протокол: входящий удар регистрируется как «ходатайство» и гасится адаптацией до вынесения фазы.",
       },
+      {
+        id: "thukuna",
+        elite: true,
+        promo: true,
+        name: "Thukuna",
+        emoji: "👑",
+        hp: 144,
+        atk: 20,
+        tech: 20,
+        def: 14,
+        strikePool: [
+          "Улыбка «не отсюда» — удар приходит не по траектории, а по подозрению.",
+          "Слишком ровный шаг: лезвие разрезает паузу между кадрами, как будто тебя «не было».",
+        ],
+        techPool: [
+          "Подмена роли: техника меняет местами причину и следствие — урон настигает раньше решения.",
+          "Тень шевелится под текстом — CE оставляет «след» и взрывает его вторым импульсом.",
+          "Смех в пустоте: противник на миг теряет ритм, и следующий удар усиливается.",
+        ],
+        domainHit: "Расширение домена: «Зал подозрений» — пока ты оправдываешься, закон поля уже вынес приговор; урон неизбежен.",
+        domainMiss: "Подозрение не закрепилось — остаётся резкий импульс CE без полного контура DE.",
+        defendLine: "Невиновен… пока не доказано обратное: удар соскальзывает по фальшивому алиби.",
+      },
     ];
 
     /** Категории для фильтра ростера (id → подпись). Персонаж может иметь несколько тегов. */
     const ROSTER_TAG_DEFS = [
       { id: "elite", label: "Усиленные" },
+      { id: "promo", label: "Промокодные" },
       { id: "migration", label: "Смертельная миграция" },
       { id: "curse", label: "Проклятия" },
       { id: "sorcerer", label: "Маги" },
@@ -3009,13 +3210,46 @@
       naoya_cs_true: ["curse", "zenin", "elite"],
       modulo_yuji: ["sorcerer", "elite"],
       megumi_sukuna: ["curse", "sorcerer", "elite", "migration"],
-      lawyer_mahoraga: ["curse", "elite", "migration"],
+      lawyer_mahoraga: ["curse", "elite", "migration", "promo"],
+      thukuna: ["curse", "elite", "promo"],
     };
+
+    const PROMO_STORAGE_KEY = "jjk_promo_unlocks_v1";
+    const PROMO_UNLOCKS_BY_CODE = {
+      "THUKUNA!": { unlockCharIds: ["thukuna"], title: "Открыт промо‑персонаж Thukuna ඞ." },
+      "MAHORAGA!": { unlockCharIds: ["lawyer_mahoraga"], title: "Открыт промо‑персонаж Lawyer Mahoraga 📝." },
+    };
+
+    function loadUnlockedCharIds() {
+      try {
+        const raw = localStorage.getItem(PROMO_STORAGE_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return new Set(Array.isArray(arr) ? arr : []);
+      } catch {
+        return new Set();
+      }
+    }
+
+    function saveUnlockedCharIds(set) {
+      try {
+        localStorage.setItem(PROMO_STORAGE_KEY, JSON.stringify([...set]));
+      } catch {
+        /* ignore */
+      }
+    }
+
+    let unlockedCharIds = loadUnlockedCharIds();
+
+    function isCharLocked(c) {
+      if (!c || !c.promo) return false;
+      return !unlockedCharIds.has(c.id);
+    }
 
     let rosterActiveTagIds = new Set();
     let rosterSearchNorm = "";
 
     function charMatchesRosterFilter(c) {
+      if (isCharLocked(c) && !team1Pick.includes(c.id) && !team2Pick.includes(c.id)) return false;
       if (team1Pick.includes(c.id) || team2Pick.includes(c.id)) return true;
       if (rosterSearchNorm) {
         const hay = `${c.name} ${c.emoji || ""}`.toLowerCase();
@@ -3025,6 +3259,57 @@
       const tags = CHAR_TAGS_BY_ID[c.id];
       if (!tags || !tags.length) return false;
       return tags.some((t) => rosterActiveTagIds.has(t));
+    }
+
+    function ensurePicksValid() {
+      const allowed = new Set(CHARS.filter((c) => !isCharLocked(c)).map((c) => c.id));
+      team1Pick = team1Pick.filter((id) => allowed.has(id));
+      team2Pick = team2Pick.filter((id) => allowed.has(id));
+      updateLabels();
+    }
+
+    function renderPromoRedeemed() {
+      const wrap = document.getElementById("promoRedeemed");
+      if (!wrap) return;
+      wrap.innerHTML = "";
+      const codes = Object.keys(PROMO_UNLOCKS_BY_CODE).filter((code) => {
+        const unlockIds = PROMO_UNLOCKS_BY_CODE[code].unlockCharIds || [];
+        return unlockIds.every((id) => unlockedCharIds.has(id));
+      });
+      if (!codes.length) return;
+      codes.forEach((code) => {
+        const pill = document.createElement("span");
+        pill.className = "promo-pill";
+        pill.textContent = code;
+        wrap.appendChild(pill);
+      });
+    }
+
+    function setPromoMsg(text) {
+      const el = document.getElementById("promoMsg");
+      if (!el) return;
+      el.textContent = text || "";
+    }
+
+    function applyPromoCode(rawCode) {
+      const code = String(rawCode || "").trim().toUpperCase();
+      if (!code) {
+        setPromoMsg("Введи промокод.");
+        return;
+      }
+      const promo = PROMO_UNLOCKS_BY_CODE[code];
+      if (!promo) {
+        setPromoMsg("Промокод не найден.");
+        return;
+      }
+      const before = unlockedCharIds.size;
+      (promo.unlockCharIds || []).forEach((id) => unlockedCharIds.add(id));
+      saveUnlockedCharIds(unlockedCharIds);
+      const changed = unlockedCharIds.size !== before;
+      setPromoMsg(changed ? promo.title : "Этот промокод уже активирован.");
+      ensurePicksValid();
+      renderRosters();
+      renderPromoRedeemed();
     }
 
     function updateFilterToggleAppearance() {
@@ -4237,20 +4522,42 @@
     (function initMainTabs() {
       const tabGame = document.getElementById("mainTabGame");
       const tabUpdates = document.getElementById("mainTabUpdates");
-      if (!tabGame || !tabUpdates) return;
-      function setMainTab(updates) {
-        document.body.classList.toggle("main-tab-updates", updates);
-        tabGame.classList.toggle("is-on", !updates);
-        tabUpdates.classList.toggle("is-on", updates);
-        tabGame.setAttribute("aria-selected", updates ? "false" : "true");
-        tabUpdates.setAttribute("aria-selected", updates ? "true" : "false");
+      const tabPromos = document.getElementById("mainTabPromos");
+      if (!tabGame || !tabUpdates || !tabPromos) return;
+      function setMainTab(mode) {
+        const isUpdates = mode === "updates";
+        const isPromos = mode === "promos";
+        document.body.classList.toggle("main-tab-updates", isUpdates);
+        document.body.classList.toggle("main-tab-promos", isPromos);
+        tabGame.classList.toggle("is-on", !isUpdates && !isPromos);
+        tabUpdates.classList.toggle("is-on", isUpdates);
+        tabPromos.classList.toggle("is-on", isPromos);
+        tabGame.setAttribute("aria-selected", (!isUpdates && !isPromos) ? "true" : "false");
+        tabUpdates.setAttribute("aria-selected", isUpdates ? "true" : "false");
+        tabPromos.setAttribute("aria-selected", isPromos ? "true" : "false");
       }
-      tabGame.addEventListener("click", () => setMainTab(false));
-      tabUpdates.addEventListener("click", () => setMainTab(true));
+      tabGame.addEventListener("click", () => setMainTab("game"));
+      tabUpdates.addEventListener("click", () => setMainTab("updates"));
+      tabPromos.addEventListener("click", () => setMainTab("promos"));
     })();
 
     renderRosters();
     updateLabels();
+    ensurePicksValid();
+    renderPromoRedeemed();
+
+    (function initPromoUI() {
+      const input = document.getElementById("promoCodeInput");
+      const btn = document.getElementById("promoApplyBtn");
+      if (!input || !btn) return;
+      btn.addEventListener("click", () => applyPromoCode(input.value));
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          applyPromoCode(input.value);
+        }
+      });
+    })();
 
     const verEl = document.getElementById("appVersion");
     if (verEl) verEl.textContent = `Версия ${APP_VERSION}`;

@@ -1,0 +1,70 @@
+/*
+  Extra theme polish.
+  This file intentionally overrides the inline styles in `index.html`
+  without trying to duplicate the whole stylesheet.
+*/
+
+/* Rich background layers (behind `.wrap`, above body background) */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0; /* stays behind `.wrap` (z=1); see `.ambient` override below */
+}
+
+/* Ensure our new background isn't covered by `.ambient` */
+.ambient { z-index: -1 !important; }
+
+/* Aurora / soft glow */
+body::before {
+  opacity: 0.92;
+  background:
+    radial-gradient(ellipse 70% 48% at 18% 12%, rgba(56, 189, 248, 0.22), transparent 68%),
+    radial-gradient(ellipse 62% 52% at 84% 22%, rgba(244, 63, 94, 0.2), transparent 66%),
+    radial-gradient(ellipse 70% 62% at 55% 86%, rgba(192, 132, 252, 0.22), transparent 66%),
+    conic-gradient(from 210deg at 50% 50%, rgba(34, 211, 238, 0.065), transparent 35%, rgba(168, 85, 247, 0.055), transparent 72%, rgba(225, 29, 72, 0.05));
+  filter: blur(14px) saturate(1.25);
+  mix-blend-mode: screen;
+  transform: translateZ(0);
+  animation: bgAuroraDrift 22s ease-in-out infinite;
+}
+
+/* Subtle pattern + vignette */
+body::after {
+  opacity: 0.46;
+  background:
+    radial-gradient(ellipse 88% 72% at 50% 45%, transparent 0%, rgba(0, 0, 0, 0.72) 100%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 12px),
+    repeating-linear-gradient(25deg, rgba(56, 189, 248, 0.024) 0 1px, transparent 1px 16px);
+  mask-image: radial-gradient(ellipse 82% 72% at 50% 42%, black 32%, transparent 80%);
+  filter: contrast(1.05);
+}
+
+@keyframes bgAuroraDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.02); opacity: 0.58; }
+  35% { transform: translate3d(1.8%, -1.2%, 0) scale(1.05); opacity: 0.72; }
+  70% { transform: translate3d(-1.6%, 1.4%, 0) scale(1.03); opacity: 0.64; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+}
+
+/* Better, consistent focus ring */
+:root {
+  --focus: rgba(56, 189, 248, 0.75);
+  --focus-soft: rgba(56, 189, 248, 0.18);
+  --focus-curse: rgba(192, 132, 252, 0.8);
+  --focus-curse-soft: rgba(192, 132, 252, 0.22);
+}
+
+.main-tabs__btn:focus-visible,
+.filter-toggle-btn:focus-visible,
+.filter-clear-btn:focus-visible,
+.act-btn:focus-visible,
+.back:focus-visible,
+.roster-filter-panel__search:focus {
+  outline: none;
+}
