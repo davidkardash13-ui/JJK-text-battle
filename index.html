@@ -967,6 +967,8 @@
       font-size: 0.82rem;
       font-weight: 600;
       text-align: center;
+      position: relative;
+      overflow: hidden;
       transition: transform 0.18s var(--ease-out), box-shadow 0.22s, border-color 0.2s, background 0.2s;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
@@ -984,6 +986,37 @@
       opacity: 0.32;
       cursor: not-allowed;
       transform: none;
+    }
+    .char-btn__emoji,
+    .char-btn .char-title,
+    .char-btn__price,
+    .char-btn__locknote,
+    .char-btn .slot-mark {
+      position: relative;
+      z-index: 1;
+    }
+    .char-btn.is-locked:hover:not(:disabled) {
+      border-color: rgba(251, 191, 36, 0.35);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.48), 0 0 34px rgba(251, 191, 36, 0.12);
+    }
+    .char-btn__price {
+      margin-top: 0.2rem;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: rgba(253, 230, 138, 0.95);
+      text-shadow: 0 0 16px rgba(251, 191, 36, 0.22);
+      position: relative;
+      z-index: 1;
+    }
+    .char-btn__locknote {
+      margin-top: 0.15rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(244, 242, 248, 0.62);
     }
     .char-btn.p1-pick {
       border-color: rgba(56, 189, 248, 0.65);
@@ -1050,6 +1083,30 @@
     .char-title--yuta {
       background-image: linear-gradient(120deg, #e0e7ff 0%, #a5b4fc 40%, #6366f1 100%);
       filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.45));
+    }
+    .char-title--tsurugi_okkotsu {
+      background-image: linear-gradient(125deg, #e0f2fe 0%, #38bdf8 35%, #fde68a 85%);
+      filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.35));
+    }
+    .char-title--yuka_okkotsu {
+      background-image: linear-gradient(125deg, #fef3c7 0%, #f59e0b 35%, #fb7185 85%);
+      filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.28));
+    }
+    .char-title--marulu_val_vol_yelvori {
+      background-image: linear-gradient(130deg, #e9d5ff 0%, #a855f7 38%, #22d3ee 78%, #fef08a 110%);
+      filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.35)) drop-shadow(0 0 10px rgba(34, 211, 238, 0.22));
+    }
+    .char-title--takeda_masaki {
+      background-image: linear-gradient(125deg, #e7e5e4 0%, #a8a29e 45%, #38bdf8 100%);
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.25));
+    }
+    .char-title--usami_kou {
+      background-image: linear-gradient(122deg, #cffafe 0%, #06b6d4 48%, #a855f7 100%);
+      filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.35));
+    }
+    .char-title--cross_val_vol_yelvori {
+      background-image: linear-gradient(130deg, #bae6fd 0%, #22d3ee 35%, #fde68a 75%, #f43f5e 115%);
+      filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.25));
     }
     .char-title--yuji {
       background-image: linear-gradient(125deg, #fecdd3 0%, #fb7185 45%, #f43f5e 100%);
@@ -1847,6 +1904,14 @@
       <p class="sub updates-intro">Значимые изменения по версиям. Текущая — в подписи под заголовком.</p>
       <div class="updates-log">
         <article class="updates-release">
+          <h3 class="updates-release__ver">1.14.0</h3>
+          <ul class="updates-release__list">
+            <li>Добавлена вкладка «Промокоды» и промо-открытия персонажей (локально).</li>
+            <li>Новые персонажи: Marulu Val Vol Yelvori, Tsurugi Okkotsu, Yuka Okkotsu, Masaki Takeda, Kou Usami, Cross Val Vol Yelvori.</li>
+            <li>Новый фильтр ростера: «Модуло».</li>
+          </ul>
+        </article>
+        <article class="updates-release">
           <h3 class="updates-release__ver">1.13.0</h3>
           <ul class="updates-release__list">
             <li>Убраны командные связки (синергии): бой строится только на составе и индивидуальных механиках бойцов.</li>
@@ -1924,7 +1989,7 @@
 
     <section id="promosPanel" class="panel promos-panel" aria-labelledby="promosHeading">
       <h2 id="promosHeading">Промокоды</h2>
-      <p class="sub promos-intro">Активируй промокод, чтобы открыть промо‑персонажей в ростере (сохраняется на этом устройстве).</p>
+      <p class="sub promos-intro">Активируй промокод для бонусных йен и подарков (сохраняется на этом устройстве).</p>
       <div class="promo-form" role="form" aria-label="Активация промокода">
         <input class="promo-input" id="promoCodeInput" type="text" inputmode="text" autocomplete="off" placeholder="Введи промокод…" aria-label="Промокод" />
         <button type="button" class="promo-btn" id="promoApplyBtn">Активировать</button>
@@ -2014,7 +2079,7 @@
 
   <script>
     /** Увеличивай при каждом значимом изменении (одна точка правды для UI). */
-    const APP_VERSION = "1.13.0";
+    const APP_VERSION = "1.14.0";
 
     function pick(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
@@ -2129,6 +2194,132 @@
         domainHit: "Расширение домена: «Подлинная взаимная любовь» (Authentic Mutual Love) — копии техник сыплются без остановки.",
         domainMiss: "Домен не удаётся зафиксировать — противник выскальзывает из повторяющихся копий.",
         defendLine: "Реверсивная техника залечивает раны и сжимает дистанцию.",
+      },
+      {
+        id: "tsurugi_okkotsu",
+        name: "Tsurugi Okkotsu",
+        emoji: "⚔️",
+        hp: 112,
+        atk: 14,
+        tech: 16,
+        def: 12,
+        strikePool: [
+          "Сталь по дуге — быстрый срез катаной, без лишней дистанции.",
+          "Шаг в слепую зону — удар рукоятью и добивание клинком.",
+          "Смена хвата: «двуручник» на короткой дистанции — ломает темп защиты.",
+        ],
+        techPool: [
+          "Разряд CE по лезвию — удар режет не только плоть, но и стойку.",
+          "Финт-обманка: клинок уходит вниз, а CE бьёт по центру корпуса.",
+          "Связка из трёх ударов — последний приходит на долю секунды раньше ожидания.",
+        ],
+        domainHit: "Расширение домена: «Клинковая клятва» — каждое движение клинка фиксируется правилом, и уклониться почти невозможно.",
+        domainMiss: "Клятва не замыкается — остаётся один усиленный разрез CE.",
+        defendLine: "Клинок в гард: CE гасит импульс, и ты выходишь в контратаку.",
+      },
+      {
+        id: "yuka_okkotsu",
+        name: "Yuka Okkotsu",
+        emoji: "⚔",
+        hp: 108,
+        atk: 13,
+        tech: 17,
+        def: 11,
+        strikePool: [
+          "Точный укол — короткая траектория, минимум телодвижений.",
+          "Смещение корпуса и удар по ребру защиты — «режет» привычку блока.",
+        ],
+        techPool: [
+          "Нить CE по воздуху — удар достигает цели без полного замаха.",
+          "Реверс-ритм: шаг назад, и сразу рывок вперёд с усилением лезвия.",
+          "Сборка CE в одной точке — режущий импульс раскрывается внутри защиты.",
+        ],
+        domainHit: "Расширение домена: «Линия клинка» — пространство «размечено» траекториями, и каждый промах превращается в попадание.",
+        domainMiss: "Разметка рвётся — остаётся один резкий импульс, но без полного DE.",
+        defendLine: "Короткий блок и разворот: CE распределяет удар по дуге.",
+      },
+      {
+        id: "marulu_val_vol_yelvori",
+        name: "Marulu Val Vol Yelvori",
+        emoji: "👁️‍🗨️",
+        hp: 118,
+        atk: 12,
+        tech: 18,
+        def: 12,
+        strikePool: [
+          "Взгляд режет дистанцию — удар приходит как будто «изнутри» твоей стойки.",
+          "Слепая точка отмечена: один шаг — и удар попадает в пустоту защиты.",
+        ],
+        techPool: [
+          "Клеймо «наблюдения»: CE фиксирует тебя, и следующий удар усиливается.",
+          "Иллюзия шага: ты защищаешься не там — техника бьёт по настоящей линии.",
+          "Пульс глаза — резонанс CE ломает ритм дыхания и темп боя.",
+        ],
+        domainHit: "Расширение домена: «Зал наблюдения» — всё поле под прицелом; любое движение читается и наказывается.",
+        domainMiss: "Домен не закрывается — остаётся метка наблюдения и один сильный тех-удар.",
+        defendLine: "Взгляд уводит траекторию: удар проходит рядом, будто его «перерисовали».",
+      },
+      {
+        id: "takeda_masaki",
+        name: "Masaki Takeda",
+        emoji: "🧢",
+        hp: 104,
+        atk: 12,
+        tech: 12,
+        def: 11,
+        strikePool: [
+          "Неприметный шаг — удар без пафоса, но в уязвимую точку.",
+          "Рывок вперёд: контактный удар CE, как у «обычного» мага.",
+        ],
+        techPool: [
+          "Стабилизация CE — техника не бьёт больнее, но делает ход надёжным.",
+          "Срыв темпа: короткий импульс CE мешает противнику завершить движение.",
+        ],
+        domainHit: "DE нет — но редкая концентрация CE даёт «псевдо-доменное» давление на один обмен.",
+        domainMiss: "Концентрация не собирается — остаётся обычный ход.",
+        defendLine: "Плотная стойка и минимальные движения — удар уходит в блок.",
+      },
+      {
+        id: "usami_kou",
+        name: "Kou Usami",
+        emoji: "📎",
+        hp: 106,
+        atk: 11,
+        tech: 14,
+        def: 11,
+        strikePool: [
+          "Короткий удар по суставу — точность важнее силы.",
+          "CE по пальцам — быстрый контактный удар без разгона.",
+        ],
+        techPool: [
+          "«Сцепка»: техника фиксирует движение на миг и открывает окно для урона.",
+          "Нить CE тянет цель ближе — и удар приходит сразу следом.",
+          "Тонкая работа: CE попадает в ритм противника и сбивает темп.",
+        ],
+        domainHit: "DE нет — но техника на секунду превращает поле в «кабинет правил»: любое движение наказывается импульсом.",
+        domainMiss: "Правило не фиксируется — остаётся слабый импульс CE.",
+        defendLine: "Шаг в сторону и фиксация кисти — удар теряет силу.",
+      },
+      {
+        id: "cross_val_vol_yelvori",
+        name: "Cross Val Vol Yelvori",
+        emoji: "🛰️",
+        hp: 114,
+        atk: 12,
+        tech: 17,
+        def: 11,
+        strikePool: [
+          "Точный удар «по координате» — будто тебя подсветили прицелом.",
+          "Резкий контакт: импульс CE бьёт в момент, когда ты меняешь стойку.",
+        ],
+        techPool: [
+          "Метка траектории — следующий удар сильнее, если цель продолжает движение.",
+          "Сдвиг угла: техника «переносит» удар в линию, где защиты нет.",
+          "Резонанс наблюдения: CE усиливается, пока цель в поле внимания.",
+        ],
+        domainHit: "Расширение домена: «Сетка координат» — уклонение превращается в попадание по закону поля.",
+        domainMiss: "Сетка не замыкается — остаётся одна мощная метка и удар.",
+        defendLine: "Переход в «мертвую» зону сетки — удар уходит в пустоту.",
       },
       {
         id: "yuji",
@@ -3201,6 +3392,7 @@
     const ROSTER_TAG_DEFS = [
       { id: "elite", label: "Усиленные" },
       { id: "promo", label: "Промокодные" },
+      { id: "modulo", label: "Модуло" },
       { id: "migration", label: "Смертельная миграция" },
       { id: "curse", label: "Проклятия" },
       { id: "sorcerer", label: "Маги" },
@@ -3208,8 +3400,14 @@
     ];
 
     const CHAR_TAGS_BY_ID = {
-      yuta: ["sorcerer"],
-      yuji: ["sorcerer", "migration"],
+      yuta: ["sorcerer", "modulo"],
+      tsurugi_okkotsu: ["sorcerer", "modulo"],
+      yuka_okkotsu: ["sorcerer", "modulo"],
+      marulu_val_vol_yelvori: ["curse", "sorcerer", "modulo"],
+      takeda_masaki: ["sorcerer", "modulo"],
+      usami_kou: ["sorcerer", "modulo"],
+      cross_val_vol_yelvori: ["curse", "sorcerer", "modulo"],
+      yuji: ["sorcerer", "migration", "modulo"],
       choso: ["curse", "sorcerer", "migration"],
       ryu: ["sorcerer", "migration"],
       sukuna: ["curse", "sorcerer"],
@@ -3222,17 +3420,17 @@
       kashimo: ["sorcerer", "migration"],
       hakari: ["sorcerer", "migration"],
       higuruma: ["sorcerer", "migration"],
-      nobara: ["sorcerer"],
-      mahoraga: ["curse", "elite"],
+      nobara: ["sorcerer", "modulo"],
+      mahoraga: ["curse", "elite", "modulo"],
       toji: ["sorcerer", "zenin"],
       nanami: ["sorcerer"],
       toge: ["sorcerer"],
-      maki: ["sorcerer", "zenin"],
-      panda: ["sorcerer"],
+      maki: ["sorcerer", "zenin", "modulo"],
+      panda: ["sorcerer", "modulo"],
       jogo: ["curse"],
       dagon: ["curse"],
       dagon_true: ["curse", "elite"],
-      mahito: ["curse"],
+      mahito: ["curse", "modulo"],
       mahito_true: ["curse", "elite"],
       geto: ["sorcerer"],
       yuki: ["sorcerer"],
@@ -3249,22 +3447,22 @@
       hanami: ["curse"],
       naoya: ["sorcerer", "zenin"],
       shigemo: ["sorcerer", "migration"],
-      dabura: ["sorcerer"],
+      dabura: ["sorcerer", "modulo"],
       dhruv: ["sorcerer", "migration"],
       reggie: ["sorcerer", "migration"],
       iori_hazenoki: ["sorcerer", "migration"],
       naoya_cs: ["curse", "zenin"],
       naoya_cs_true: ["curse", "zenin", "elite"],
-      modulo_yuji: ["sorcerer", "elite"],
+      modulo_yuji: ["sorcerer", "elite", "modulo"],
       megumi_sukuna: ["curse", "sorcerer", "elite", "migration"],
       lawyer_mahoraga: ["curse", "elite", "migration", "promo"],
       thukuna: ["curse", "elite", "promo"],
     };
 
-    const PROMO_STORAGE_KEY = "jjk_promo_unlocks_v1";
+    const PROMO_STORAGE_KEY = "jjk_promo_unlocks_v3";
     const PROMO_UNLOCKS_BY_CODE = {
-      "THUKUNA!": { unlockCharIds: ["thukuna"], title: "Открыт промо‑персонаж Thukuna ඞ." },
-      "MAHORAGA!": { unlockCharIds: ["lawyer_mahoraga"], title: "Открыт промо‑персонаж Lawyer Mahoraga 📝." },
+      "THUKUNA!": { unlockCharIds: ["thukuna"], title: "Открыт персонаж: Thukuna." },
+      "MAHORAGA!": { unlockCharIds: ["lawyer_mahoraga"], title: "Открыт персонаж: Lawyer Mahoraga." },
     };
 
     function loadUnlockedCharIds() {
@@ -3285,10 +3483,11 @@
       }
     }
 
-    let unlockedCharIds = loadUnlockedCharIds();
+    let unlockedCharIds = loadUnlockedCharIds(); // promo-unlocked character ids
 
     function isCharLocked(c) {
-      if (!c || !c.promo) return false;
+      if (!c) return false;
+      if (!c.promo) return false;
       return !unlockedCharIds.has(c.id);
     }
 
@@ -3296,7 +3495,6 @@
     let rosterSearchNorm = "";
 
     function charMatchesRosterFilter(c) {
-      if (isCharLocked(c) && !team1Pick.includes(c.id) && !team2Pick.includes(c.id)) return false;
       if (team1Pick.includes(c.id) || team2Pick.includes(c.id)) return true;
       if (rosterSearchNorm) {
         const hay = `${c.name} ${c.emoji || ""}`.toLowerCase();
@@ -3320,8 +3518,7 @@
       if (!wrap) return;
       wrap.innerHTML = "";
       const codes = Object.keys(PROMO_UNLOCKS_BY_CODE).filter((code) => {
-        const unlockIds = PROMO_UNLOCKS_BY_CODE[code].unlockCharIds || [];
-        return unlockIds.every((id) => unlockedCharIds.has(id));
+        return unlockedCharIds.has(code);
       });
       if (!codes.length) return;
       codes.forEach((code) => {
@@ -3349,11 +3546,15 @@
         setPromoMsg("Промокод не найден.");
         return;
       }
-      const before = unlockedCharIds.size;
+      if (unlockedCharIds.has(code)) {
+        setPromoMsg("Этот промокод уже активирован.");
+        return;
+      }
+      unlockedCharIds.add(code);
+      saveUnlockedCharIds(unlockedCharIds);
       (promo.unlockCharIds || []).forEach((id) => unlockedCharIds.add(id));
       saveUnlockedCharIds(unlockedCharIds);
-      const changed = unlockedCharIds.size !== before;
-      setPromoMsg(changed ? promo.title : "Этот промокод уже активирован.");
+      setPromoMsg(promo.title || "Промокод активирован.");
       ensurePicksValid();
       renderRosters();
       renderPromoRedeemed();
@@ -4594,9 +4795,9 @@
       tabPromos.addEventListener("click", () => setMainTab("promos"));
     })();
 
+    ensurePicksValid();
     renderRosters();
     updateLabels();
-    ensurePicksValid();
     renderPromoRedeemed();
 
     (function initPromoUI() {
